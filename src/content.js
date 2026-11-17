@@ -90,7 +90,7 @@ export const SECTORS = [
  */
 const UP = "https://rsinternationalagency.com/wp-content/uploads/";
 export const ADVANTAGES = {
-  tag: "(03) Advantages",
+  tag: "(04) Advantages",
   headline: "Save Time And Get The Best Talent",
   cta: "Search For Talent",
   pillars: [
@@ -132,7 +132,7 @@ export const ADVANTAGES = {
  * (screening & vetting, MEA licence, 99.9% job-security guarantee, 95% retention).
  */
 export const SOLUTION = {
-  tag: "(04) The Solution",
+  tag: "(05) The Solution",
   headline: "We know how difficult it is to hire a deserving candidate",
   subtitle: "We can help you hire the best talents for your industry!",
   cta: "Search for a Talent",
@@ -161,7 +161,7 @@ export const SOLUTION = {
 
 /* Section 5 — "Your Steps to hire the best candidate" (copy per the section brief) */
 export const WORKFLOW = {
-  tag: "(05) Workflow",
+  tag: "(06) Workflow",
   headline: "Your Steps to hire the best candidate",
   cta: "Contact Us",
   steps: [
@@ -190,7 +190,7 @@ export const WORKFLOW = {
  */
 const LOGO = "https://rsinternationalagency.com/wp-content/uploads/2023/02/";
 export const CLIENTS = {
-  tag: "(06) Trusted Partners",
+  tag: "(07) Trusted Partners",
   headline: "Trusted by Industry Leaders Worldwide",
   subtitle: "Powering workforce deployment for multinational enterprises and government contractors.",
   logos: [
@@ -204,7 +204,7 @@ export const CLIENTS = {
 
 /* Section 7 — "Strategic Advantage" (card text verbatim from the live homepage) */
 export const STRATEGIC = {
-  tag: "(07) Strategic Advantage",
+  tag: "(08) Strategic Advantage",
   headline: "Enterprise-Grade Manpower Solutions Backed by Certified Trust",
   cards: [
     {
@@ -232,7 +232,7 @@ export const STRATEGIC = {
 
 /* Section 8 — "Proven Impact" (labels verbatim from the live homepage counters) */
 export const IMPACT = {
-  tag: "(08) Proven Impact",
+  tag: "(09) Proven Impact",
   headline: "Successful Recruitment 2022-2023",
   metrics: [
     { id: "projects", value: 65, suffix: "+", label: "Projects" },
@@ -277,4 +277,20 @@ export const ABOUT = {
     "R.S. International is approved by the Government of India, Ministry of External Affairs to carry business of Manpower Recruitments.",
   promise:
     "Hiring a new talent can cost you time, energy, and money. With R.S. International, complete your search and hire the best talents in your industry!",
+};
+
+/** Section 3 — two-column platform feature (copy as supplied). */
+export const PLATFORM = {
+  tag: "(03) Advanced Recruitment Platform",
+  headlineLead: "Smart Recruitment That",
+  headlineAccent: "Gets Global Hiring Done.",
+  subtitle:
+    "Find, vet, and mobilize elite international talent in minutes. Powered by automated compliance, secure visa processing, and in-country expert verification.",
+  bullets: [
+    "End-to-end visa processing and legal documentation handled",
+    "Rapid mobilization with strict pre-screening and skill vetting",
+    "Complete compliance with international labor standards",
+  ],
+  primaryCta: "Book a Consultation",
+  secondaryCta: "Explore Sectors",
 };

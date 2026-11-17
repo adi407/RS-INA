@@ -3,6 +3,7 @@ import UtilityBar from "./components/UtilityBar.jsx";
 import Navbar from "./components/Navbar.jsx";
 import Hero from "./components/Hero.jsx";
 import Sectors from "./components/Sectors.jsx";
+import Platform from "./components/Platform.jsx";
 import Advantages from "./components/Advantages.jsx";
 import Solution from "./components/Solution.jsx";
 import Workflow from "./components/Workflow.jsx";
@@ -54,6 +55,7 @@ export default function App() {
           }}
         />
         <Sectors onHire={hireFromSector} />
+        <Platform onConsult={() => setIntent("employer")} />
         <Advantages onSearch={() => setIntent("employer")} />
         <Solution onSearch={() => setIntent("employer")} />
         <Workflow onContact={() => setIntent("employer")} />
