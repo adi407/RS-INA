@@ -1,0 +1,82 @@
+@import "tailwindcss";
+
+/* Brand tokens — usable as Tailwind utilities, e.g. bg-obsidian, font-display */
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Plus Jakarta Sans", "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  --color-obsidian: #0a0f1d;
+  --color-abyss: #090d16;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Light canvas (RemotePeople-style); hero, nav and footer are dark anchors */
+body {
+  background: #ffffff;
+  color: #475569; /* slate-600 body copy */
+  font-family: var(--font-sans);
+}
+
+::selection {
+  background: rgb(16 185 129 / 0.35);
+  color: #fff;
+}
+
+/* Advantages card: content swap + autoplay progress */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* Nav link underline micro-interaction */
+.link-underline {
+  position: relative;
+}
+.link-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -6px;
+  height: 1px;
+  background: #34d399;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 300ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.link-underline:hover::after,
+.link-underline:focus-visible::after,
+.link-underline[data-active="true"]::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    transition-duration: 1ms !important;
+    animation-duration: 1ms !important;
+  }
+}
