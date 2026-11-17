@@ -9,6 +9,7 @@
   --color-abyss: #090d16;
 }
 
+/* Native smooth scrolling is the fallback; Lenis turns it off (lenis.css) while it runs */
 html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;

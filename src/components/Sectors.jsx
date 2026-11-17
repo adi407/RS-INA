@@ -1,5 +1,7 @@
 import { ArrowRight, ArrowUpRight, ConciergeBell, HardHat, Sprout, TrainFront } from "lucide-react";
-import { Section, SectionHeader } from "./ui.jsx";
+import { useLayoutEffect, useRef } from "react";
+import { Section } from "./ui.jsx";
+import { gsap } from "../motion.js";
 import { SECTORS, SECTORS_COPY } from "../content.js";
 
 const ICONS = { hospitality: ConciergeBell, railway: TrainFront, agriculture: Sprout, construction: HardHat };
@@ -49,23 +51,109 @@ function SectorCard({ sector, index, onHire }) {
   );
 }
 
-/** Section 2 — industry sectors bento grid (white canvas). */
+/**
+ * Intro stage: a 2x2 collage of the sector photos starts large in the centre and,
+ * as the visitor scrolls (stage pinned), shrinks into a slot inside the heading
+ * while the copy fades in around it. Desktop + motion-allowed only; elsewhere the
+ * collage simply sits in its slot.
+ */
+function SectorsStage({ onHire }) {
+  const stage = useRef(null);
+  const slot = useRef(null);
+  const collage = useRef(null);
+
+  useLayoutEffect(() => {
+    const mm = gsap.matchMedia();
+    mm.add("(min-width: 768px) and (prefers-reduced-motion: no-preference)", () => {
+      const big = () => Math.min(560, window.innerHeight * 0.62);
+      // Offset from the slot to the stage centre (both move together while pinned)
+      const delta = () => {
+        const s = stage.current.getBoundingClientRect();
+        const t = slot.current.getBoundingClientRect();
+        return {
+          x: s.left + s.width / 2 - (t.left + t.width / 2),
+          y: s.top + s.height / 2 - (t.top + t.height / 2),
+          scale: big() / t.width,
+        };
+      };
+      const fade = stage.current.querySelectorAll("[data-fade]");
+
+      gsap
+        .timeline({
+          scrollTrigger: {
+            trigger: stage.current,
+            start: "top top",
+            end: "+=110%",
+            scrub: 0.6,
+            pin: true,
+            invalidateOnRefresh: true,
+          },
+        })
+        .from(collage.current, {
+          x: () => delta().x,
+          y: () => delta().y,
+          scale: () => delta().scale,
+          force3D: false, // keep the photos crisp while scaling
+          ease: "power2.inOut",
+          duration: 1,
+        })
+        .from(fade, { opacity: 0, y: 24, stagger: 0.06, duration: 0.45, ease: "power2.out" }, 0.5);
+    });
+    return () => mm.revert();
+  }, []);
+
+  const words = SECTORS_COPY.headline.replace(/\.$/, "").split(" ");
+  const lead = words.slice(0, SECTORS_COPY.headlineSplit).join(" ");
+  const rest = words.slice(SECTORS_COPY.headlineSplit);
+  const last = rest.pop();
+
+  return (
+    <div ref={stage} className="flex flex-col items-center text-center md:min-h-[100svh] md:justify-center">
+      <p data-fade className="text-xs font-semibold uppercase tracking-widest text-emerald-600">
+        {SECTORS_COPY.tag}
+      </p>
+      <h2 id="sectors-title" className="mt-5 max-w-5xl font-display text-4xl font-bold leading-[1.08] tracking-tight text-slate-900 sm:text-5xl lg:text-7xl">
+        <span data-fade className="inline">{lead}</span>{" "}
+        {/* Slot the collage lands in — sized in em so it scales with the heading */}
+        <span ref={slot} aria-hidden className="relative z-10 mx-[0.08em] inline-block size-[0.92em] align-[-0.14em]">
+          <span
+            ref={collage}
+            className="absolute inset-0 grid grid-cols-2 grid-rows-2 gap-[4%] overflow-hidden rounded-[0.16em] bg-white p-[4%] shadow-xl shadow-slate-900/10 ring-1 ring-slate-200/80"
+          >
+            {/* Square crops from the top keep the photos' baked-in red caption band out of view */}
+            {SECTORS.map((s) => (
+              <img key={s.id} src={s.image} alt="" className="size-full min-h-0 rounded-[0.08em] object-cover object-top" />
+            ))}
+          </span>
+        </span>{" "}
+        <span data-fade className="inline text-slate-500">
+          {rest.length > 0 && `${rest.join(" ")} `}
+          <span className="whitespace-nowrap">
+            {last}
+            <span aria-hidden className="ml-[0.06em] inline-block size-[0.17em] rounded-full bg-emerald-500" />
+          </span>
+        </span>
+      </h2>
+      <a
+        data-fade
+        href="#inquiry"
+        onClick={() => onHire("hospitality")}
+        className="group mt-10 inline-flex items-center gap-2 font-semibold text-emerald-600 transition-colors hover:text-emerald-500"
+      >
+        {SECTORS_COPY.subtitle}
+        <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" aria-hidden />
+      </a>
+    </div>
+  );
+}
+
+/** Section 2 — collage intro stage, then the industry sectors bento grid. */
 export default function Sectors({ onHire }) {
   return (
     <Section id="sectors" labelledBy="sectors-title">
-      <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-        <SectionHeader id="sectors-title" tag={SECTORS_COPY.tag} title={SECTORS_COPY.headline} split={SECTORS_COPY.headlineSplit} />
-        <a
-          href="#inquiry"
-          onClick={() => onHire("hospitality")}
-          className="group inline-flex items-center gap-2 self-start font-semibold text-emerald-600 transition-colors hover:text-emerald-500 lg:self-auto"
-        >
-          {SECTORS_COPY.subtitle}
-          <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" aria-hidden />
-        </a>
-      </div>
+      <SectorsStage onHire={onHire} />
 
-      <div className="focus-grid mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="focus-grid mt-16 grid grid-cols-1 gap-6 sm:grid-cols-2 md:mt-4 lg:grid-cols-4">
         {SECTORS.map((s, i) => (
           <SectorCard key={s.id} sector={s} index={i} onHire={onHire} />
         ))}

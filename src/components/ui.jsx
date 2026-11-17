@@ -1,3 +1,5 @@
+import { forwardRef } from "react";
+
 /**
  * Design system — RemotePeople-inspired tokens shared by every light section.
  * Canvas: white / slate-50 · Anchors: #0A0F1D (hero, footer) · Text: slate-900 / 600 / 500
@@ -19,17 +21,20 @@ export const ICON_TILE =
   "grid size-12 shrink-0 place-items-center rounded-2xl bg-emerald-50 text-emerald-600 ring-1 ring-inset ring-emerald-100";
 
 /** Section wrapper: alternating canvas + consistent rhythm */
-export function Section({ id, tint = false, labelledBy, className = "", children }) {
+/** Page section. `bg` overrides the white / slate-50 background; extra props (ref, data-*) pass through. */
+export const Section = forwardRef(function Section({ id, tint = false, bg, labelledBy, className = "", children, ...rest }, ref) {
   return (
     <section
+      ref={ref}
       id={id}
       aria-labelledby={labelledBy}
-      className={`scroll-mt-20 px-6 py-24 md:px-12 ${tint ? "bg-slate-50" : "bg-white"} ${className}`}
+      className={`scroll-mt-20 px-6 py-24 md:px-12 ${bg ?? (tint ? "bg-slate-50" : "bg-white")} ${className}`}
+      {...rest}
     >
       <div className="mx-auto max-w-7xl">{children}</div>
     </section>
   );
-}
+});
 
 /** Overline tag + H2 (+ optional subtitle). `align="center"` for centred headers. */
 /**
@@ -45,7 +50,7 @@ export function TwoTone({ text, split }) {
   return (
     <>
       {words.slice(0, split).join(" ")}{" "}
-      <span className="text-slate-500">
+      <span className="text-slate-500 transition-colors duration-700 group-data-[dark=true]/theme:text-slate-400">
         {rest.length > 0 && `${rest.join(" ")} `}
         {/* nowrap keeps the dot on the same line as the final word */}
         <span className="whitespace-nowrap">
@@ -61,8 +66,8 @@ export function SectionHeader({ id, tag, title, split, subtitle, align = "left",
   const center = align === "center";
   return (
     <header data-reveal className={`${center ? "mx-auto max-w-3xl text-center" : "max-w-3xl"} ${className}`}>
-      <p className="text-xs font-semibold uppercase tracking-widest text-emerald-600">{tag}</p>
-      <h2 id={id} className="mt-4 font-display text-3xl font-bold tracking-tight text-slate-900 lg:text-4xl">
+      <p className="text-xs font-semibold uppercase tracking-widest text-emerald-600 transition-colors duration-700 group-data-[dark=true]/theme:text-emerald-400">{tag}</p>
+      <h2 id={id} className="mt-4 font-display text-3xl font-bold tracking-tight text-slate-900 transition-colors duration-700 group-data-[dark=true]/theme:text-white lg:text-4xl">
         <TwoTone text={title} split={split} />
       </h2>
       {subtitle && (

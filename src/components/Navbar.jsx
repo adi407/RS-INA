@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { ArrowUpRight, ChevronDown, Menu, X } from "lucide-react";
 import Logo from "./Logo.jsx";
 import { NAV } from "../content.js";
+import { getLenis } from "../motion.js";
 
 /** Desktop dropdown — opens on hover and on click/keyboard; closes on Escape or outside click. */
 function Dropdown({ item, onPick, alignRight = false }) {
@@ -87,8 +88,11 @@ export default function Navbar({ onIntent }) {
   // Lock body scroll while the mobile sheet is open
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? "hidden" : "";
+    if (mobileOpen) getLenis()?.stop();
+    else getLenis()?.start();
     return () => {
       document.body.style.overflow = "";
+      getLenis()?.start();
     };
   }, [mobileOpen]);
 

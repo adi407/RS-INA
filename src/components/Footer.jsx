@@ -28,7 +28,11 @@ function LinkColumn({ title, links, onIntent, className = "" }) {
 
 export default function Footer({ onIntent }) {
   return (
-    <footer className="border-t border-slate-800/80 bg-[#0A0F1D] px-6 py-20 text-slate-300 md:px-12">
+    <footer
+      // Footer reveal: sticks to the bottom under the raised <main> on large, tall screens only,
+      // so it can never be taller than the viewport (which would hide its top)
+      className="z-0 border-t border-slate-800/80 bg-[#0A0F1D] px-6 py-20 text-slate-300 md:px-12 [@media(min-width:1024px)_and_(min-height:760px)]:sticky [@media(min-width:1024px)_and_(min-height:760px)]:bottom-0"
+    >
       <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-12 lg:gap-8">
         {/* Column 1 — brand */}
         <div className="lg:col-span-4">

@@ -11,11 +11,13 @@ import Clients from "./components/Clients.jsx";
 import CaseStudies from "./components/CaseStudies.jsx";
 import StrategicAdvantage from "./components/StrategicAdvantage.jsx";
 import ImpactMetrics from "./components/ImpactMetrics.jsx";
+import BigStatement from "./components/BigStatement.jsx";
 import Contact from "./components/Contact.jsx";
 import Footer from "./components/Footer.jsx";
 import BackToTop from "./components/BackToTop.jsx";
 import Cursor from "./components/Cursor.jsx";
 import useReveal from "./useReveal.js";
+import { useSmoothScroll } from "./motion.js";
 
 /**
  * Page layout (RemotePeople-style rhythm):
@@ -31,6 +33,7 @@ export default function App() {
   const [intent, setIntent] = useState("employer");
 
   useReveal();
+  useSmoothScroll();
 
   const toForm =() => document.getElementById("inquiry")?.scrollIntoView({ behavior: "smooth", block: "start" });
 
@@ -49,7 +52,8 @@ export default function App() {
       </a>
       <UtilityBar />
       <Navbar onIntent={setIntent} />
-      <main>
+      {/* Raised layer: on large screens it scrolls up off the sticky footer beneath it */}
+      <main className="relative z-10 bg-white shadow-[0_40px_80px_-24px_rgba(2,6,23,0.55)]">
         <Hero
           industry={industry}
           setIndustry={setIndustry}
@@ -69,6 +73,7 @@ export default function App() {
         <CaseStudies onConsult={() => setIntent("employer")} />
         <StrategicAdvantage />
         <ImpactMetrics />
+        <BigStatement />
         <Contact intent={intent} setIntent={setIntent} industry={industry} setIndustry={setIndustry} region={region} />
       </main>
       <Footer onIntent={setIntent} />
