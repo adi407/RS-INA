@@ -1,4 +1,6 @@
+import { useCallback, useState } from "react";
 import { ArrowRight, Briefcase, ChevronDown, Globe2 } from "lucide-react";
+import HeroScene from "./HeroScene.jsx";
 import useCountUp from "../useCountUp.js";
 import { HERO, METRICS, REGIONS, SECTORS } from "../content.js";
 
@@ -50,6 +52,10 @@ function PillSelect({ id, label, icon: Icon, value, onChange, options }) {
  * floating white search pill (its button is the "Free CV Search" CTA), trust ribbon.
  */
 export default function Hero({ industry, setIndustry, region, setRegion, onSearch }) {
+  // Once the 3D globe has drawn, dim the photo so the scene reads clearly
+  const [scene3d, setScene3d] = useState(false);
+  const onSceneReady = useCallback(() => setScene3d(true), []);
+
   return (
     <section id="top" className="relative isolate overflow-hidden bg-[#0A0F1D]">
       {/* Backdrop: photo → grayscale → teal tint (duotone) → legibility gradients */}
@@ -57,13 +63,17 @@ export default function Hero({ industry, setIndustry, region, setRegion, onSearc
         <img
           src={HERO.image}
           alt=""
-          className="size-full object-cover object-[70%_center] grayscale contrast-125 brightness-[0.7]"
+          className={`size-full object-cover object-[70%_center] grayscale contrast-125 brightness-[0.7] transition-opacity duration-[1500ms] ${
+            scene3d ? "opacity-30" : "opacity-100"
+          }`}
           fetchpriority="high"
         />
         <div className="absolute inset-0 bg-teal-950 mix-blend-color" />
         <div className="absolute inset-0 bg-gradient-to-r from-[#0A0F1D]/95 via-[#0A0F1D]/80 to-transparent" />
         <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[#0A0F1D] to-transparent" />
       </div>
+
+      <HeroScene onReady={onSceneReady} />
 
       <div className="mx-auto max-w-7xl px-6 pb-16 pt-20 md:px-12 lg:pb-20 lg:pt-28">
         <h1 className="max-w-4xl font-display text-[40px] font-extrabold uppercase leading-[1.1] tracking-tight text-white sm:text-5xl lg:text-6xl">
