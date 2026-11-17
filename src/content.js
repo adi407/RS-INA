@@ -67,6 +67,7 @@ export const REGIONS = [
 export const SECTORS_COPY = {
   tag: "(02) Sectors",
   headline: "Looking For A Deserving Candidate Is Not Easy.",
+  headlineSplit: 5, // words in the dark lead of the two-tone heading
   subtitle: "Start Searching Now!",
 };
 
@@ -92,6 +93,7 @@ const UP = "https://rsinternationalagency.com/wp-content/uploads/";
 export const ADVANTAGES = {
   tag: "(04) Advantages",
   headline: "Save Time And Get The Best Talent",
+  headlineSplit: 2, // words in the dark lead of the two-tone heading
   cta: "Search For Talent",
   pillars: [
     {
@@ -134,6 +136,7 @@ export const ADVANTAGES = {
 export const SOLUTION = {
   tag: "(05) The Solution",
   headline: "We know how difficult it is to hire a deserving candidate",
+  headlineSplit: 6, // words in the dark lead of the two-tone heading
   subtitle: "We can help you hire the best talents for your industry!",
   cta: "Search for a Talent",
   assurances: [
@@ -163,6 +166,7 @@ export const SOLUTION = {
 export const WORKFLOW = {
   tag: "(06) Workflow",
   headline: "Your Steps to hire the best candidate",
+  headlineSplit: 2, // words in the dark lead of the two-tone heading
   cta: "Contact Us",
   steps: [
     {
@@ -192,6 +196,7 @@ const LOGO = "https://rsinternationalagency.com/wp-content/uploads/2023/02/";
 export const CLIENTS = {
   tag: "(07) Trusted Partners",
   headline: "Trusted by Industry Leaders Worldwide",
+  headlineSplit: 4, // words in the dark lead of the two-tone heading
   subtitle: "Powering workforce deployment for multinational enterprises and government contractors.",
   logos: [
     { name: "SKD Group", logo: `${LOGO}SKD.png` },
@@ -206,6 +211,7 @@ export const CLIENTS = {
 export const STRATEGIC = {
   tag: "(09) Strategic Advantage",
   headline: "Enterprise-Grade Manpower Solutions Backed by Certified Trust",
+  headlineSplit: 3, // words in the dark lead of the two-tone heading
   cards: [
     {
       id: "efficiency",
@@ -234,6 +240,7 @@ export const STRATEGIC = {
 export const IMPACT = {
   tag: "(10) Proven Impact",
   headline: "Successful Recruitment 2022-2023",
+  headlineSplit: 2, // words in the dark lead of the two-tone heading
   metrics: [
     { id: "projects", value: 65, suffix: "+", label: "Projects" },
     { id: "recruitment", value: 4000, suffix: "+", label: "Recruitment" },
@@ -302,6 +309,7 @@ export const PLATFORM = {
 export const CASE_STUDIES = {
   tag: "(08) Global Case Studies",
   headline: "Trusted by Leading Enterprises Worldwide.",
+  headlineSplit: 4, // words in the dark lead of the two-tone heading
   subtitle: "See how world-class companies scale their workforce across borders with verified manpower deployment.",
   stories: [
     {

@@ -69,6 +69,41 @@ body {
   transform-origin: left;
 }
 
+/* ---------- Scroll reveal ----------
+   Elements tagged data-reveal start hidden only once JS has added .reveal-ready
+   (so no-JS and reduced-motion visitors always see content). useReveal.js sets
+   data-reveal="in" on entry, then "done" when the animation ends so the element's
+   own hover transitions take over again. --d staggers grid items. */
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .reveal-ready [data-reveal]:not([data-reveal="done"]) {
+    opacity: 0;
+  }
+  .reveal-ready [data-reveal="in"] {
+    animation: reveal-up 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) var(--d, 0ms) both;
+  }
+}
+
+/* ---------- Hover focus ----------
+   In a .focus-grid, hovering one item blurs and dims its siblings.
+   Mouse devices only, so a tap on a phone never leaves a grid blurred.
+   Children carry their own transition-all, which animates filter/opacity. */
+@media (hover: hover) and (pointer: fine) {
+  .focus-grid:has(> :hover) > :not(:hover) {
+    filter: blur(3px) saturate(0.6);
+    opacity: 0.45;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

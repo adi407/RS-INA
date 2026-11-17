@@ -20,7 +20,7 @@ function Body({ text }) {
 function AdvantageCard({ card, index }) {
   const Icon = ICONS[card.id];
   return (
-    <article className={`${CARD} group relative overflow-hidden lg:p-10`}>
+    <article data-reveal style={{ "--d": `${index * 90}ms` }} className={`${CARD} group relative overflow-hidden lg:p-10`}>
       <div className="flex items-center justify-between">
         <span className={`${ICON_TILE} transition-colors duration-300 group-hover:bg-emerald-600 group-hover:text-white`}>
           <Icon className="size-[22px]" strokeWidth={1.5} aria-hidden />
@@ -49,8 +49,8 @@ function AdvantageCard({ card, index }) {
 export default function StrategicAdvantage() {
   return (
     <Section id="about" tint labelledBy="strategic-title">
-      <SectionHeader id="strategic-title" tag={STRATEGIC.tag} title={STRATEGIC.headline} align="center" />
-      <div className="mx-auto mt-16 grid max-w-6xl grid-cols-1 gap-8 md:grid-cols-2">
+      <SectionHeader id="strategic-title" tag={STRATEGIC.tag} title={STRATEGIC.headline} split={STRATEGIC.headlineSplit} align="center" />
+      <div className="focus-grid mx-auto mt-16 grid max-w-6xl grid-cols-1 gap-8 md:grid-cols-2">
         {STRATEGIC.cards.map((c, i) => (
           <AdvantageCard key={c.id} card={c} index={i} />
         ))}

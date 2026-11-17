@@ -11,7 +11,7 @@ export default function Contact(formProps) {
   return (
     <Section id="contact" tint labelledBy="contact-title">
       <div className="grid items-start gap-12 lg:grid-cols-12 lg:gap-16">
-        <div className="lg:col-span-6">
+        <div data-reveal className="lg:col-span-6">
           <p className="text-xs font-semibold uppercase tracking-widest text-emerald-600">(11) Get In Touch</p>
           <h2 id="contact-title" className="mt-4 font-display text-3xl font-bold tracking-tight text-slate-900 lg:text-4xl">
             Hiring a new talent can cost you time, energy, and money.{" "}
@@ -43,7 +43,7 @@ export default function Contact(formProps) {
           </div>
         </div>
 
-        <div className="lg:col-span-6">
+        <div data-reveal style={{ "--d": "120ms" }} className="lg:col-span-6">
           <InquiryForm {...formProps} />
         </div>
       </div>

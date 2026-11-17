@@ -8,7 +8,7 @@ const ICONS = { search: Search, consult: MessagesSquare, hire: BadgeCheck };
 /** Desktop milestone rail: one dot centred over each card, joined by a dashed line. */
 function MilestoneRail({ count, active }) {
   return (
-    <div aria-hidden className="relative mx-auto hidden max-w-6xl md:block">
+    <div aria-hidden data-reveal className="relative mx-auto hidden max-w-6xl md:block">
       <span className="absolute left-[16.667%] right-[16.667%] top-1/2 -translate-y-1/2 border-t-2 border-dashed border-slate-300" />
       <div className="relative grid grid-cols-3 gap-8">
         {Array.from({ length: count }, (_, i) => (
@@ -31,6 +31,8 @@ function StepCard({ step, index, active, onActivate }) {
   const Icon = ICONS[step.id];
   return (
     <li
+      data-reveal
+      style={{ "--d": `${index * 90}ms` }}
       onPointerEnter={(e) => e.pointerType === "mouse" && onActivate(index)}
       onPointerLeave={(e) => e.pointerType === "mouse" && onActivate(null)}
       onClick={() => onActivate(index)}
@@ -90,7 +92,7 @@ export default function Workflow({ onContact }) {
   const [active, setActive] = useState(null);
   return (
     <Section id="workflow" tint labelledBy="workflow-title">
-      <SectionHeader id="workflow-title" tag={WORKFLOW.tag} title={WORKFLOW.headline} align="center" />
+      <SectionHeader id="workflow-title" tag={WORKFLOW.tag} title={WORKFLOW.headline} split={WORKFLOW.headlineSplit} align="center" />
 
       <div className="mt-16">
         <MilestoneRail count={steps.length} active={active} />

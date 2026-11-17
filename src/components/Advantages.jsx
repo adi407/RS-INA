@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { ArrowRight, BadgeCheck, Landmark, PiggyBank, Plane } from "lucide-react";
-import { BTN_PRIMARY } from "./ui.jsx";
+import { BTN_PRIMARY, TwoTone } from "./ui.jsx";
 import { ADVANTAGES } from "../content.js";
 
 const ICONS = { mobilization: Plane, security: BadgeCheck, affordability: PiggyBank, government: Landmark };
@@ -58,10 +58,10 @@ export default function Advantages({ onSearch }) {
     <section ref={sectionRef} id="advantages" aria-labelledby="advantages-title" className="scroll-mt-20 bg-slate-50 px-6 py-24 md:px-12">
       <div className="mx-auto grid max-w-7xl grid-cols-1 items-start gap-12 lg:grid-cols-12">
         {/* ---------- Left: sticky editorial column ---------- */}
-        <div className="lg:sticky lg:top-28 lg:col-span-5">
+        <div data-reveal className="lg:sticky lg:top-28 lg:col-span-5">
           <p className="text-xs font-semibold uppercase tracking-widest text-emerald-600">{ADVANTAGES.tag}</p>
           <h2 id="advantages-title" className="mt-4 font-display text-3xl font-bold tracking-tight text-slate-900 lg:text-4xl">
-            {ADVANTAGES.headline}
+            <TwoTone text={ADVANTAGES.headline} split={ADVANTAGES.headlineSplit} />
           </h2>
 
           <div
@@ -137,7 +137,7 @@ export default function Advantages({ onSearch }) {
         </div>
 
         {/* ---------- Right: dynamic showcase card ---------- */}
-        <div className="lg:col-span-7">
+        <div data-reveal style={{ "--d": "120ms" }} className="lg:col-span-7">
           <div
             id="adv-panel"
             role="tabpanel"

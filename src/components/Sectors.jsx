@@ -12,6 +12,8 @@ function SectorCard({ sector, index, onHire }) {
       href="#inquiry"
       onClick={() => onHire(sector.id)}
       aria-label={`Explore ${sector.title.toLowerCase()} talent`}
+      data-reveal
+      style={{ "--d": `${index * 90}ms` }}
       className="group flex flex-col rounded-3xl border border-slate-200/80 bg-white p-3 shadow-xl shadow-slate-900/5 transition-all duration-300 hover:-translate-y-1 hover:border-emerald-500/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
     >
       {/* 4:3 crop framed on the upper-middle of the photo: the source images carry a red
@@ -52,7 +54,7 @@ export default function Sectors({ onHire }) {
   return (
     <Section id="sectors" labelledBy="sectors-title">
       <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-        <SectionHeader id="sectors-title" tag={SECTORS_COPY.tag} title={SECTORS_COPY.headline} />
+        <SectionHeader id="sectors-title" tag={SECTORS_COPY.tag} title={SECTORS_COPY.headline} split={SECTORS_COPY.headlineSplit} />
         <a
           href="#inquiry"
           onClick={() => onHire("hospitality")}
@@ -63,7 +65,7 @@ export default function Sectors({ onHire }) {
         </a>
       </div>
 
-      <div className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="focus-grid mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {SECTORS.map((s, i) => (
           <SectorCard key={s.id} sector={s} index={i} onHire={onHire} />
         ))}

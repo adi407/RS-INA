@@ -13,6 +13,9 @@ import StrategicAdvantage from "./components/StrategicAdvantage.jsx";
 import ImpactMetrics from "./components/ImpactMetrics.jsx";
 import Contact from "./components/Contact.jsx";
 import Footer from "./components/Footer.jsx";
+import BackToTop from "./components/BackToTop.jsx";
+import Cursor from "./components/Cursor.jsx";
+import useReveal from "./useReveal.js";
 
 /**
  * Page layout (RemotePeople-style rhythm):
@@ -27,7 +30,9 @@ export default function App() {
   const [region, setRegion] = useState("middle-east");
   const [intent, setIntent] = useState("employer");
 
-  const toForm = () => document.getElementById("inquiry")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  useReveal();
+
+  const toForm =() => document.getElementById("inquiry")?.scrollIntoView({ behavior: "smooth", block: "start" });
 
   const hireFromSector = (id) => {
     setIndustry(id);
@@ -67,6 +72,8 @@ export default function App() {
         <Contact intent={intent} setIntent={setIntent} industry={industry} setIndustry={setIndustry} region={region} />
       </main>
       <Footer onIntent={setIntent} />
+      <BackToTop />
+      <Cursor />
     </>
   );
 }

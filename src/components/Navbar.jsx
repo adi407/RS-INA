@@ -68,12 +68,17 @@ function Dropdown({ item, onPick, alignRight = false }) {
 
 export default function Navbar({ onIntent }) {
   const [scrolled, setScrolled] = useState(false);
+  const [compact, setCompact] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [expanded, setExpanded] = useState(null);
 
-  // Deepen the glass once the page scrolls under the bar
+  // Deepen the glass once the page scrolls under the bar; past the hero top,
+  // collapse the desktop links into a Menu button (nk.studio-style compact bar)
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
+    const onScroll = () => {
+      setScrolled(window.scrollY > 40);
+      setCompact(window.scrollY > 160);
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -87,6 +92,11 @@ export default function Navbar({ onIntent }) {
     };
   }, [mobileOpen]);
 
+  // Back at the top on desktop the full links return, so close the sheet
+  useEffect(() => {
+    if (!compact && window.matchMedia("(min-width: 1280px)").matches) setMobileOpen(false);
+  }, [compact]);
+
   const pick = (link) => {
     if (link.intent) onIntent(link.intent);
     setMobileOpen(false);
@@ -98,11 +108,15 @@ export default function Navbar({ onIntent }) {
         scrolled ? "border-slate-800/80 bg-obsidian/75 backdrop-blur-xl" : "border-transparent bg-obsidian"
       }`}
     >
-      <nav aria-label="Primary" className="mx-auto flex h-20 max-w-[1280px] items-center justify-between gap-6 px-5 sm:px-8">
+      <nav aria-label="Primary" className="mx-auto flex h-20 max-w-[1280px] items-center justify-between gap-6 px-5 sm:px-8 xl:grid xl:grid-cols-[1fr_auto_1fr]">
         <Logo />
 
-        {/* Desktop links */}
-        <ul className="hidden items-center gap-8 xl:flex">
+        {/* Desktop links — fade out once the bar goes compact (invisible also removes them from tab order) */}
+        <ul
+          className={`hidden items-center gap-8 transition-all duration-300 xl:flex ${
+            compact ? "invisible -translate-y-2 opacity-0" : "visible translate-y-0 opacity-100"
+          }`}
+        >
           {NAV.map((item, i) =>
             item.children ? (
               <Dropdown key={item.label} item={item} onPick={pick} alignRight={i === NAV.length - 1} />
@@ -120,26 +134,38 @@ export default function Navbar({ onIntent }) {
           )}
         </ul>
 
-        <button
-          type="button"
-          onClick={() => setMobileOpen((v) => !v)}
-          aria-expanded={mobileOpen}
-          aria-controls="mobile-menu"
-          aria-label={mobileOpen ? "Close menu" : "Open menu"}
-          className="grid size-11 place-items-center rounded-full border border-slate-700 text-white xl:hidden"
-        >
-          {mobileOpen ? <X className="size-5" /> : <Menu className="size-5" />}
-        </button>
+        <div className="flex items-center justify-end gap-5">
+          <a
+            href="#contact"
+            onClick={() => setMobileOpen(false)}
+            className="link-underline hidden text-xs font-semibold uppercase tracking-widest text-white focus-visible:outline-none sm:inline-block"
+          >
+            Contact Us
+          </a>
+          {/* Always shown below xl; on xl it appears only in the compact bar */}
+          <button
+            type="button"
+            onClick={() => setMobileOpen((v) => !v)}
+            aria-expanded={mobileOpen}
+            aria-controls="mobile-menu"
+            aria-label={mobileOpen ? "Close menu" : "Open menu"}
+            className={`grid size-11 place-items-center rounded-full border border-slate-700 text-white transition-all duration-300 hover:border-emerald-500 ${
+              compact ? "" : "xl:invisible xl:scale-90 xl:opacity-0"
+            }`}
+          >
+            {mobileOpen ? <X className="size-5" /> : <Menu className="size-5" />}
+          </button>
+        </div>
       </nav>
 
       {/* Mobile / tablet sheet */}
       <div
         id="mobile-menu"
-        className={`overflow-y-auto border-t border-slate-800/80 bg-obsidian transition-[max-height] duration-300 xl:hidden ${
+        className={`overflow-y-auto border-t border-slate-800/80 bg-obsidian transition-[max-height] duration-300 ${compact ? "" : "xl:hidden"} ${
           mobileOpen ? "max-h-[calc(100dvh-5rem)]" : "max-h-0 border-transparent"
         }`}
       >
-        <ul className="px-5 py-4 sm:px-8">
+        <ul className="mx-auto max-w-[1280px] px-5 py-4 sm:px-8">
           {NAV.map((item) => (
             <li key={item.label} className="border-b border-slate-800/60">
               {item.children ? (

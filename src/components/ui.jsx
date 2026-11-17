@@ -32,13 +32,38 @@ export function Section({ id, tint = false, labelledBy, className = "", children
 }
 
 /** Overline tag + H2 (+ optional subtitle). `align="center"` for centred headers. */
-export function SectionHeader({ id, tag, title, subtitle, align = "left", className = "" }) {
+/**
+ * Two-tone heading text: the first `split` words in slate-900, the rest in slate-500,
+ * closed with a decorative emerald dot (replacing any trailing full stop).
+ * Words are unchanged; only colour differs. slate-500 keeps WCAG contrast on white/slate-50.
+ */
+export function TwoTone({ text, split }) {
+  if (!split) return text;
+  const words = text.replace(/\.$/, "").split(" ");
+  const rest = words.slice(split);
+  const last = rest.pop();
+  return (
+    <>
+      {words.slice(0, split).join(" ")}{" "}
+      <span className="text-slate-500">
+        {rest.length > 0 && `${rest.join(" ")} `}
+        {/* nowrap keeps the dot on the same line as the final word */}
+        <span className="whitespace-nowrap">
+          {last}
+          <span aria-hidden className="ml-[0.06em] inline-block size-[0.17em] rounded-full bg-emerald-500" />
+        </span>
+      </span>
+    </>
+  );
+}
+
+export function SectionHeader({ id, tag, title, split, subtitle, align = "left", className = "" }) {
   const center = align === "center";
   return (
-    <header className={`${center ? "mx-auto max-w-3xl text-center" : "max-w-3xl"} ${className}`}>
+    <header data-reveal className={`${center ? "mx-auto max-w-3xl text-center" : "max-w-3xl"} ${className}`}>
       <p className="text-xs font-semibold uppercase tracking-widest text-emerald-600">{tag}</p>
       <h2 id={id} className="mt-4 font-display text-3xl font-bold tracking-tight text-slate-900 lg:text-4xl">
-        {title}
+        <TwoTone text={title} split={split} />
       </h2>
       {subtitle && (
         <p className={`mt-4 text-base leading-relaxed text-slate-600 ${center ? "mx-auto max-w-xl" : "max-w-xl"}`}>{subtitle}</p>

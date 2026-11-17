@@ -1,6 +1,6 @@
 import { ArrowRight, Check, FileCheck2, Landmark, ShieldCheck } from "lucide-react";
 import useCountUp from "../useCountUp.js";
-import { BTN_PRIMARY, Section } from "./ui.jsx";
+import { BTN_PRIMARY, Section, TwoTone } from "./ui.jsx";
 import { LICENSE, SOLUTION } from "../content.js";
 
 const ICONS = { vetting: FileCheck2, compliance: Landmark, risk: ShieldCheck };
@@ -75,7 +75,7 @@ function AssuranceCard() {
 export default function Solution({ onSearch }) {
   return (
     <Section id="solution" labelledBy="solution-title">
-      <div className="relative overflow-hidden rounded-3xl border border-slate-200/80 bg-gradient-to-br from-slate-50 via-white to-emerald-50/60 p-8 shadow-xl shadow-slate-900/5 lg:p-14">
+      <div data-reveal className="relative overflow-hidden rounded-3xl border border-slate-200/80 bg-gradient-to-br from-slate-50 via-white to-emerald-50/60 p-8 shadow-xl shadow-slate-900/5 lg:p-14">
         {/* Soft dot grid, fading toward the copy */}
         <div
           aria-hidden
@@ -85,7 +85,7 @@ export default function Solution({ onSearch }) {
           <div className="lg:col-span-7">
             <p className="text-xs font-semibold uppercase tracking-widest text-emerald-600">{SOLUTION.tag}</p>
             <h2 id="solution-title" className="mt-4 max-w-xl font-display text-3xl font-bold tracking-tight text-slate-900 lg:text-4xl">
-              {SOLUTION.headline}
+              <TwoTone text={SOLUTION.headline} split={SOLUTION.headlineSplit} />
             </h2>
             <p className="mb-8 mt-4 max-w-lg text-lg leading-relaxed text-slate-600">{SOLUTION.subtitle}</p>
             <a href="#inquiry" onClick={onSearch} className={BTN_PRIMARY}>

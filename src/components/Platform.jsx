@@ -152,7 +152,7 @@ export default function Platform({ onConsult }) {
   return (
     <Section id="platform" labelledBy="platform-title">
       <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-12 lg:gap-16">
-        <div className="lg:col-span-6">
+        <div data-reveal className="lg:col-span-6">
           <p className="text-xs font-semibold uppercase tracking-widest text-emerald-600">{PLATFORM.tag}</p>
           <h2
             id="platform-title"
@@ -187,7 +187,7 @@ export default function Platform({ onConsult }) {
           </div>
         </div>
 
-        <div className="group/frame lg:col-span-6">
+        <div data-reveal style={{ "--d": "120ms" }} className="group/frame lg:col-span-6">
           <DashboardMockup />
         </div>
       </div>

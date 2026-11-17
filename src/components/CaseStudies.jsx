@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { ArrowRight, Building2, MapPin } from "lucide-react";
-import { BTN_PRIMARY } from "./ui.jsx";
+import { BTN_PRIMARY, TwoTone } from "./ui.jsx";
 import { CASE_STUDIES, PLATFORM } from "../content.js";
 
 const AUTOPLAY_MS = 6000;
@@ -54,10 +54,10 @@ export default function CaseStudies({ onConsult }) {
     <section ref={sectionRef} id="case-studies" aria-labelledby="cases-title" className="scroll-mt-20 bg-white px-6 py-24 md:px-12">
       <div className="mx-auto grid max-w-7xl grid-cols-1 items-start gap-12 lg:grid-cols-12">
         {/* ---------- Left: sticky editorial column ---------- */}
-        <div className="lg:sticky lg:top-28 lg:col-span-5">
+        <div data-reveal className="lg:sticky lg:top-28 lg:col-span-5">
           <p className="text-xs font-semibold uppercase tracking-widest text-emerald-600">{CASE_STUDIES.tag}</p>
           <h2 id="cases-title" className="mt-4 font-display text-3xl font-bold tracking-tight text-slate-900 lg:text-4xl">
-            {CASE_STUDIES.headline}
+            <TwoTone text={CASE_STUDIES.headline} split={CASE_STUDIES.headlineSplit} />
           </h2>
           <p className="mt-4 max-w-md text-base leading-relaxed text-slate-600">{CASE_STUDIES.subtitle}</p>
 
@@ -132,7 +132,7 @@ export default function CaseStudies({ onConsult }) {
         </div>
 
         {/* ---------- Right: showcase card in a warm gradient frame ---------- */}
-        <div className="lg:col-span-7">
+        <div data-reveal style={{ "--d": "120ms" }} className="lg:col-span-7">
           <div className="rounded-3xl border border-slate-200/80 bg-gradient-to-br from-amber-100/40 via-orange-50/20 to-emerald-50/30 p-3 shadow-xl shadow-slate-900/5">
             <div
               id="case-panel"

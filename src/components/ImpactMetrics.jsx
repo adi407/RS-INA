@@ -6,11 +6,11 @@ import { IMPACT } from "../content.js";
 const ICONS = { projects: Briefcase, recruitment: Users, retention: ShieldCheck, support: Clock };
 
 /** White stat card — the emerald value counts up when it scrolls into view. */
-function MetricCard({ id, value, suffix, label }) {
+function MetricCard({ id, value, suffix, label, index }) {
   const [ref, n] = useCountUp(value);
   const Icon = ICONS[id];
   return (
-    <div ref={ref} className={`${CARD} group flex flex-col items-center text-center`}>
+    <div ref={ref} data-reveal style={{ "--d": `${index * 90}ms` }} className={`${CARD} group flex flex-col items-center text-center`}>
       <span className={`${ICON_TILE} order-1 transition-colors duration-300 group-hover:bg-emerald-600 group-hover:text-white`}>
         <Icon className="size-[22px]" strokeWidth={1.5} aria-hidden />
       </span>
@@ -28,10 +28,10 @@ function MetricCard({ id, value, suffix, label }) {
 export default function ImpactMetrics() {
   return (
     <Section id="impact" labelledBy="impact-title">
-      <SectionHeader id="impact-title" tag={IMPACT.tag} title={IMPACT.headline} align="center" />
+      <SectionHeader id="impact-title" tag={IMPACT.tag} title={IMPACT.headline} split={IMPACT.headlineSplit} align="center" />
       <dl className="mx-auto mt-16 grid max-w-6xl grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {IMPACT.metrics.map((m) => (
-          <MetricCard key={m.id} {...m} />
+        {IMPACT.metrics.map((m, i) => (
+          <MetricCard key={m.id} {...m} index={i} />
         ))}
       </dl>
     </Section>
