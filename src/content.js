@@ -204,7 +204,7 @@ export const CLIENTS = {
 
 /* Section 7 — "Strategic Advantage" (card text verbatim from the live homepage) */
 export const STRATEGIC = {
-  tag: "(08) Strategic Advantage",
+  tag: "(09) Strategic Advantage",
   headline: "Enterprise-Grade Manpower Solutions Backed by Certified Trust",
   cards: [
     {
@@ -232,7 +232,7 @@ export const STRATEGIC = {
 
 /* Section 8 — "Proven Impact" (labels verbatim from the live homepage counters) */
 export const IMPACT = {
-  tag: "(09) Proven Impact",
+  tag: "(10) Proven Impact",
   headline: "Successful Recruitment 2022-2023",
   metrics: [
     { id: "projects", value: 65, suffix: "+", label: "Projects" },
@@ -293,4 +293,44 @@ export const PLATFORM = {
   ],
   primaryCta: "Book a Consultation",
   secondaryCta: "Explore Sectors",
+};
+
+/**
+ * Section 8 — case studies carousel. Copy as supplied by the client brief;
+ * Images are the live site's photos — placeholders until real project photos are supplied.
+ */
+export const CASE_STUDIES = {
+  tag: "(08) Global Case Studies",
+  headline: "Trusted by Leading Enterprises Worldwide.",
+  subtitle: "See how world-class companies scale their workforce across borders with verified manpower deployment.",
+  stories: [
+    {
+      id: "am-logistics",
+      client: "AM Logistics",
+      region: "United Kingdom",
+      metric: "100% Audit Pass Rate",
+      body: "Successfully onboarded and managed over 250 logistics drivers with zero compliance friction across annual UK audits.",
+      image: `${UP}2023/01/Slider-2.jpg`,
+      tone: "orange",
+    },
+    {
+      id: "al-qabdah",
+      client: "Al Qabdah Contracting",
+      region: "Middle East",
+      metric: "48-Hour Mobilization",
+      body: "Scaled engineering and technical teams across regional sites with fully verified visas and labor documentation.",
+      image: `${UP}2023/01/Slider-4.png`,
+      tone: "rose",
+    },
+    {
+      id: "skd",
+      client: "SKD Group",
+      region: "Southeast Asia",
+      metric: "98% Retention Rate",
+      body: "Optimized corporate and hospitality staffing through rigorous pre-screening and end-to-end recruitment pipelines.",
+      image: `${UP}2023/02/home-photo0.jpg`,
+      imagePosition: "object-top",
+      tone: "emerald",
+    },
+  ],
 };

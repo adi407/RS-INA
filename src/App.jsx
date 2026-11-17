@@ -8,6 +8,7 @@ import Advantages from "./components/Advantages.jsx";
 import Solution from "./components/Solution.jsx";
 import Workflow from "./components/Workflow.jsx";
 import Clients from "./components/Clients.jsx";
+import CaseStudies from "./components/CaseStudies.jsx";
 import StrategicAdvantage from "./components/StrategicAdvantage.jsx";
 import ImpactMetrics from "./components/ImpactMetrics.jsx";
 import Contact from "./components/Contact.jsx";
@@ -60,6 +61,7 @@ export default function App() {
         <Solution onSearch={() => setIntent("employer")} />
         <Workflow onContact={() => setIntent("employer")} />
         <Clients />
+        <CaseStudies />
         <StrategicAdvantage />
         <ImpactMetrics />
         <Contact intent={intent} setIntent={setIntent} industry={industry} setIndustry={setIndustry} region={region} />
