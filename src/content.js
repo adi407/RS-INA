@@ -311,7 +311,6 @@ export const CASE_STUDIES = {
       metric: "100% Audit Pass Rate",
       body: "Successfully onboarded and managed over 250 logistics drivers with zero compliance friction across annual UK audits.",
       image: `${UP}2023/01/Slider-2.jpg`,
-      tone: "orange",
     },
     {
       id: "al-qabdah",
@@ -320,7 +319,6 @@ export const CASE_STUDIES = {
       metric: "48-Hour Mobilization",
       body: "Scaled engineering and technical teams across regional sites with fully verified visas and labor documentation.",
       image: `${UP}2023/01/Slider-4.png`,
-      tone: "rose",
     },
     {
       id: "skd",
@@ -330,7 +328,6 @@ export const CASE_STUDIES = {
       body: "Optimized corporate and hospitality staffing through rigorous pre-screening and end-to-end recruitment pipelines.",
       image: `${UP}2023/02/home-photo0.jpg`,
       imagePosition: "object-top",
-      tone: "emerald",
     },
   ],
 };

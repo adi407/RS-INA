@@ -61,7 +61,7 @@ export default function App() {
         <Solution onSearch={() => setIntent("employer")} />
         <Workflow onContact={() => setIntent("employer")} />
         <Clients />
-        <CaseStudies />
+        <CaseStudies onConsult={() => setIntent("employer")} />
         <StrategicAdvantage />
         <ImpactMetrics />
         <Contact intent={intent} setIntent={setIntent} industry={industry} setIndustry={setIndustry} region={region} />
