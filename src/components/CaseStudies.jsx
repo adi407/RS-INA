@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { ArrowRight, Building2, MapPin } from "lucide-react";
-import { BTN_PRIMARY, TwoTone } from "./ui.jsx";
+import { BlurGroup, BTN_PRIMARY, TwoTone, Words } from "./ui.jsx";
 import { CASE_STUDIES, PLATFORM } from "../content.js";
 
 const AUTOPLAY_MS = 6000;
@@ -51,15 +51,17 @@ export default function CaseStudies({ onConsult }) {
   const s = stories[active];
 
   return (
-    <section ref={sectionRef} id="case-studies" aria-labelledby="cases-title" className="scroll-mt-20 bg-white px-6 py-24 md:px-12">
+    <section ref={sectionRef} id="case-studies" aria-labelledby="cases-title" className="wash-white scroll-mt-20 px-6 py-24 md:px-12">
       <div className="mx-auto grid max-w-7xl grid-cols-1 items-start gap-12 lg:grid-cols-12">
         {/* ---------- Left: sticky editorial column ---------- */}
         <div data-reveal className="lg:sticky lg:top-28 lg:col-span-5">
-          <p className="text-xs font-semibold uppercase tracking-widest text-emerald-600">{CASE_STUDIES.tag}</p>
+          <BlurGroup>
+          <p className="text-xs font-semibold uppercase tracking-widest text-emerald-600"><Words text={CASE_STUDIES.tag} /></p>
           <h2 id="cases-title" className="mt-4 font-display text-3xl font-bold tracking-tight text-slate-900 lg:text-4xl">
             <TwoTone text={CASE_STUDIES.headline} split={CASE_STUDIES.headlineSplit} />
           </h2>
-          <p className="mt-4 max-w-md text-base leading-relaxed text-slate-600">{CASE_STUDIES.subtitle}</p>
+          <p className="mt-4 max-w-md text-base leading-relaxed text-slate-600"><Words text={CASE_STUDIES.subtitle} /></p>
+          </BlurGroup>
 
           <div
             role="tablist"

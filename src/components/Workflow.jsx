@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import { ArrowRight, BadgeCheck, Check, MessagesSquare, Search } from "lucide-react";
 import { Section, SectionHeader } from "./ui.jsx";
 import { WORKFLOW } from "../content.js";
+import { gsap } from "../motion.js";
 
 const ICONS = { search: Search, consult: MessagesSquare, hire: BadgeCheck };
 
@@ -17,7 +18,7 @@ function MilestoneRail({ count, active }) {
               className={`size-5 rounded-full border-2 transition-all duration-300 ${
                 i === active
                   ? "border-emerald-600 bg-emerald-600 ring-[6px] ring-emerald-500/20"
-                  : "border-slate-300 bg-[#F8FAFC] ring-0 ring-transparent"
+                  : "wash-tint border-slate-300 ring-0 ring-transparent"
               }`}
             />
           </span>
@@ -90,8 +91,35 @@ function StepCard({ step, index, active, onActivate }) {
 export default function Workflow({ onContact }) {
   const { steps } = WORKFLOW;
   const [active, setActive] = useState(null);
+  const sectionRef = useRef(null);
+
+  // Page colour wash: as this section scrolls in, every light section blends toward mint
+  // (--wash 0 → 1, see index.css), holds while it's in view, then fades back on the way out.
+  // Scrubbed to the scroll, so the colour moves exactly with the visitor.
+  useLayoutEffect(() => {
+    const root = document.documentElement;
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: "top 85%",
+        end: "bottom 15%",
+        scrub: 0.8,
+        // Measure after the pinned Sectors stage above has added its scroll space
+        refreshPriority: -1,
+      },
+    });
+    tl.fromTo(root, { "--wash": 0 }, { "--wash": 1, duration: 0.3, ease: "power1.inOut" })
+      .to(root, { "--wash": 1, duration: 0.4 })
+      .to(root, { "--wash": 0, duration: 0.3, ease: "power1.inOut" });
+    return () => {
+      tl.scrollTrigger?.kill();
+      tl.kill();
+      root.style.setProperty("--wash", "0");
+    };
+  }, []);
+
   return (
-    <Section id="workflow" tint labelledBy="workflow-title">
+    <Section ref={sectionRef} id="workflow" tint labelledBy="workflow-title">
       <SectionHeader id="workflow-title" tag={WORKFLOW.tag} title={WORKFLOW.headline} split={WORKFLOW.headlineSplit} align="center" />
 
       <div className="mt-16">

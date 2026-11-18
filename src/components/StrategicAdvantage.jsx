@@ -1,5 +1,5 @@
 import { BadgeCheck, LineChart, ShieldCheck, TrendingUp, Users } from "lucide-react";
-import { CARD, ICON_TILE, Section, SectionHeader } from "./ui.jsx";
+import { CARD, ICON_TILE, LinePattern, Section, SectionHeader } from "./ui.jsx";
 import { LICENSE, STRATEGIC } from "../content.js";
 
 const ICONS = { efficiency: TrendingUp, license: ShieldCheck, research: Users, analytics: LineChart };
@@ -48,7 +48,8 @@ function AdvantageCard({ card, index }) {
 /** Section 7 — strategic advantage bento on slate-50. */
 export default function StrategicAdvantage() {
   return (
-    <Section id="about" tint labelledBy="strategic-title">
+    <Section id="about" tint labelledBy="strategic-title" className="relative isolate overflow-hidden">
+      <LinePattern className="inset-x-0 top-0 h-[520px]" />
       <SectionHeader id="strategic-title" tag={STRATEGIC.tag} title={STRATEGIC.headline} split={STRATEGIC.headlineSplit} align="center" />
       <div className="focus-grid mx-auto mt-16 grid max-w-6xl grid-cols-1 gap-8 md:grid-cols-2">
         {STRATEGIC.cards.map((c, i) => (

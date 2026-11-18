@@ -1,6 +1,6 @@
 import { ArrowRight, ArrowUpRight, ConciergeBell, HardHat, Sprout, TrainFront } from "lucide-react";
 import { useLayoutEffect, useRef } from "react";
-import { Section } from "./ui.jsx";
+import { LinePattern, Section } from "./ui.jsx";
 import { gsap } from "../motion.js";
 import { SECTORS, SECTORS_COPY } from "../content.js";
 
@@ -98,6 +98,19 @@ function SectorsStage({ onHire }) {
           duration: 1,
         })
         .from(fade, { opacity: 0, y: 24, stagger: 0.06, duration: 0.45, ease: "power2.out" }, 0.5);
+
+      // Appear on approach: the collage stays hidden until the visitor scrolls down to it,
+      // then fades in and sharpens as the stage rises into view (before the pin starts)
+      gsap.fromTo(
+        collage.current,
+        { autoAlpha: 0, filter: "blur(14px)" },
+        {
+          autoAlpha: 1,
+          filter: "blur(0px)",
+          ease: "power1.out",
+          scrollTrigger: { trigger: stage.current, start: "top 75%", end: "top 15%", scrub: 0.6 },
+        }
+      );
     });
     return () => mm.revert();
   }, []);
@@ -108,7 +121,8 @@ function SectorsStage({ onHire }) {
   const last = rest.pop();
 
   return (
-    <div ref={stage} className="flex flex-col items-center text-center md:min-h-[100svh] md:justify-center">
+    <div ref={stage} className="relative isolate flex flex-col items-center text-center md:min-h-[100svh] md:justify-center">
+      <LinePattern className="inset-x-0 top-1/2 h-[520px] -translate-y-1/2" />
       <p data-fade className="text-xs font-semibold uppercase tracking-widest text-emerald-600">
         {SECTORS_COPY.tag}
       </p>

@@ -1,6 +1,6 @@
 import { Globe2, Landmark } from "lucide-react";
 import InquiryForm from "./InquiryForm.jsx";
-import { Section } from "./ui.jsx";
+import { BlurGroup, Section, Words } from "./ui.jsx";
 import { ABOUT, LICENSE, REGIONS } from "../content.js";
 
 /**
@@ -12,11 +12,15 @@ export default function Contact(formProps) {
     <Section id="contact" tint labelledBy="contact-title">
       <div className="grid items-start gap-12 lg:grid-cols-12 lg:gap-16">
         <div data-reveal className="lg:col-span-6">
-          <p className="text-xs font-semibold uppercase tracking-widest text-emerald-600">(11) Get In Touch</p>
+          <BlurGroup>
+          <p className="text-xs font-semibold uppercase tracking-widest text-emerald-600"><Words text="Get In Touch" /></p>
           <h2 id="contact-title" className="mt-4 font-display text-3xl font-bold tracking-tight text-slate-900 lg:text-4xl">
-            Hiring a new talent can cost you time, energy, and money.{" "}
-            <span className="text-emerald-600">Hire the best with RS International.</span>
+            <Words text="Hiring a new talent can cost you time, energy, and money." />{" "}
+            <span className="text-emerald-600">
+              <Words text="Hire the best with RS International." />
+            </span>
           </h2>
+          </BlurGroup>
 
           <div className="mt-10 flex gap-4 rounded-3xl border border-slate-200/80 bg-white p-6 shadow-xl shadow-slate-900/5">
             <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-emerald-50 text-emerald-600 ring-1 ring-inset ring-emerald-100">

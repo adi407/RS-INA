@@ -55,10 +55,6 @@ export default function App() {
       {/* Raised layer: on large screens it scrolls up off the sticky footer beneath it */}
       <main className="relative z-10 bg-white shadow-[0_40px_80px_-24px_rgba(2,6,23,0.55)]">
         <Hero
-          industry={industry}
-          setIndustry={setIndustry}
-          region={region}
-          setRegion={setRegion}
           onSearch={() => {
             setIntent("employer");
             toForm();
@@ -74,7 +70,7 @@ export default function App() {
         <StrategicAdvantage />
         <ImpactMetrics />
         <BigStatement />
-        <Contact intent={intent} setIntent={setIntent} industry={industry} setIndustry={setIndustry} region={region} />
+        <Contact intent={intent} setIntent={setIntent} industry={industry} setIndustry={setIndustry} region={region} setRegion={setRegion} />
       </main>
       <Footer onIntent={setIntent} />
       <BackToTop />

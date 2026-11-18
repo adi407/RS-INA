@@ -109,7 +109,7 @@ export default function Navbar({ onIntent }) {
   return (
     <header
       className={`sticky top-0 z-40 border-b transition-colors duration-300 ${
-        scrolled ? "border-slate-800/80 bg-obsidian/75 backdrop-blur-xl" : "border-transparent bg-obsidian"
+        scrolled ? "border-slate-800/80 bg-obsidian/75 backdrop-blur-xl" : "border-transparent bg-transparent" /* transparent over the hero video at the top */
       }`}
     >
       <nav aria-label="Primary" className="mx-auto flex h-20 max-w-[1280px] items-center justify-between gap-6 px-5 sm:px-8 xl:grid xl:grid-cols-[1fr_auto_1fr]">

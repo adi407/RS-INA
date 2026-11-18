@@ -35,7 +35,7 @@ export default function BigStatement() {
 
   return (
     // Decorative restatement of the hero tagline, so it's hidden from screen readers
-    <section ref={band} aria-hidden className="overflow-hidden bg-white py-24 lg:py-32">
+    <section ref={band} aria-hidden className="wash-white overflow-hidden py-24 lg:py-32">
       <p
         ref={line}
         className="w-max whitespace-nowrap px-6 font-display text-[17vw] font-extrabold leading-[0.95] tracking-tighter text-slate-900 md:text-[13vw]"

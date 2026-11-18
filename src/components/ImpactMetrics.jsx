@@ -1,9 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Briefcase, Clock, ShieldCheck, Users } from "lucide-react";
 import useCountUp from "../useCountUp.js";
 import { CARD, ICON_TILE, Section, SectionHeader } from "./ui.jsx";
-import { IMPACT } from "../content.js";
-import { ScrollTrigger } from "../motion.js";
+import { CASE_STUDIES, IMPACT, SECTORS } from "../content.js";
+import { gsap, ScrollTrigger } from "../motion.js";
 
 /* Dark-mode variants, active while the section carries data-dark="true" (group/theme) */
 const DARK_CARD = "group-data-[dark=true]/theme:border-white/10 group-data-[dark=true]/theme:bg-white/[0.04] group-data-[dark=true]/theme:shadow-none";
@@ -26,6 +26,103 @@ function MetricCard({ id, value, suffix, label, index }) {
         {n.toLocaleString("en-IN")}
         {suffix}
       </dd>
+    </div>
+  );
+}
+
+/*
+ * Floating photos for the depth layer. Positions are % of the section, kept to the side
+ * margins and the top/bottom bands so they never cover the stats. depth 0.3 (far) → 1 (near):
+ * nearer photos are bigger, sharper and move more. side: -1 left, 1 right (scroll spread).
+ * Sector photos carry a red caption band in their lower ~40%, so they're cropped from the top.
+ */
+const [hospitality, railway, agriculture, construction] = SECTORS.map((s) => s.image);
+const [, siteWide, professional] = CASE_STUDIES.stories.map((s) => s.image);
+const PHOTOS = [
+  { src: hospitality, left: "2.5%", top: "12%", w: 190, depth: 1, side: -1, crop: "aspect-[5/4] object-top" },
+  { src: agriculture, left: "1%", top: "58%", w: 120, depth: 0.45, side: -1, crop: "aspect-[5/4] object-top" },
+  { src: construction, left: "17%", top: "3%", w: 120, depth: 0.3, side: -1, crop: "aspect-[5/4] object-top" },
+  { src: railway, left: "83%", top: "4%", w: 150, depth: 0.5, side: 1, crop: "aspect-[5/4] object-top" },
+  { src: professional, left: "89.6%", top: "40%", w: 130, depth: 0.95, side: 1, crop: "aspect-[4/5] object-top" },
+  { src: siteWide, left: "72%", top: "80%", w: 200, depth: 0.7, side: 1, crop: "aspect-[16/10] object-center" },
+];
+
+/**
+ * Photo depth parallax (desktop): the photos sit at different depths in a 3D layer that
+ * tilts toward the mouse (near photos shift more), and drift upward / spread apart as the
+ * section scrolls past. They fade in with the section's dark state. Reduced motion: static.
+ */
+function ImpactPhotos() {
+  const layer = useRef(null);
+
+  useLayoutEffect(() => {
+    const mm = gsap.matchMedia();
+    mm.add("(min-width: 1024px) and (prefers-reduced-motion: no-preference)", () => {
+      const items = gsap.utils.toArray("[data-depth]", layer.current);
+
+      // Scroll: drift up and spread outward, faster for nearer photos
+      items.forEach((el) => {
+        const d = Number(el.dataset.depth);
+        const side = Number(el.dataset.side);
+        gsap.set(el, { z: d * 140 });
+        gsap.fromTo(
+          el,
+          { y: 150 * d, x: -30 * d * side },
+          {
+            y: -150 * d,
+            x: 70 * d * side,
+            ease: "none",
+            scrollTrigger: { trigger: layer.current, start: "top bottom", end: "bottom top", scrub: 0.7 },
+          }
+        );
+      });
+
+      // Mouse: per-photo shift by depth + a gentle tilt of the whole layer
+      const inners = items.map((el) => el.firstElementChild);
+      const qx = inners.map((el) => gsap.quickTo(el, "x", { duration: 1, ease: "power3.out" }));
+      const qy = inners.map((el) => gsap.quickTo(el, "y", { duration: 1, ease: "power3.out" }));
+      const tiltX = gsap.quickTo(layer.current, "rotationX", { duration: 1.2, ease: "power3.out" });
+      const tiltY = gsap.quickTo(layer.current, "rotationY", { duration: 1.2, ease: "power3.out" });
+      const onMove = (e) => {
+        const mx = (e.clientX / window.innerWidth) * 2 - 1;
+        const my = (e.clientY / window.innerHeight) * 2 - 1;
+        items.forEach((el, i) => {
+          const d = Number(el.dataset.depth);
+          qx[i](-mx * 40 * d);
+          qy[i](-my * 28 * d);
+        });
+        tiltY(mx * 6);
+        tiltX(-my * 4);
+      };
+      window.addEventListener("pointermove", onMove, { passive: true });
+      return () => window.removeEventListener("pointermove", onMove);
+    });
+    return () => mm.revert();
+  }, []);
+
+  return (
+    <div aria-hidden className="pointer-events-none absolute inset-0 -z-[5] hidden [perspective:1200px] lg:block">
+      <div
+        ref={layer}
+        className="absolute inset-0 opacity-0 transition-opacity duration-1000 [transform-style:preserve-3d] group-data-[dark=true]/theme:opacity-100"
+      >
+        {PHOTOS.map((p) => (
+          <div key={p.src} data-depth={p.depth} data-side={p.side} className="absolute" style={{ left: p.left, top: p.top, width: p.w }}>
+            <div className="overflow-hidden rounded-2xl shadow-2xl shadow-black/50 ring-1 ring-white/10">
+              <img
+                src={p.src}
+                alt=""
+                loading="lazy"
+                className={`w-full object-cover ${p.crop}`}
+                style={{
+                  // Depth of field: far photos softer and dimmer
+                  filter: `blur(${((1 - p.depth) * 2.2).toFixed(1)}px) brightness(${0.55 + p.depth * 0.4})`,
+                }}
+              />
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
@@ -55,8 +152,9 @@ export default function ImpactMetrics() {
       labelledBy="impact-title"
       data-dark={dark}
       bg={dark ? "bg-[#0A0F1D]" : "bg-white"}
-      className="group/theme relative isolate overflow-hidden transition-colors duration-700"
+      className="group/theme relative isolate overflow-hidden transition-colors duration-700 lg:py-40"
     >
+      <ImpactPhotos />
       {/* Emerald glow that fades in with the dark state */}
       <div
         aria-hidden

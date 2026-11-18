@@ -45,6 +45,12 @@ export const HERO = {
   // Offshore rig photo from the agency's current homepage slider.
   // For production, copy it into /public and point this at "/hero-offshore.jpg".
   image: "https://rsinternationalagency.com/wp-content/uploads/2023/01/Slider-1.jpg",
+  // Background videos (served from /public/media), played one after another in a
+  // crossfading loop. The first poster shows until playback starts and for reduced motion.
+  videos: [
+    { src: "/media/hero-cities.mp4", poster: "/media/hero-cities-poster.jpg" },
+    { src: "/media/hero.mp4", poster: "/media/hero-poster.jpg" },
+  ],
 };
 
 /* Successful Recruitment 2022–2023 */
@@ -65,7 +71,7 @@ export const REGIONS = [
 
 /* Section 2 copy — original wording from the live homepage */
 export const SECTORS_COPY = {
-  tag: "(02) Sectors",
+  tag: "Sectors",
   headline: "Looking For A Deserving Candidate Is Not Easy.",
   headlineSplit: 5, // words in the dark lead of the two-tone heading
   subtitle: "Start Searching Now!",
@@ -91,7 +97,7 @@ export const SECTORS = [
  */
 const UP = "https://rsinternationalagency.com/wp-content/uploads/";
 export const ADVANTAGES = {
-  tag: "(04) Advantages",
+  tag: "Advantages",
   headline: "Save Time And Get The Best Talent",
   headlineSplit: 2, // words in the dark lead of the two-tone heading
   cta: "Search For Talent",
@@ -134,7 +140,7 @@ export const ADVANTAGES = {
  * (screening & vetting, MEA licence, 99.9% job-security guarantee, 95% retention).
  */
 export const SOLUTION = {
-  tag: "(05) The Solution",
+  tag: "The Solution",
   headline: "We know how difficult it is to hire a deserving candidate",
   headlineSplit: 6, // words in the dark lead of the two-tone heading
   subtitle: "We can help you hire the best talents for your industry!",
@@ -164,7 +170,7 @@ export const SOLUTION = {
 
 /* Section 5 — "Your Steps to hire the best candidate" (copy per the section brief) */
 export const WORKFLOW = {
-  tag: "(06) Workflow",
+  tag: "Workflow",
   headline: "Your Steps to hire the best candidate",
   headlineSplit: 2, // words in the dark lead of the two-tone heading
   cta: "Contact Us",
@@ -194,7 +200,7 @@ export const WORKFLOW = {
  */
 const LOGO = "https://rsinternationalagency.com/wp-content/uploads/2023/02/";
 export const CLIENTS = {
-  tag: "(07) Trusted Partners",
+  tag: "Trusted Partners",
   headline: "Trusted by Industry Leaders Worldwide",
   headlineSplit: 4, // words in the dark lead of the two-tone heading
   subtitle: "Powering workforce deployment for multinational enterprises and government contractors.",
@@ -209,7 +215,7 @@ export const CLIENTS = {
 
 /* Section 7 — "Strategic Advantage" (card text verbatim from the live homepage) */
 export const STRATEGIC = {
-  tag: "(09) Strategic Advantage",
+  tag: "Strategic Advantage",
   headline: "Enterprise-Grade Manpower Solutions Backed by Certified Trust",
   headlineSplit: 3, // words in the dark lead of the two-tone heading
   cards: [
@@ -238,7 +244,7 @@ export const STRATEGIC = {
 
 /* Section 8 — "Proven Impact" (labels verbatim from the live homepage counters) */
 export const IMPACT = {
-  tag: "(10) Proven Impact",
+  tag: "Proven Impact",
   headline: "Successful Recruitment 2022-2023",
   headlineSplit: 2, // words in the dark lead of the two-tone heading
   metrics: [
@@ -288,7 +294,7 @@ export const ABOUT = {
 
 /** Section 3 — two-column platform feature (copy as supplied). */
 export const PLATFORM = {
-  tag: "(03) Advanced Recruitment Platform",
+  tag: "Advanced Recruitment Platform",
   headlineLead: "Smart Recruitment That",
   headlineAccent: "Gets Global Hiring Done.",
   subtitle:
@@ -307,7 +313,7 @@ export const PLATFORM = {
  * Images are the live site's photos — placeholders until real project photos are supplied.
  */
 export const CASE_STUDIES = {
-  tag: "(08) Global Case Studies",
+  tag: "Global Case Studies",
   headline: "Trusted by Leading Enterprises Worldwide.",
   headlineSplit: 4, // words in the dark lead of the two-tone heading
   subtitle: "See how world-class companies scale their workforce across borders with verified manpower deployment.",

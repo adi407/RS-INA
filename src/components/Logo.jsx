@@ -1,22 +1,25 @@
-/** Wordmark: emerald monogram + "RS INTERNATIONAL" with descriptor line. */
-export default function Logo({ compact = false }) {
+/**
+ * RS International logo (the company's own artwork, /public/media/rs-logo.png).
+ * Its navy text would disappear on the dark navbar/footer, so it sits on a small
+ * white badge and shows exactly as designed. Source is 158×68px; it's displayed
+ * at 44px tall (navbar) so it stays sharp. Ask the agency for an SVG for retina.
+ */
+export default function Logo({ size = "md" }) {
+  const height = size === "lg" ? "h-14" : "h-11";
   return (
     <a
       href="#top"
-      className="group flex items-center gap-3 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/70"
+      // justify-self/self-center: don't stretch to fill the navbar's grid column
+      className="group inline-flex shrink-0 self-center justify-self-start rounded-xl bg-white px-3 py-1.5 shadow-sm ring-1 ring-white/10 transition-transform duration-300 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/70"
       aria-label="RS International — home"
     >
-      <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-emerald-500 font-display text-sm font-extrabold tracking-tight text-obsidian transition-transform duration-300 group-hover:rotate-[-6deg]">
-        RS
-      </span>
-      <span className="leading-none">
-        <span className="block font-display text-[15px] font-bold tracking-[0.18em] text-white">RS INTERNATIONAL</span>
-        {!compact && (
-          <span className="mt-1.5 block text-[10.5px] font-medium tracking-[0.04em] text-slate-400">
-            Human Resource &amp; Manpower Consultant
-          </span>
-        )}
-      </span>
+      <img
+        src="/media/rs-logo.png"
+        alt="RS International — Human Resource & Manpower Consultant"
+        width="158"
+        height="68"
+        className={`${height} w-auto`}
+      />
     </a>
   );
 }

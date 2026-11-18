@@ -94,6 +94,68 @@ body {
   }
 }
 
+/* ---------- Hero rolling word ----------
+   Letter-by-letter roll: the old word's letters slide up and out while the new
+   word's letters rise into place, staggered left to right (delay set per letter). */
+@keyframes roll-in {
+  from {
+    transform: translateY(105%);
+  }
+  to {
+    transform: none;
+  }
+}
+@keyframes roll-out {
+  from {
+    transform: none;
+  }
+  to {
+    transform: translateY(-105%);
+  }
+}
+
+/* ---------- Page colour wash (Fluxon-style) ----------
+   Light sections blend toward mint by --wash (0 → 1), which Workflow.jsx drives with
+   the scroll: the whole visible page tints as that section comes into view, holds,
+   then fades back. Plain colours come first as the fallback for older browsers. */
+:root {
+  --wash: 0;
+  --wash-to: #d3f3e1;
+}
+.wash-white {
+  background-color: #ffffff;
+  background-color: color-mix(in oklab, #ffffff, var(--wash-to) calc(var(--wash) * 100%));
+}
+.wash-tint {
+  background-color: #f8fafc;
+  background-color: color-mix(in oklab, #f8fafc, var(--wash-to) calc(var(--wash) * 100%));
+}
+
+/* ---------- Mockup "in progress" text ----------
+   A soft emerald highlight sweeps across pending statuses ("Checking…", "Pending")
+   in the product mockups until their hover sequence resolves them. */
+@keyframes shimmer {
+  from {
+    background-position: 150% 0;
+  }
+  to {
+    background-position: -50% 0;
+  }
+}
+.text-shimmer {
+  background: linear-gradient(90deg, #94a3b8 0%, #94a3b8 38%, #10b981 50%, #94a3b8 62%, #94a3b8 100%);
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer 1.8s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .text-shimmer {
+    animation: none;
+  }
+}
+
 /* ---------- Hover focus ----------
    In a .focus-grid, hovering one item blurs and dims its siblings.
    Mouse devices only, so a tap on a phone never leaves a grid blurred.

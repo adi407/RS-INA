@@ -11,7 +11,7 @@ const EMPTY = { name: "", phone: "", email: "", org: "", message: "" };
  * message to the agency inbox. Swap `submit()` for an API call when one exists.
  * `region` (from the hero search) is included in the message when set.
  */
-export default function InquiryForm({ intent, setIntent, industry, setIndustry, region }) {
+export default function InquiryForm({ intent, setIntent, industry, setIndustry, region, setRegion }) {
   const [form, setForm] = useState(EMPTY);
   const [errors, setErrors] = useState({});
   const [sent, setSent] = useState(false);
@@ -127,6 +127,7 @@ export default function InquiryForm({ intent, setIntent, industry, setIndustry, 
             {field("email", "Email", { type: "email", autoComplete: "email" })}
             {field("org", employer ? "Company" : "Trade / skill", { autoComplete: employer ? "organization" : "off" })}
           </div>
+          <div className="grid gap-4 sm:grid-cols-2">
           <div>
             <label htmlFor="f-industry" className="mb-1.5 block text-sm font-medium text-slate-700">
               Industry
@@ -143,6 +144,25 @@ export default function InquiryForm({ intent, setIntent, industry, setIndustry, 
                 </option>
               ))}
             </select>
+          </div>
+          {/* Destination (moved here from the old hero search bar) */}
+          <div>
+            <label htmlFor="f-region" className="mb-1.5 block text-sm font-medium text-slate-700">
+              Destination
+            </label>
+            <select
+              id="f-region"
+              value={region}
+              onChange={(e) => setRegion(e.target.value)}
+              className={`${input} cursor-pointer border-slate-300`}
+            >
+              {REGIONS.map((r) => (
+                <option key={r.id} value={r.id}>
+                  {r.label}
+                </option>
+              ))}
+            </select>
+          </div>
           </div>
           <div>
             <label htmlFor="f-message" className="mb-1.5 block text-sm font-medium text-slate-700">
