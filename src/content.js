@@ -3,8 +3,8 @@
  * (rsinternationalagency.com) and the agency's brief. Edit here, not in components.
  */
 export const CONTACT = {
-  phones: ["+91-9811660959", "+91-9811668579"],
-  emails: ["info@rsinternationalagency.com", "info@rsinternational.co.in"],
+  phones: ["+91-9846822444"],
+  emails: ["recruit@rsina.net"],
 };
 
 export const LICENSE = "B-0605/DEL/PER/1000+/5/7217/2005";
