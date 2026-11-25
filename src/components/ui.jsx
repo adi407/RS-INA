@@ -126,3 +126,15 @@ export function BlurGroup({ as: Tag = "div", className, children, ...rest }) {
     </Tag>
   );
 }
+
+/** A long slash-separated code (the MEA licence no.) that may wrap only after a slash, never inside "B-0605". */
+export function SlashBreak({ text }) {
+  const parts = text.split("/");
+  return parts.map((part, i) => (
+    <span key={i} className="whitespace-nowrap">
+      {part}
+      {i < parts.length - 1 && "/"}
+      {i < parts.length - 1 && <wbr />}
+    </span>
+  ));
+}

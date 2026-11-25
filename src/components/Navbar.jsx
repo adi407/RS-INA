@@ -3,6 +3,7 @@ import { ArrowUpRight, ChevronDown, Menu, X } from "lucide-react";
 import Logo from "./Logo.jsx";
 import { NAV } from "../content.js";
 import { getLenis } from "../motion.js";
+import { PATH, isHome, linkTo } from "../routes.js";
 
 /** Desktop dropdown — opens on hover and on click/keyboard; closes on Escape or outside click. */
 function Dropdown({ item, onPick, alignRight = false }) {
@@ -31,7 +32,8 @@ function Dropdown({ item, onPick, alignRight = false }) {
         aria-expanded={open}
         aria-haspopup="true"
         onClick={() => setOpen((v) => !v)}
-        className="link-underline flex items-center gap-1 text-sm font-medium text-slate-300 transition-colors hover:text-white focus-visible:text-white focus-visible:outline-none"
+        data-active={item.children.some((c) => c.href === PATH)}
+        className="link-underline flex items-center gap-1 text-sm font-medium text-slate-300 transition-colors hover:text-white focus-visible:text-white focus-visible:outline-none data-[active=true]:text-white"
       >
         {item.label}
         <ChevronDown className={`size-3.5 transition-transform duration-200 ${open ? "rotate-180" : ""}`} />
@@ -49,7 +51,7 @@ function Dropdown({ item, onPick, alignRight = false }) {
           {item.children.map((c) => (
             <li key={c.label}>
               <a
-                href={c.href}
+                href={linkTo(c.href)}
                 onClick={() => {
                   onPick(c);
                   setOpen(false);
@@ -127,8 +129,8 @@ export default function Navbar({ onIntent }) {
             ) : (
               <li key={item.label}>
                 <a
-                  href={item.href}
-                  data-active={item.label === "Home"}
+                  href={linkTo(item.href)}
+                  data-active={(item.label === "Home" && isHome) || item.href === PATH}
                   className="link-underline text-sm font-medium text-slate-300 transition-colors hover:text-white focus-visible:text-white focus-visible:outline-none data-[active=true]:text-white"
                 >
                   {item.label}
@@ -140,7 +142,7 @@ export default function Navbar({ onIntent }) {
 
         <div className="flex items-center justify-end gap-5">
           <a
-            href="#contact"
+            href="/contact"
             onClick={() => setMobileOpen(false)}
             className="link-underline hidden text-xs font-semibold uppercase tracking-widest text-white focus-visible:outline-none sm:inline-block"
           >
@@ -187,7 +189,7 @@ export default function Navbar({ onIntent }) {
                     <ul className="pb-3 pl-3">
                       {item.children.map((c) => (
                         <li key={c.label}>
-                          <a href={c.href} onClick={() => pick(c)} className="block py-2.5 text-sm text-slate-400 hover:text-white">
+                          <a href={linkTo(c.href)} onClick={() => pick(c)} className="block py-2.5 text-sm text-slate-400 hover:text-white">
                             {c.label}
                           </a>
                         </li>
@@ -196,7 +198,7 @@ export default function Navbar({ onIntent }) {
                   )}
                 </>
               ) : (
-                <a href={item.href} onClick={() => pick(item)} className="block py-4 text-base font-medium text-slate-200">
+                <a href={linkTo(item.href)} onClick={() => pick(item)} className="block py-4 text-base font-medium text-slate-200">
                   {item.label}
                 </a>
               )}

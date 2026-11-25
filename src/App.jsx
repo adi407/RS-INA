@@ -1,31 +1,39 @@
 import { useState } from "react";
 import UtilityBar from "./components/UtilityBar.jsx";
 import Navbar from "./components/Navbar.jsx";
-import Hero from "./components/Hero.jsx";
-import Sectors from "./components/Sectors.jsx";
-import Platform from "./components/Platform.jsx";
-import Advantages from "./components/Advantages.jsx";
-import Solution from "./components/Solution.jsx";
-import Workflow from "./components/Workflow.jsx";
-import Clients from "./components/Clients.jsx";
-import CaseStudies from "./components/CaseStudies.jsx";
-import StrategicAdvantage from "./components/StrategicAdvantage.jsx";
-import ImpactMetrics from "./components/ImpactMetrics.jsx";
-import BigStatement from "./components/BigStatement.jsx";
-import Contact from "./components/Contact.jsx";
 import Footer from "./components/Footer.jsx";
 import BackToTop from "./components/BackToTop.jsx";
 import Cursor from "./components/Cursor.jsx";
+import HomePage from "./pages/HomePage.jsx";
+import EmployersPage from "./pages/EmployersPage.jsx";
+import JobsPage from "./pages/JobsPage.jsx";
+import ClientsPage from "./pages/ClientsPage.jsx";
+import AboutPage from "./pages/AboutPage.jsx";
+import ProcessPage from "./pages/ProcessPage.jsx";
+import RegionsPage from "./pages/RegionsPage.jsx";
+import ContactPage from "./pages/ContactPage.jsx";
+import UpdatesPage from "./pages/UpdatesPage.jsx";
+import GlobalPage from "./pages/GlobalPage.jsx";
 import useReveal from "./useReveal.js";
 import { useSmoothScroll } from "./motion.js";
+import { PATH } from "./routes.js";
 
 /**
- * Page layout (RemotePeople-style rhythm):
- *   dark anchor (utility bar, nav, hero) → white / slate-50 alternating sections → dark footer.
+ * Shared layout (utility bar, navbar, footer) around one page, chosen by URL:
+ *   /           → homepage (RemotePeople-style rhythm: dark hero → light sections → dark footer)
+ *   /employers  → "Choose Your Employee" talent database
+ *   /jobs       → "Job Openings" board
+ *   /clients    → "Our Clients": case studies, partner logos, recruitment metrics
+ *   /about      → "About Company": story, licence, director's message, vision/mission/values
+ *   /how-we-do  → "How We Do It?": the 8-step recruitment methodology timeline
+ *   /regions    → "Region We Serve": the four regions, each opening its full story
+ *   /contact    → "Contact Us": company / job-seeker forms, offices, figures
+ *   /rs-updates → "RS Updates": company news stories
+ *   /global     → "Global Updates": industry news stories
  *
  * Shared state:
  *  - intent: "employer" | "candidate" — set by links, CTAs and sector cards; pre-selects the form toggle
- *  - industry / region: chosen in the hero search; pre-fill the inquiry form
+ *  - industry / region: pre-fill the homepage inquiry form
  */
 export default function App() {
   const [industry, setIndustry] = useState("construction");
@@ -35,12 +43,14 @@ export default function App() {
   useReveal();
   useSmoothScroll();
 
-  const toForm =() => document.getElementById("inquiry")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  const toForm = () => document.getElementById("inquiry")?.scrollIntoView({ behavior: "smooth", block: "start" });
 
   const hireFromSector = (id) => {
     setIndustry(id);
     setIntent("employer");
   };
+
+  const form = { intent, setIntent, industry, setIndustry, region, setRegion };
 
   return (
     <>
@@ -54,23 +64,27 @@ export default function App() {
       <Navbar onIntent={setIntent} />
       {/* Raised layer: on large screens it scrolls up off the sticky footer beneath it */}
       <main className="relative z-10 bg-white shadow-[0_40px_80px_-24px_rgba(2,6,23,0.55)]">
-        <Hero
-          onSearch={() => {
-            setIntent("employer");
-            toForm();
-          }}
-        />
-        <Sectors onHire={hireFromSector} />
-        <Platform onConsult={() => setIntent("employer")} />
-        <Advantages onSearch={() => setIntent("employer")} />
-        <Solution onSearch={() => setIntent("employer")} />
-        <Workflow onContact={() => setIntent("employer")} />
-        <Clients />
-        <CaseStudies onConsult={() => setIntent("employer")} />
-        <StrategicAdvantage />
-        <ImpactMetrics />
-        <BigStatement />
-        <Contact intent={intent} setIntent={setIntent} industry={industry} setIndustry={setIndustry} region={region} setRegion={setRegion} />
+        {PATH === "/employers" ? (
+          <EmployersPage />
+        ) : PATH === "/jobs" ? (
+          <JobsPage />
+        ) : PATH === "/clients" ? (
+          <ClientsPage />
+        ) : PATH === "/about" ? (
+          <AboutPage />
+        ) : PATH === "/how-we-do" ? (
+          <ProcessPage />
+        ) : PATH === "/regions" ? (
+          <RegionsPage />
+        ) : PATH === "/contact" ? (
+          <ContactPage />
+        ) : PATH === "/rs-updates" ? (
+          <UpdatesPage />
+        ) : PATH === "/global" ? (
+          <GlobalPage />
+        ) : (
+          <HomePage form={form} setIntent={setIntent} hireFromSector={hireFromSector} toForm={toForm} />
+        )}
       </main>
       <Footer onIntent={setIntent} />
       <BackToTop />

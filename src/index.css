@@ -94,6 +94,24 @@ body {
   }
 }
 
+/* ---------- Drawer / backdrop entrances ---------- */
+@keyframes slide-in {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: none;
+  }
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 /* ---------- Hero rolling word ----------
    Letter-by-letter roll: the old word's letters slide up and out while the new
    word's letters rise into place, staggered left to right (delay set per letter). */

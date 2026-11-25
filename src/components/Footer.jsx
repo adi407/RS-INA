@@ -1,6 +1,7 @@
 import { Facebook, Instagram, Linkedin, Mail, Phone } from "lucide-react";
 import Logo from "./Logo.jsx";
 import { ABOUT, CONTACT, FOOTER } from "../content.js";
+import { linkTo } from "../routes.js";
 
 const SOCIAL_ICONS = { Facebook, Instagram, LinkedIn: Linkedin };
 
@@ -13,7 +14,7 @@ function LinkColumn({ title, links, onIntent, className = "" }) {
         {links.map((l) => (
           <li key={l.label}>
             <a
-              href={l.href}
+              href={linkTo(l.href)}
               onClick={() => l.intent && onIntent(l.intent)}
               className="inline-block text-[15px] text-slate-400 transition-all duration-300 hover:translate-x-1 hover:text-emerald-400 focus-visible:text-emerald-400 focus-visible:outline-none"
             >

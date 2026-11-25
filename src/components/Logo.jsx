@@ -1,3 +1,5 @@
+import { isHome } from "../routes.js";
+
 /**
  * RS International logo (the company's own artwork, /public/media/rs-logo.png).
  * Its navy text would disappear on the dark navbar/footer, so it sits on a small
@@ -8,7 +10,7 @@ export default function Logo({ size = "md" }) {
   const height = size === "lg" ? "h-14" : "h-11";
   return (
     <a
-      href="#top"
+      href={isHome ? "#top" : "/"}
       // justify-self/self-center: don't stretch to fill the navbar's grid column
       className="group inline-flex shrink-0 self-center justify-self-start rounded-xl bg-white px-3 py-1.5 shadow-sm ring-1 ring-white/10 transition-transform duration-300 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/70"
       aria-label="RS International — home"
