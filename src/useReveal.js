@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { reducedMotion } from "./motion.js";
 
 /**
  * Scroll reveal for every [data-reveal] element on the page (see index.css).
@@ -7,7 +8,7 @@ import { useEffect } from "react";
 export default function useReveal() {
   useEffect(() => {
     if (!("IntersectionObserver" in window)) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (reducedMotion() || window.matchMedia("(max-width: 767px)").matches) return; // phones: content shows at once, no blank gaps
 
     const root = document.documentElement;
     root.classList.add("reveal-ready");
@@ -27,7 +28,7 @@ export default function useReveal() {
           io.unobserve(el);
         });
       },
-      { rootMargin: "0px 0px -8% 0px", threshold: 0.08 }
+      { rootMargin: "0px 0px 10% 0px", threshold: 0 } // start just before the element enters
     );
 
     const els = document.querySelectorAll("[data-reveal]");

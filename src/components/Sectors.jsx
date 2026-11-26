@@ -1,22 +1,20 @@
 import { ArrowRight, ArrowUpRight, ConciergeBell, HardHat, Sprout, TrainFront } from "lucide-react";
 import { useLayoutEffect, useRef } from "react";
 import { LinePattern, Section } from "./ui.jsx";
-import { gsap } from "../motion.js";
+import { gsap, reducedMotion } from "../motion.js";
 import { SECTORS, SECTORS_COPY } from "../content.js";
 
 const ICONS = { hospitality: ConciergeBell, railway: TrainFront, agriculture: Sprout, construction: HardHat };
 
 /** White bento card: inset photo (zooms on hover), icon, title and "Explore Talent". */
-function SectorCard({ sector, index, onHire }) {
+function SectorCard({ sector, index }) {
   const Icon = ICONS[sector.id];
   return (
     <a
-      href="#inquiry"
-      onClick={() => onHire(sector.id)}
-      aria-label={`Explore ${sector.title.toLowerCase()} talent`}
+      href={`/employers?sector=${sector.id}`}
       data-reveal
       style={{ "--d": `${index * 90}ms` }}
-      className="group flex flex-col rounded-3xl border border-slate-200/80 bg-white p-3 shadow-xl shadow-slate-900/5 transition-all duration-300 hover:-translate-y-1 hover:border-emerald-500/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
+      className="spotlight group flex flex-col rounded-3xl border border-slate-200 bg-white p-3 shadow-xl shadow-slate-900/5 transition-all duration-300 hover:-translate-y-1 hover:border-emerald-600/50 focus-visible:-translate-y-1"
     >
       {/* 4:3 crop framed on the upper-middle of the photo: the source images carry a red
           overlay baked into their lower ~40% (from the old site), which this keeps out of view */}
@@ -27,22 +25,22 @@ function SectorCard({ sector, index, onHire }) {
           loading="lazy"
           className="size-full object-cover object-[center_25%] transition-transform duration-500 ease-out group-hover:scale-105"
         />
-        <span className="absolute left-3 top-3 rounded-full bg-white/90 px-2.5 py-1 font-display text-xs font-semibold text-slate-900 shadow-sm backdrop-blur">
-          0{index + 1}
+        <span aria-hidden className="absolute left-3 top-3 rounded-full bg-white/90 px-2.5 py-1 font-display text-xs font-semibold text-slate-900 shadow-sm backdrop-blur">
+          {String(index + 1).padStart(2, "0")}
         </span>
-        <span className="absolute right-3 top-3 grid size-9 place-items-center rounded-full bg-white/90 text-slate-900 shadow-sm backdrop-blur transition-colors duration-300 group-hover:bg-emerald-600 group-hover:text-white">
+        <span className="absolute right-3 top-3 grid size-9 place-items-center rounded-full bg-white/90 text-slate-900 shadow-sm backdrop-blur transition-colors duration-300 group-hover:bg-emerald-700 group-hover:text-white">
           <ArrowUpRight className="size-4" aria-hidden />
         </span>
       </div>
 
       <div className="flex items-center gap-3 px-3 pb-3 pt-5">
-        <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-emerald-50 text-emerald-600 ring-1 ring-inset ring-emerald-100">
+        <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-100">
           <Icon className="size-5" strokeWidth={1.6} aria-hidden />
         </span>
         <div className="min-w-0">
-          <h3 className="font-display text-xl font-semibold uppercase tracking-tight text-slate-900">{sector.title}</h3>
-          <span className="flex items-center gap-1.5 text-sm font-medium text-emerald-600">
-            Explore Talent
+          <h3 className="font-display text-xl font-semibold tracking-tight text-slate-900">{sector.title}</h3>
+          <span className="flex items-center gap-1.5 text-sm font-medium text-emerald-700">
+            Explore talent
             <ArrowRight className="size-3.5 transition-transform duration-300 group-hover:translate-x-1" aria-hidden />
           </span>
         </div>
@@ -57,7 +55,7 @@ function SectorCard({ sector, index, onHire }) {
  * while the copy fades in around it. Desktop + motion-allowed only; elsewhere the
  * collage simply sits in its slot.
  */
-function SectorsStage({ onHire }) {
+function SectorsStage({ onSearch }) {
   const stage = useRef(null);
   const slot = useRef(null);
   const collage = useRef(null);
@@ -65,6 +63,7 @@ function SectorsStage({ onHire }) {
   useLayoutEffect(() => {
     const mm = gsap.matchMedia();
     mm.add("(min-width: 768px) and (prefers-reduced-motion: no-preference)", () => {
+      if (reducedMotion()) return;
       const big = () => Math.min(560, window.innerHeight * 0.62);
       // Offset from the slot to the stage centre (both move together while pinned)
       const delta = () => {
@@ -82,10 +81,9 @@ function SectorsStage({ onHire }) {
         .timeline({
           scrollTrigger: {
             trigger: stage.current,
-            start: "top top",
-            end: "+=110%",
+            start: "top 80%",
+            end: "top 20%",
             scrub: 0.6,
-            pin: true,
             invalidateOnRefresh: true,
           },
         })
@@ -123,7 +121,7 @@ function SectorsStage({ onHire }) {
   return (
     <div ref={stage} className="relative isolate flex flex-col items-center text-center md:min-h-[100svh] md:justify-center">
       <LinePattern className="inset-x-0 top-1/2 h-[520px] -translate-y-1/2" />
-      <p data-fade className="text-xs font-semibold uppercase tracking-widest text-emerald-600">
+      <p data-fade className="text-xs font-semibold uppercase tracking-widest text-emerald-700">
         {SECTORS_COPY.tag}
       </p>
       <h2 id="sectors-title" className="mt-5 max-w-5xl font-display text-4xl font-bold leading-[1.08] tracking-tight text-slate-900 sm:text-5xl lg:text-7xl">
@@ -151,8 +149,8 @@ function SectorsStage({ onHire }) {
       <a
         data-fade
         href="#inquiry"
-        onClick={() => onHire("hospitality")}
-        className="group mt-10 inline-flex items-center gap-2 font-semibold text-emerald-600 transition-colors hover:text-emerald-500"
+        onClick={onSearch}
+        className="group mt-10 inline-flex items-center gap-2 font-semibold text-emerald-700 transition-colors hover:text-emerald-900"
       >
         {SECTORS_COPY.subtitle}
         <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" aria-hidden />
@@ -162,14 +160,14 @@ function SectorsStage({ onHire }) {
 }
 
 /** Section 2 — collage intro stage, then the industry sectors bento grid. */
-export default function Sectors({ onHire }) {
+export default function Sectors({ onSearch }) {
   return (
     <Section id="sectors" labelledBy="sectors-title">
-      <SectorsStage onHire={onHire} />
+      <SectorsStage onSearch={onSearch} />
 
-      <div className="focus-grid mt-16 grid grid-cols-1 gap-6 sm:grid-cols-2 md:mt-4 lg:grid-cols-4">
+      <div className="mt-16 grid grid-cols-1 gap-6 sm:grid-cols-2 md:mt-4 lg:grid-cols-4">
         {SECTORS.map((s, i) => (
-          <SectorCard key={s.id} sector={s} index={i} onHire={onHire} />
+          <SectorCard key={s.id} sector={s} index={i} />
         ))}
       </div>
     </Section>

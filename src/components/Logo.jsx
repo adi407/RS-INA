@@ -7,12 +7,12 @@ import { isHome } from "../routes.js";
  * at 44px tall (navbar) so it stays sharp. Ask the agency for an SVG for retina.
  */
 export default function Logo({ size = "md" }) {
-  const height = size === "lg" ? "h-14" : "h-11";
+  const height = size === "lg" ? "h-14" : "h-9 sm:h-11";
   return (
     <a
       href={isHome ? "#top" : "/"}
       // justify-self/self-center: don't stretch to fill the navbar's grid column
-      className="group inline-flex shrink-0 self-center justify-self-start rounded-xl bg-white px-3 py-1.5 shadow-sm ring-1 ring-white/10 transition-transform duration-300 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/70"
+      className="group inline-flex shrink-0 self-center justify-self-start rounded-xl bg-white px-3 py-1.5 shadow-sm ring-1 ring-white/10 transition-transform duration-300 hover:-translate-y-0.5"
       aria-label="RS International — home"
     >
       <img

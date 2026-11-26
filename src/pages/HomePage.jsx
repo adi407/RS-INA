@@ -9,15 +9,14 @@ import Clients from "../components/Clients.jsx";
 import CaseStudies from "../components/CaseStudies.jsx";
 import StrategicAdvantage from "../components/StrategicAdvantage.jsx";
 import ImpactMetrics from "../components/ImpactMetrics.jsx";
-import BigStatement from "../components/BigStatement.jsx";
 import Contact from "../components/Contact.jsx";
 
 /**
  * Homepage sections. `form` carries the shared inquiry state (intent, industry, region).
- * Arriving from another page with a hash (e.g. /#clients), wait for fonts and the pinned
- * sections to settle, then scroll to that section.
+ * Arriving from another page with a hash (e.g. /#clients), wait for fonts and layout
+ * to settle, then scroll to that section.
  */
-export default function HomePage({ form, setIntent, hireFromSector, toForm }) {
+export default function HomePage({ form, setIntent, toForm }) {
   useEffect(() => {
     const id = window.location.hash.slice(1);
     if (!id) return;
@@ -25,31 +24,32 @@ export default function HomePage({ form, setIntent, hireFromSector, toForm }) {
     document.fonts.ready.then(() =>
       setTimeout(() => {
         if (!cancelled) document.getElementById(id)?.scrollIntoView({ block: "start" });
-      }, 400)
+      }, 300)
     );
     return () => {
       cancelled = true;
     };
   }, []);
 
+  const employer = () => setIntent("employer");
+
   return (
     <>
       <Hero
         onSearch={() => {
-          setIntent("employer");
+          employer();
           toForm();
         }}
       />
-      <Sectors onHire={hireFromSector} />
-      <Platform onConsult={() => setIntent("employer")} />
-      <Advantages onSearch={() => setIntent("employer")} />
-      <Solution onSearch={() => setIntent("employer")} />
-      <Workflow onContact={() => setIntent("employer")} />
+      <Sectors onSearch={employer} />
+      <Platform onConsult={employer} />
+      <Advantages onSearch={employer} />
+      <Solution onSearch={employer} />
+      <Workflow onContact={employer} />
       <Clients />
-      <CaseStudies onConsult={() => setIntent("employer")} />
+      <CaseStudies onConsult={employer} />
       <StrategicAdvantage />
       <ImpactMetrics />
-      <BigStatement />
       <Contact {...form} />
     </>
   );

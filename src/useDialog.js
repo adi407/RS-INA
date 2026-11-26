@@ -20,7 +20,9 @@ export default function useDialog(open, onClose) {
     const onKey = (e) => {
       if (e.key === "Escape") return onClose();
       if (e.key !== "Tab" || !ref.current) return;
-      const f = [...ref.current.querySelectorAll("button, input, select, textarea, a[href]")].filter((el) => !el.disabled);
+      const f = [...ref.current.querySelectorAll("button, input, select, textarea, a[href], [tabindex]")].filter(
+        (el) => !el.disabled && el.tabIndex >= 0 && el.getClientRects().length > 0
+      );
       if (!f.length) return;
       const first = f[0];
       const last = f[f.length - 1];

@@ -6,6 +6,8 @@ export const CONTACT = {
   phones: ["+91-9072111770", "+91-484-2359569", "+91-484-2356270"],
   // emails[0] receives every website inquiry (all forms send to it)
   emails: ["recruit@rsina.in", "hr1@rsina.in", "hr2@rsina.in", "cvs@rsina.in"],
+  // WhatsApp number (country code + number, digits only) — confirm this mobile is on WhatsApp
+  whatsapp: "919072111770",
 };
 
 export const LICENSE = "B-0605/DEL/PER/1000+/5/7217/2005";
@@ -42,10 +44,10 @@ export const NAV = [
 /* Hero copy — original wording from the live homepage */
 export const HERO = {
   subtitle: "One stop solution for your recruitment needs.",
-  cta: "Free CV Search",
+  cta: "Hire Talent",
   // Offshore rig photo from the agency's current homepage slider.
   // For production, copy it into /public and point this at "/hero-offshore.jpg".
-  image: "https://rsinternationalagency.com/wp-content/uploads/2023/01/Slider-1.jpg",
+  image: "/media/site/slider-1.webp",
   // Background videos (served from /public/media), played one after another in a
   // crossfading loop. The first poster shows until playback starts and for reduced motion.
   videos: [
@@ -82,12 +84,11 @@ export const SECTORS_COPY = {
  * Core sectors — the four categories from the live site's slider, with its photos.
  * For production, copy the images into /public and update the paths.
  */
-const IMG = "https://rsinternationalagency.com/wp-content/uploads/2023/02/";
 export const SECTORS = [
-  { id: "hospitality", title: "Hospitality", image: `${IMG}Hospitality-2.jpg` },
-  { id: "railway", title: "Railway", image: `${IMG}Railway.jpg` },
-  { id: "agriculture", title: "Agriculture", image: `${IMG}Agriculture-1.jpg` },
-  { id: "construction", title: "Construction", image: `${IMG}Construction-1.jpg` },
+  { id: "hospitality", title: "Hospitality", image: `/media/site/hospitality-2.webp` },
+  { id: "railway", title: "Railway", image: `/media/site/railway.webp` },
+  { id: "agriculture", title: "Agriculture", image: `/media/site/agriculture-1.webp` },
+  { id: "construction", title: "Construction", image: `/media/site/construction-1.webp` },
 ];
 
 /*
@@ -96,7 +97,6 @@ export const SECTORS = [
  * because the live tab text for it ("insured rates… coverage") reads as template filler.
  * Images are from the live homepage; copy them into /public before launch.
  */
-const UP = "https://rsinternationalagency.com/wp-content/uploads/";
 export const ADVANTAGES = {
   tag: "Advantages",
   headline: "Save Time And Get The Best Talent",
@@ -107,28 +107,28 @@ export const ADVANTAGES = {
       id: "mobilization",
       title: "Easy Mobilization",
       body: "We can help! We provide easy mobilization of candidates to your company through our recruitment strategy. Our recruiters will search for the best fit for your organization, and we will make sure that each candidate is properly screened and vetted before beginning their application process.",
-      image: `${UP}2023/01/Slider-2.jpg`,
+      image: `/media/site/slider-2.webp`,
       position: "object-[80%_center]",
     },
     {
       id: "security",
       title: "99.9% Talent Job Security",
       body: "We offer 99.9% job security, so you can rest easy knowing that we don’t just say it – we back it up with a guarantee. If you’re not happy, we’ll make it right.",
-      image: `${UP}2023/01/Slider-4.png`,
+      image: `/media/site/slider-4.webp`,
       position: "object-center",
     },
     {
       id: "affordability",
       title: "Talent Affordability",
       body: "We guarantee the best talents at the most affordable cost. With us, you can hire trained candidates at an affordable cost!",
-      image: `${UP}2023/02/home-photo0.jpg`,
+      image: `/media/site/home-photo0.webp`,
       position: "object-[center_20%]",
     },
     {
       id: "government",
       title: "Government-Approved Agency",
       body: "R.S. International is approved by the Government of India, Ministry of External Affairs to carry business of Manpower Recruitments.",
-      image: `${UP}2023/01/Home-3.png`,
+      image: `/media/site/home-3.webp`,
       position: "object-center",
       badge: `License No: ${LICENSE}`,
     },
@@ -199,18 +199,17 @@ export const WORKFLOW = {
  * Section 6 — client logos from the live site (150×80 PNGs on white, no transparency).
  * Ask the agency for transparent/SVG versions and drop them in /public before launch.
  */
-const LOGO = "https://rsinternationalagency.com/wp-content/uploads/2023/02/";
 export const CLIENTS = {
   tag: "Trusted Partners",
   headline: "Trusted by Industry Leaders Worldwide",
   headlineSplit: 4, // words in the dark lead of the two-tone heading
   subtitle: "Powering workforce deployment for multinational enterprises and government contractors.",
   logos: [
-    { name: "SKD Group", logo: `${LOGO}SKD.png` },
-    { name: "United Plantations Berhad", logo: `${LOGO}UP.png` },
-    { name: "Al Qabdah Building Contracting", logo: `${LOGO}Al-Qabdah-1.png` },
-    { name: "FGV", logo: `${LOGO}FGV.png` },
-    { name: "Kuwait Resources House", logo: `${LOGO}KRH-2.png` },
+    { name: "SKD Group", logo: `/media/site/skd.webp` },
+    { name: "United Plantations Berhad", logo: `/media/site/up.webp` },
+    { name: "Al Qabdah Building Contracting", logo: `/media/site/al-qabdah-1.webp` },
+    { name: "FGV", logo: `/media/site/fgv.webp` },
+    { name: "Kuwait Resources House", logo: `/media/site/krh-2.webp` },
   ],
 };
 
@@ -274,6 +273,7 @@ export const FOOTER = {
     { label: "Region We Serve", href: "/regions" },
     { label: "RS Updates", href: "/rs-updates" },
     { label: "Global Updates", href: "/global" },
+    { label: "Privacy Policy", href: "/privacy" },
   ],
   social: [
     { label: "Facebook", href: "https://www.facebook.com/manpowr" },
@@ -291,7 +291,7 @@ export const FOOTER = {
 export const ABOUT_PAGE = {
   tag: "(About Us)",
   title: "About Company",
-  banner: `${UP}2023/01/About-Company.png`,
+  banner: `/media/site/about-company.webp`,
   storyTag: "Who We Are",
   storyTitle: "Our Story",
   story: [
@@ -304,18 +304,18 @@ export const ABOUT_PAGE = {
     "We understand the importance of having the right candidates in an organization, which is why we provide international placements. We set up interviews in our office or even at the clients to hire the best people directly for our clients. This process can be done in a short period of time to organize any number of candidates in any capacity. We will help you arrange any number of workers for overseas recruitment.",
     "We help you in managing all international recruitments through our trustworthy associates in India, Bangladesh, and Nepal. After joining, we continue to monitor candidates and assist our clients and candidates in resolving any issues between employers and employees. If in any case the problem is not resolved in a span of three months, we will replace them.",
   ],
-  brochure: `${UP}2023/01/R.S.-Brochure-101.pdf`,
+  brochure: `/media/site/r-s-brochure-101.pdf`,
   director: {
     tag: "Managing Director's Message",
     quote:
       "I started this journey in 2005 with my first client “Laglove”. A Malaysian glove production firm. As time passes, we updated our recruitment pattern with a high-tech sourcing team. In 2012 we joined ourselves in a project with “Shapoorji Pallonji” Dubai as a construction manpower vendor. It was a huge success and we learned a lot of new tricks to serve our client happy. Since 2017 we are in touch with “KRH” from Kuwait, “FGV” from Malaysia, and many more from different countries. It was a roller coaster ride and we are ready for a new chapter.",
     name: "Mr. Shri Chand",
     role: "Managing Director",
-    photo: `${UP}2023/02/Director-photo00.jpg`,
+    photo: `/media/site/director-photo00.webp`,
   },
   valuesTag: "What Drives Us",
   valuesTitle: "Vision, Mission & Values",
-  photo: `${UP}2023/01/About-3.png`,
+  photo: `/media/site/about-3.webp`,
   pillars: [
     {
       id: "vision",
@@ -343,7 +343,7 @@ export const ABOUT_PAGE = {
 export const PROCESS_PAGE = {
   tag: "(Our Process)",
   title: "How We Do It?",
-  banner: `${UP}2023/01/About-Company.png`,
+  banner: `/media/site/about-company.webp`,
   sectionTag: "Methodology",
   sectionTitle: "Our Methodology",
   subtitle:
@@ -400,7 +400,7 @@ export const PROCESS_PAGE = {
 export const REGIONS_PAGE = {
   tag: "(Global Reach)",
   title: "Region, We Serve",
-  banner: `${UP}2023/02/world-map-3.jpg`,
+  banner: `/media/site/world-map-3.webp`,
   intro:
     "Last year has seen a lot of people looking for opportunities to build and grow their careers in Gulf countries. Understanding the need for recruitment in Gulf countries we made sure to help our clients in these countries especially in Middle East, South East, Europe, and the Russian Federation to have mass workers as per their requirement.",
   sectionTag: "Regions",
@@ -410,7 +410,7 @@ export const REGIONS_PAGE = {
     {
       id: "south-east",
       title: "Recruitment in South East",
-      image: `${UP}2023/01/Region-we-serve-2.png`,
+      image: `/media/site/region-we-serve-2.webp`,
       places: ["Malaysia", "Singapore", "Thailand", "Indonesia"],
       body: [
         "As a way to cope with the aftereffects of the pandemic, South East has various job vacancies. Seeing the crucial need of the hour, R.S.International took the initiative to help many organizations in the South East area including Malaysia, Singapore, and many more, to have bulk workers during their time of need.",
@@ -425,7 +425,7 @@ export const REGIONS_PAGE = {
     {
       id: "middle-east",
       title: "Recruitment in Middle East",
-      image: `${UP}2023/01/Region-we-serve-1.png`,
+      image: `/media/site/region-we-serve-1.webp`,
       places: ["UAE", "Kuwait", "Bahrain", "Saudi Arabia", "Oman", "Qatar"],
       body: [
         "Manpower requirements are crucial in Gulf countries. Getting bulk workers for all kinds of jobs is an important aspect for many organizations in the Middle East. With numerous job vacancies having low manpower is a challenge. Keeping the requirements in mind R.S.International has provided bulk workers to some of the areas in the Middle East that as UAE, Kuwait, Bahrain, Saudi Arabia, Oman, Qatar, and many more.",
@@ -439,7 +439,7 @@ export const REGIONS_PAGE = {
     {
       id: "russian-federation",
       title: "Recruitment in Russian Federation",
-      image: `${UP}2023/01/Region-we-serve-4.png`,
+      image: `/media/site/region-we-serve-4.webp`,
       places: ["Moscow", "Novosibirsk", "Kazan", "Vladivostok"],
       body: [
         "The European economy is facing a difficult challenge as it struggles to find enough qualified workers. This is especially true in Russia, where the economic situation has led to a shortage of available manpower. As a result, many companies are turning to India to find the skilled workers they need. However, this comes with its own set of problems. The cultural differences between Russia and India can make it difficult for Russian companies to successfully recruit Indian workers, and there are also issues related to the cost of living and wages in Russia that can be prohibitive for some Indian workers.",
@@ -452,7 +452,7 @@ export const REGIONS_PAGE = {
     {
       id: "europe",
       title: "Recruitment in Europe",
-      image: `${UP}2023/01/Region-we-serve-3.png`,
+      image: `/media/site/region-we-serve-3.webp`,
       places: [],
       body: [
         "The European job market is constantly evolving, with new opportunities and recruitment strategies emerging every day. As a result, it can be difficult to keep up with the latest trends and remain competitive in the job search or hiring of deserving candidates. However, understanding the current trends in Europe’s job market can help you find employment opportunities that match your skills and experience. With an increase in the number of jobs globally, the need for manpower from India has seen a huge rise. With a large range of skilled and talented professionals and with emerging companies entering the market, it has become far easier for recruitment agencies to fulfill the business requirements and candidates’ preferences.",
@@ -473,7 +473,7 @@ export const REGIONS_PAGE = {
 export const CONTACT_PAGE = {
   tag: "(Get In Touch)",
   title: "Contact Us",
-  banner: `${UP}2023/02/contact.jpg`, // contact-1.jpg (used by the old page) is a broken file
+  banner: `/media/site/contact.webp`, // contact-1.jpg (used by the old page) is a broken file
   formsTag: "Enquiries",
   formsTitle: "How can we help?",
   tabs: {
@@ -531,15 +531,15 @@ export const CONTACT_PAGE = {
 export const UPDATES_PAGE = {
   tag: "(Company News)",
   title: "RS Updates",
-  banner: `${UP}2023/02/Picture3.png`,
+  banner: `/media/site/picture3.webp`,
   stories: [
     {
       id: "zero-cost-recruitment",
       label: "Zero Cost Recruitment",
       title: "Rs International Works On A “Zero-Cost Recruitment” Policy!",
       images: [
-        { src: `${UP}2023/02/Picture3.png`, alt: "Selected candidates holding their documents at the R.S. International office" },
-        { src: `${UP}2023/02/Picture4.png`, alt: "A selected candidate holding his passport and documents", portrait: true },
+        { src: `/media/site/picture3.webp`, alt: "Selected candidates holding their documents at the R.S. International office" },
+        { src: `/media/site/picture4.webp`, alt: "A selected candidate holding his passport and documents", portrait: true },
       ],
       lead: "R.S. International focuses on providing a no-cost recruitment service. We do not charge any fees to workers or employees during the recruitment process.",
       body: [
@@ -552,8 +552,8 @@ export const UPDATES_PAGE = {
       label: "Interview At Your Desired Location",
       title: "R.S. International Provides Physical Interviews At Your Desired Location!",
       images: [
-        { src: `${UP}2023/02/Picture1.png`, alt: "Candidates completing a practical trade test during the interview" },
-        { src: `${UP}2023/02/Picture2.png`, alt: "Candidates at work during the 3-day interview" },
+        { src: `/media/site/picture1.webp`, alt: "Candidates completing a practical trade test during the interview" },
+        { src: `/media/site/picture2.webp`, alt: "Candidates at work during the 3-day interview" },
       ],
       lead: "R.S. International aims at making all the procedures easy for our clients. Starting from 1-1 consultations to making the workers arrive safely we help you out in every bit of the journey.",
       body: [
@@ -572,7 +572,7 @@ export const UPDATES_PAGE = {
 export const GLOBAL_PAGE = {
   tag: "(Global Updates)",
   title: "Global Updates",
-  banner: `${UP}2023/02/Marsa-Al-Arab.png`,
+  banner: `/media/site/marsa-al-arab.webp`,
   // Old page: "THIS PAGE SHOWS GLOBAL UPPDATES AS IN GENERAL NOTION" (typo fixed)
   note: "This page shows global updates as in general notion",
   stories: [
@@ -580,7 +580,7 @@ export const GLOBAL_PAGE = {
       id: "neom",
       label: "NEOM - Saudi Arabia",
       title: "The New City In Saudi Arabia- NEOM",
-      images: [{ src: `${UP}2023/02/NEOM.png`, alt: "Architectural render of NEOM, Saudi Arabia" }],
+      images: [{ src: `/media/site/neom.webp`, alt: "Architectural render of NEOM, Saudi Arabia" }],
       lead: "Creating a new city from scratch is an extremely challenging and daunting task. It requires careful planning, large investments of time and resources, and the ability to make sure the project stays on track throughout its duration.",
       body: [
         "Without proper management of such a large project, it can easily become derailed and lead to costly delays, with potentially disastrous consequences.",
@@ -591,7 +591,7 @@ export const GLOBAL_PAGE = {
       id: "marsa-al-arab",
       label: "Marsa Al Arab - Dubai",
       title: "The Marsa Al Arab Project-Dubai had extended the coastline of the mighty Burj Al Arab!",
-      images: [{ src: `${UP}2023/02/Marsa-Al-Arab.png`, alt: "Render of the Marsa Al Arab islands beside the Burj Al Arab, Dubai" }],
+      images: [{ src: `/media/site/marsa-al-arab.webp`, alt: "Render of the Marsa Al Arab islands beside the Burj Al Arab, Dubai" }],
       lead: "Dubai is a world-renowned city that has become a popular choice for tourists from across the globe. But, until now it has lacked something truly spectacular that would make it stand out from the rest.",
       body: [
         "People want something exclusive and extraordinary to experience in a city like Dubai, something that will leave them with memories to cherish for a lifetime.",
@@ -642,7 +642,7 @@ export const CASE_STUDIES = {
       region: "United Kingdom",
       metric: "100% Audit Pass Rate",
       body: "Successfully onboarded and managed over 250 logistics drivers with zero compliance friction across annual UK audits.",
-      image: `${UP}2023/01/Slider-2.jpg`,
+      image: `/media/site/slider-2.webp`,
     },
     {
       id: "al-qabdah",
@@ -650,7 +650,7 @@ export const CASE_STUDIES = {
       region: "Middle East",
       metric: "48-Hour Mobilization",
       body: "Scaled engineering and technical teams across regional sites with fully verified visas and labor documentation.",
-      image: `${UP}2023/01/Slider-4.png`,
+      image: `/media/site/slider-4.webp`,
     },
     {
       id: "skd",
@@ -658,7 +658,7 @@ export const CASE_STUDIES = {
       region: "Southeast Asia",
       metric: "98% Retention Rate",
       body: "Optimized corporate and hospitality staffing through rigorous pre-screening and end-to-end recruitment pipelines.",
-      image: `${UP}2023/02/home-photo0.jpg`,
+      image: `/media/site/home-photo0.webp`,
       imagePosition: "object-top",
     },
   ],
@@ -669,11 +669,10 @@ export const CASE_STUDIES = {
  * case-study posts (the card shows the opening paragraph; "Read More" opens the rest).
  * Images and logos are the old page's own files; copy into /public before launch.
  */
-const CL = `${UP}2023/02/`;
 export const CLIENTS_PAGE = {
   tag: "(Our Clients)",
   title: "Our Clients",
-  banner: `${UP}2023/01/our-client.png`,
+  banner: `/media/site/our-client.webp`,
   caseTag: "Case Studies",
   caseTitle: "Some Of Our Case Studies",
   logosTag: "Partners",
@@ -683,7 +682,7 @@ export const CLIENTS_PAGE = {
     {
       id: "skd-group",
       client: "SKD Group of Companies",
-      image: `${CL}skd-group.png`,
+      image: "/media/site/client-skd-group.webp",
       body: [
         "Finding reliable, experienced, and skilled staff can be a daunting task for many companies. With the ever-changing labor market and the need to stay ahead of the competition, it is important to recruit top-notch talent in a timely manner.",
         "Turning away potential customers due to a lack of resources can have a long-term impact on your company’s growth and reputation. Without the right staff, it can be difficult to ensure the quality of service and meet customer demands.",
@@ -693,7 +692,7 @@ export const CLIENTS_PAGE = {
     {
       id: "kuwait-resource-house",
       client: "Kuwait Resource House",
-      image: `${UP}2023/01/Kuwait-Resource-House.png`,
+      image: `/media/site/kuwait-resource-house.webp`,
       body: [
         "Organizations in the defense industry require logistical support to complete their projects. Traditional logistics companies often lack the infrastructure, expertise, and capacity needed for reliable and efficient service.",
         "This often leads to delayed projects, overspending on resources, and difficulty in achieving optimal performance from staff and employees. Poor logistical services can cost organizations in the defense industry a fortune, not to mention the time wasted – potentially jeopardizing their reputation and success.",
@@ -704,7 +703,7 @@ export const CLIENTS_PAGE = {
     {
       id: "fgv-holding-berhad",
       client: "FGV Holding Berhad",
-      image: `${CL}FGV-Holding-Berhad.png`,
+      image: "/media/site/client-fgv-holding-berhad.webp",
       body: [
         "Recruitment can be a challenging process, with high costs associated with it. This is especially true for companies like FGV that have large workforces and need to find qualified candidates quickly and cost-effectively.",
         "The cost of recruitment can add up quickly, which could potentially burden the company’s budget and prevent it from expanding its operations. Furthermore, a lack of qualified candidates can lead to costly mistakes and delays in hiring.",
@@ -714,7 +713,7 @@ export const CLIENTS_PAGE = {
     {
       id: "al-qabdah",
       client: "Al-Qabdah Global Building Contracting LLC",
-      image: `${CL}Al-Qabdah.png`,
+      image: "/media/site/client-al-qabdah.webp",
       body: [
         "Finding the right type of skilled and semi-skilled labor for your construction projects can be a challenging task. Not to mention, traditional recruitment processes are also time-consuming and costly.",
         "In this era of digital transformation, your construction business needs to adapt quickly to keep up with the competition. Time is of the essence and if you don’t find quality workers quickly, it could cost you dearly in terms of lost progress and lost profits.",
@@ -723,13 +722,13 @@ export const CLIENTS_PAGE = {
     },
   ],
   logos: [
-    { name: "United Plantations Berhad", logo: `${CL}UP.png` },
-    { name: "Al Qabdah Building Contracting", logo: `${CL}Al-Qabdah-1.png` },
-    { name: "FGV (Felda Global Ventures)", logo: `${CL}FGV.png` },
-    { name: "Kuwait Resources House", logo: `${CL}KRH-2.png` },
-    { name: "Sime Darby", logo: `${CL}Sime.png` },
-    { name: "Simplex Infrastructures", logo: `${CL}simplex.png` },
-    { name: "SKD Group", logo: `${CL}SKD.png` },
+    { name: "United Plantations Berhad", logo: "/media/site/client-up.webp" },
+    { name: "Al Qabdah Building Contracting", logo: "/media/site/client-al-qabdah-1.webp" },
+    { name: "FGV (Felda Global Ventures)", logo: "/media/site/client-fgv.webp" },
+    { name: "Kuwait Resources House", logo: "/media/site/client-krh-2.webp" },
+    { name: "Sime Darby", logo: "/media/site/client-sime.webp" },
+    { name: "Simplex Infrastructures", logo: "/media/site/client-simplex.webp" },
+    { name: "SKD Group", logo: "/media/site/client-skd.webp" },
   ],
 };
 
@@ -737,12 +736,11 @@ export const CLIENTS_PAGE = {
  * /employers — "Choose Your Employee" talent database (copy from the old For Employer page).
  * Photos are that page's own images (480 × 315); copy into /public before launch.
  */
-const EMP = `${UP}2023/02/`;
 export const EMPLOYERS = {
   tag: "Employer Portal",
   title: "Choose Your Employee",
   subtitle: "Browse our pre-vetted, government-approved international workforce database.",
-  banner: `${UP}2023/01/For-Employee-Main-Banner.png`,
+  banner: `/media/site/for-employee-main-banner.webp`,
   dbTag: "Sectors",
   dbTitle: "Available Database",
   cta: "Know More",
@@ -753,12 +751,12 @@ export const EMPLOYERS = {
     { id: "base", label: "Base Location", value: "Pan India, Nepal & Bangladesh" },
   ],
   sectors: [
-    { id: "construction", title: "Construction", image: `${EMP}construction.jpg` },
-    { id: "hospitality", title: "Hospitality", image: `${EMP}hospitality.jpg` },
-    { id: "agriculture", title: "Agriculture", image: `${EMP}AGRICULTURE.jpg` },
-    { id: "shipyard", title: "Shipyard", image: `${EMP}SHIPYARD.jpg` },
-    { id: "management", title: "Management", image: `${EMP}MANAGEMENT.jpg` },
-    { id: "facility", title: "Facility", image: `${EMP}FACILITY.jpg` },
+    { id: "construction", title: "Construction", image: "/media/site/pool-construction.webp" },
+    { id: "hospitality", title: "Hospitality", image: "/media/site/pool-hospitality.webp" },
+    { id: "agriculture", title: "Agriculture", image: "/media/site/pool-agriculture.webp" },
+    { id: "shipyard", title: "Shipyard", image: "/media/site/pool-shipyard.webp" },
+    { id: "management", title: "Management", image: "/media/site/pool-management.webp" },
+    { id: "facility", title: "Facility", image: "/media/site/pool-facility.webp" },
   ],
 };
 
@@ -781,9 +779,9 @@ export const JOBS = {
   listings: [
     {
       id: "security-guard-dubai",
-      title: "GOLDEN OPPORTUNITIES FOR SECURITY GUARD JOB IN DUBAI",
-      category: "SECURITY GUARD",
-      location: "DUBAI",
+      title: "Golden Opportunities for Security Guard Jobs in Dubai",
+      category: "Security Guard",
+      location: "Dubai",
       type: "Full Time",
       posted: "May 21, 2025",
       summary: "Client interview shortly. Share your documents through WhatsApp or email.",
@@ -791,7 +789,7 @@ export const JOBS = {
     },
     {
       id: "blacksmith-saudi",
-      title: "Job Openings for Stainless steel blacksmith for Factory in Saudi Arabia",
+      title: "Stainless Steel Blacksmith for a Factory in Saudi Arabia",
       category: "Blacksmith",
       location: "Saudi Arabia",
       type: "Full Time",
@@ -803,7 +801,7 @@ export const JOBS = {
       id: "lightning-engineer",
       title: "Lightning Engineer",
       category: "Engineer",
-      location: "MIDDLE EAST",
+      location: "Middle East",
       type: "Full Time",
       posted: "January 24, 2023",
       points: [
@@ -819,7 +817,7 @@ export const JOBS = {
       id: "audio-engineer",
       title: "Audio Engineer",
       category: "Construction",
-      location: "MIDDLE EAST",
+      location: "Middle East",
       type: "Full Time",
       posted: "January 19, 2023",
       points: [

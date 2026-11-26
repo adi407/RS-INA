@@ -2,8 +2,7 @@ import { useLayoutEffect, useRef } from "react";
 import { Megaphone, MessageSquareHeart, MessagesSquare, PlaneLanding, Presentation, Stamp, Stethoscope, UserCheck } from "lucide-react";
 import { SectionHeader } from "../components/ui.jsx";
 import PageBanner from "../components/PageBanner.jsx";
-import MetricsSection from "../components/MetricsSection.jsx";
-import { gsap, ScrollTrigger } from "../motion.js";
+import { gsap, ScrollTrigger, reducedMotion } from "../motion.js";
 import { PROCESS_PAGE } from "../content.js";
 
 const ICONS = {
@@ -29,12 +28,12 @@ function Step({ step, index }) {
   const num = pad(index + 1);
 
   return (
-    <li className="relative grid grid-cols-[3rem_1fr] gap-x-5 lg:grid-cols-[1fr_5rem_1fr] lg:gap-x-0">
+    <li id={`step-${step.id}`} className="relative scroll-mt-28 grid grid-cols-[3rem_1fr] gap-x-5 lg:grid-cols-[1fr_5rem_1fr] lg:gap-x-0">
       {/* Node on the spine: lights up (data-on) as the progress line reaches it */}
       <div className="col-start-1 row-start-1 flex justify-center lg:col-start-2">
         <span
           data-node
-          className="sticky top-32 z-10 grid size-12 place-items-center rounded-full border border-slate-200 bg-white font-display text-sm font-extrabold text-slate-400 shadow-sm transition-all duration-500 data-[on=true]:border-emerald-500 data-[on=true]:bg-emerald-600 data-[on=true]:text-white data-[on=true]:shadow-[0_0_0_6px_rgba(16,185,129,0.15),0_10px_30px_-6px_rgba(16,185,129,0.6)] lg:size-14 lg:text-base"
+          className="sticky top-32 z-10 grid size-12 place-items-center rounded-full border border-slate-200 bg-white font-display text-sm font-extrabold text-slate-600 shadow-sm transition-all duration-500 data-[on=true]:border-emerald-500 data-[on=true]:bg-emerald-700 data-[on=true]:text-white data-[on=true]:shadow-[0_0_0_6px_rgba(16,185,129,0.15),0_10px_30px_-6px_rgba(16,185,129,0.6)] lg:size-14 lg:text-base"
         >
           {num}
         </span>
@@ -50,10 +49,10 @@ function Step({ step, index }) {
         <img src={step.image} alt="" loading="lazy" className="h-48 w-full object-cover sm:h-56 lg:hidden" />
         <div className="p-7 sm:p-8 lg:p-10">
           <div className="flex items-center justify-between gap-4">
-            <span className="grid size-12 place-items-center rounded-xl bg-emerald-50 text-emerald-600 ring-1 ring-emerald-100 transition-colors duration-300 group-hover:bg-emerald-600 group-hover:text-white">
+            <span className="grid size-12 place-items-center rounded-xl bg-emerald-50 text-emerald-700 ring-1 ring-emerald-100 transition-colors duration-300 group-hover:bg-emerald-700 group-hover:text-white">
               <Icon className="size-[22px]" strokeWidth={1.5} aria-hidden />
             </span>
-            <span className="font-display text-2xl font-extrabold text-emerald-600 [text-shadow:0_0_24px_rgba(16,185,129,0.35)]" aria-hidden>
+            <span className="font-display text-2xl font-extrabold text-emerald-700 [text-shadow:0_0_24px_rgba(16,185,129,0.35)]" aria-hidden>
               {num}
             </span>
           </div>
@@ -94,6 +93,7 @@ export default function ProcessPage() {
     const mm = gsap.matchMedia();
 
     mm.add("(prefers-reduced-motion: no-preference)", () => {
+      if (reducedMotion()) return;
       gsap.fromTo(
         fillRef.current,
         { scaleY: 0 },
@@ -109,6 +109,10 @@ export default function ProcessPage() {
       );
     });
     // Reduced motion: the finished state, no scroll effects
+    if (reducedMotion()) {
+      gsap.set(fillRef.current, { scaleY: 1 });
+      nodes.forEach((n) => (n.dataset.on = "true"));
+    }
     mm.add("(prefers-reduced-motion: reduce)", () => {
       gsap.set(fillRef.current, { scaleY: 1 });
       nodes.forEach((n) => (n.dataset.on = "true"));
@@ -131,6 +135,23 @@ export default function ProcessPage() {
             subtitle={PROCESS_PAGE.subtitle}
             align="center"
           />
+          {/* Overview: all 8 steps at a glance, each jumping to its detail */}
+          <nav aria-label="Steps" className="mx-auto mt-10 max-w-5xl">
+            <ol className="flex flex-wrap justify-center gap-2">
+              {PROCESS_PAGE.steps.map((s, i) => (
+                <li key={s.id}>
+                  <a
+                    href={`#step-${s.id}`}
+                    className="inline-flex min-h-11 items-center gap-2 rounded-full border border-slate-300 bg-white px-4 text-sm font-semibold text-slate-800 transition-colors hover:border-emerald-700 hover:text-emerald-900"
+                  >
+                    <span className="text-emerald-700">{pad(i + 1)}</span>
+                    {s.title}
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </nav>
+
 
           <div className="relative mt-14 lg:mt-20">
             {/* Spine: grey track + emerald fill driven by the scroll */}
@@ -145,8 +166,6 @@ export default function ProcessPage() {
           </div>
         </div>
       </section>
-
-      <MetricsSection className="bg-white" />
     </>
   );
 }

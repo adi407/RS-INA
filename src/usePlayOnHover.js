@@ -1,11 +1,13 @@
 import { useEffect, useRef, useState } from "react";
+import { reducedMotion } from "./motion.js";
 
 /**
- * Drives the product-mockup "demo" animations (1Centre-style):
- *  - mouse devices: plays while hovered, resets when the pointer leaves
- *  - touch devices: plays once when the mockup is mostly on screen
+ * Drives the illustrative mock-up animations:
+ *  - plays once when the mock-up is mostly on screen (every device, so keyboard and
+ *    touch users see it too)
+ *  - with a mouse, hovering replays it: leaving resets, entering plays again
  *  - reduced motion: shows the finished state straight away
- * Returns [ref, on]: attach ref to the hover area, render the "done" state when on.
+ * Returns [ref, on]: attach ref to the mock-up area, render the "done" state when on.
  */
 export default function usePlayOnHover() {
   const ref = useRef(null);
@@ -14,19 +16,9 @@ export default function usePlayOnHover() {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    if (reducedMotion()) {
       setOn(true);
       return;
-    }
-    if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
-      const enter = () => setOn(true);
-      const leave = () => setOn(false);
-      el.addEventListener("pointerenter", enter);
-      el.addEventListener("pointerleave", leave);
-      return () => {
-        el.removeEventListener("pointerenter", enter);
-        el.removeEventListener("pointerleave", leave);
-      };
     }
     const io = new IntersectionObserver(
       ([e]) => {
@@ -38,7 +30,17 @@ export default function usePlayOnHover() {
       { threshold: [0.6] }
     );
     io.observe(el);
-    return () => io.disconnect();
+
+    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return () => io.disconnect();
+    const enter = () => setOn(true);
+    const leave = () => setOn(false);
+    el.addEventListener("pointerenter", enter);
+    el.addEventListener("pointerleave", leave);
+    return () => {
+      io.disconnect();
+      el.removeEventListener("pointerenter", enter);
+      el.removeEventListener("pointerleave", leave);
+    };
   }, []);
 
   return [ref, on];

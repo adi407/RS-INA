@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import UtilityBar from "./components/UtilityBar.jsx";
 import Navbar from "./components/Navbar.jsx";
 import Footer from "./components/Footer.jsx";
 import BackToTop from "./components/BackToTop.jsx";
-import Cursor from "./components/Cursor.jsx";
+import MobileActionBar from "./components/MobileActionBar.jsx";
+import ScrollProgress from "./components/ScrollProgress.jsx";
 import HomePage from "./pages/HomePage.jsx";
 import EmployersPage from "./pages/EmployersPage.jsx";
 import JobsPage from "./pages/JobsPage.jsx";
@@ -14,26 +15,79 @@ import RegionsPage from "./pages/RegionsPage.jsx";
 import ContactPage from "./pages/ContactPage.jsx";
 import UpdatesPage from "./pages/UpdatesPage.jsx";
 import GlobalPage from "./pages/GlobalPage.jsx";
+import PrivacyPage from "./pages/PrivacyPage.jsx";
+import NotFoundPage from "./pages/NotFoundPage.jsx";
 import useReveal from "./useReveal.js";
 import { useSmoothScroll } from "./motion.js";
 import { PATH } from "./routes.js";
+import { NOT_FOUND, OG_IMAGE, PAGES, SITE_URL } from "./meta.js";
+
+/** Pages by URL. Anything else gets the 404 page. */
+const ROUTES = {
+  "/employers": EmployersPage,
+  "/jobs": JobsPage,
+  "/clients": ClientsPage,
+  "/about": AboutPage,
+  "/how-we-do": ProcessPage,
+  "/regions": RegionsPage,
+  "/contact": ContactPage,
+  "/rs-updates": UpdatesPage,
+  "/global": GlobalPage,
+  "/privacy": PrivacyPage,
+};
+
+/** Feeds the pointer position to cards with the .spotlight hover glow (desktop mice only). */
+function useSpotlight() {
+  useEffect(() => {
+    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+    const onMove = (e) => {
+      const el = e.target.closest?.(".spotlight");
+      if (!el) return;
+      const r = el.getBoundingClientRect();
+      el.style.setProperty("--mx", `${e.clientX - r.left}px`);
+      el.style.setProperty("--my", `${e.clientY - r.top}px`);
+    };
+    document.addEventListener("pointermove", onMove, { passive: true });
+    return () => document.removeEventListener("pointermove", onMove);
+  }, []);
+}
+
+/** Sets <title>, description, canonical and social tags for the current page. */
+function usePageMeta() {
+  useEffect(() => {
+    const known = PATH === "/" || PATH in ROUTES;
+    const meta = known ? PAGES[PATH] : NOT_FOUND;
+    document.title = meta.title;
+    const tag = (attr, key, value) => {
+      let el = document.head.querySelector(`meta[${attr}="${key}"]`);
+      if (!el) {
+        el = document.createElement("meta");
+        el.setAttribute(attr, key);
+        document.head.appendChild(el);
+      }
+      el.setAttribute("content", value);
+    };
+    tag("name", "description", meta.description);
+    tag("property", "og:title", meta.title);
+    tag("property", "og:description", meta.description);
+    tag("property", "og:url", SITE_URL + PATH);
+    tag("property", "og:image", SITE_URL + OG_IMAGE);
+    if (!known) tag("name", "robots", "noindex");
+    let link = document.head.querySelector('link[rel="canonical"]');
+    if (!link) {
+      link = document.createElement("link");
+      link.rel = "canonical";
+      document.head.appendChild(link);
+    }
+    link.href = SITE_URL + (PATH === "/" ? "/" : PATH);
+  }, []);
+}
 
 /**
- * Shared layout (utility bar, navbar, footer) around one page, chosen by URL:
- *   /           → homepage (RemotePeople-style rhythm: dark hero → light sections → dark footer)
- *   /employers  → "Choose Your Employee" talent database
- *   /jobs       → "Job Openings" board
- *   /clients    → "Our Clients": case studies, partner logos, recruitment metrics
- *   /about      → "About Company": story, licence, director's message, vision/mission/values
- *   /how-we-do  → "How We Do It?": the 8-step recruitment methodology timeline
- *   /regions    → "Region We Serve": the four regions, each opening its full story
- *   /contact    → "Contact Us": company / job-seeker forms, offices, figures
- *   /rs-updates → "RS Updates": company news stories
- *   /global     → "Global Updates": industry news stories
- *
- * Shared state:
- *  - intent: "employer" | "candidate" — set by links, CTAs and sector cards; pre-selects the form toggle
- *  - industry / region: pre-fill the homepage inquiry form
+ * Shared layout (contact strip, navbar, footer) around one page, chosen by URL.
+ * Shared state for the homepage inquiry form:
+ *  - intent: "employer" | "candidate" — pre-selects the form toggle
+ *  - industry / region: pre-fill the form
  */
 export default function App() {
   const [industry, setIndustry] = useState("construction");
@@ -42,53 +96,32 @@ export default function App() {
 
   useReveal();
   useSmoothScroll();
+  usePageMeta();
+  useSpotlight();
 
   const toForm = () => document.getElementById("inquiry")?.scrollIntoView({ behavior: "smooth", block: "start" });
 
-  const hireFromSector = (id) => {
-    setIndustry(id);
-    setIntent("employer");
-  };
-
   const form = { intent, setIntent, industry, setIndustry, region, setRegion };
+  const Page = PATH === "/" ? null : ROUTES[PATH] || NotFoundPage;
 
   return (
     <>
       <a
-        href="#top"
-        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-emerald-500 focus:px-4 focus:py-2 focus:text-white"
+        href="#main"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-emerald-700 focus:px-5 focus:py-3 focus:font-semibold focus:text-white"
       >
         Skip to content
       </a>
+      {(PATH === "/how-we-do" || PATH === "/about" || PATH === "/privacy") && <ScrollProgress />}
       <UtilityBar />
-      <Navbar onIntent={setIntent} />
+      <Navbar />
       {/* Raised layer: on large screens it scrolls up off the sticky footer beneath it */}
-      <main className="relative z-10 bg-white shadow-[0_40px_80px_-24px_rgba(2,6,23,0.55)]">
-        {PATH === "/employers" ? (
-          <EmployersPage />
-        ) : PATH === "/jobs" ? (
-          <JobsPage />
-        ) : PATH === "/clients" ? (
-          <ClientsPage />
-        ) : PATH === "/about" ? (
-          <AboutPage />
-        ) : PATH === "/how-we-do" ? (
-          <ProcessPage />
-        ) : PATH === "/regions" ? (
-          <RegionsPage />
-        ) : PATH === "/contact" ? (
-          <ContactPage />
-        ) : PATH === "/rs-updates" ? (
-          <UpdatesPage />
-        ) : PATH === "/global" ? (
-          <GlobalPage />
-        ) : (
-          <HomePage form={form} setIntent={setIntent} hireFromSector={hireFromSector} toForm={toForm} />
-        )}
+      <main id="main" tabIndex={-1} className="relative z-10 bg-white shadow-[0_40px_80px_-24px_rgba(2,6,23,0.55)] outline-none">
+        {Page ? <Page /> : <HomePage form={form} setIntent={setIntent} toForm={toForm} />}
       </main>
       <Footer onIntent={setIntent} />
       <BackToTop />
-      <Cursor />
+      <MobileActionBar />
     </>
   );
 }

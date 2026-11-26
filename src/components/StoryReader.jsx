@@ -1,7 +1,8 @@
+import { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { ArrowRight, MapPin, X } from "lucide-react";
 import useDialog from "../useDialog.js";
-import { ABOUT } from "../content.js";
+import { BTN_PRIMARY } from "./ui.jsx";
 
 /**
  * "Read More" reader shared by the Clients (case studies) and Regions pages: the full
@@ -13,6 +14,22 @@ import { ABOUT } from "../content.js";
 export default function StoryReader({ item, list, tag, onClose, onOpen }) {
   const open = !!item;
   const ref = useDialog(open, onClose);
+  const heading = useRef(null);
+  // "Next" swaps the content in place: start the reader at the top, on the new title
+  const id = item?.id;
+  const first = useRef(true);
+  useEffect(() => {
+    if (!id) return;
+    if (first.current) {
+      first.current = false;
+      return;
+    }
+    ref.current?.scrollTo({ top: 0 });
+    heading.current?.focus();
+  }, [id]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    if (!open) first.current = true;
+  }, [open]);
   if (!open) return null;
 
   const title = item.title ?? item.client;
@@ -30,7 +47,6 @@ export default function StoryReader({ item, list, tag, onClose, onOpen }) {
       />
       <article
         ref={ref}
-        key={item.id}
         role="dialog"
         aria-modal="true"
         aria-labelledby="story-title"
@@ -42,7 +58,7 @@ export default function StoryReader({ item, list, tag, onClose, onOpen }) {
           <div className="absolute inset-0 bg-gradient-to-t from-[#0A0F1D]/90 via-[#0A0F1D]/30 to-transparent" />
           <div className="absolute inset-x-6 bottom-5 text-white sm:inset-x-10">
             <p className="text-xs font-semibold uppercase tracking-widest text-emerald-300">{tag}</p>
-            <h2 id="story-title" className="mt-1.5 font-display text-2xl font-bold leading-tight tracking-tight sm:text-3xl">
+            <h2 id="story-title" ref={heading} tabIndex={-1} className="outline-none mt-1.5 font-display text-2xl font-bold leading-tight tracking-tight sm:text-3xl">
               {title}
             </h2>
           </div>
@@ -50,7 +66,7 @@ export default function StoryReader({ item, list, tag, onClose, onOpen }) {
             type="button"
             onClick={onClose}
             aria-label="Close"
-            className="absolute right-4 top-4 grid size-10 place-items-center rounded-full bg-white/15 text-white backdrop-blur transition-colors hover:bg-white/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+            className="absolute right-4 top-4 grid size-10 place-items-center rounded-full bg-white/15 text-white backdrop-blur transition-colors hover:bg-white/25"
           >
             <X className="size-5" />
           </button>
@@ -76,21 +92,20 @@ export default function StoryReader({ item, list, tag, onClose, onOpen }) {
               </h3>
             )
           )}
-          <p className="border-l-2 border-emerald-500 pl-4 font-medium text-slate-900">{ABOUT.blurb}</p>
         </div>
 
         <div className="flex flex-col gap-3 border-t border-slate-100 px-6 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-10">
           <button
             type="button"
             onClick={() => onOpen(next.id)}
-            className="group inline-flex items-center gap-2 text-left text-sm font-semibold text-slate-700 transition-colors hover:text-emerald-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
+            className="group inline-flex items-center gap-2 text-left text-sm font-semibold text-slate-700 transition-colors hover:text-emerald-900"
           >
-            <span className="text-slate-400">Next:</span> {next.title ?? next.client}
+            <span className="text-slate-600">Next:</span> {next.title ?? next.client}
             <ArrowRight className="size-4 shrink-0 transition-transform group-hover:translate-x-1" aria-hidden />
           </button>
           <a
             href="/contact"
-            className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-emerald-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2"
+            className={BTN_PRIMARY}
           >
             Hire with R.S. International
           </a>

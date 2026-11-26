@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import { ArrowRight, Building2, MapPin } from "lucide-react";
+import { reducedMotion } from "../motion.js";
+import { ArrowRight, Building2, MapPin, Pause, Play } from "lucide-react";
 import { BlurGroup, BTN_PRIMARY, TwoTone, Words } from "./ui.jsx";
 import { CASE_STUDIES, PLATFORM } from "../content.js";
 
@@ -16,21 +17,26 @@ export default function CaseStudies({ onConsult }) {
   const [active, setActive] = useState(0);
   const [autoplay, setAutoplay] = useState(true);
   const [paused, setPaused] = useState(false);
+  const [hovered, setHovered] = useState(false);
   const [inView, setInView] = useState(false);
   const sectionRef = useRef(null);
   const tabRefs = useRef([]);
 
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) setAutoplay(false);
+    if (reducedMotion()) setAutoplay(false);
     const io = new IntersectionObserver(([e]) => setInView(e.isIntersecting), { threshold: 0.35 });
     if (sectionRef.current) io.observe(sectionRef.current);
     return () => io.disconnect();
   }, []);
 
-  const running = autoplay && inView && !paused;
+  const running = autoplay && inView && !paused && !hovered;
   useEffect(() => {
     if (!running) return;
-    const t = setTimeout(() => setActive((i) => (i + 1) % stories.length), AUTOPLAY_MS);
+    const t = setTimeout(() => {
+      const next = (active + 1) % stories.length;
+      setActive(next);
+      if (next === 0) setAutoplay(false); // one full round, then stop
+    }, AUTOPLAY_MS);
     return () => clearTimeout(t);
   }, [running, active, stories.length]);
 
@@ -56,7 +62,7 @@ export default function CaseStudies({ onConsult }) {
         {/* ---------- Left: sticky editorial column ---------- */}
         <div data-reveal className="lg:sticky lg:top-28 lg:col-span-5">
           <BlurGroup>
-          <p className="text-xs font-semibold uppercase tracking-widest text-emerald-600"><Words text={CASE_STUDIES.tag} /></p>
+          <p className="text-xs font-semibold uppercase tracking-widest text-emerald-700"><Words text={CASE_STUDIES.tag} /></p>
           <h2 id="cases-title" className="mt-4 font-display text-3xl font-bold tracking-tight text-slate-900 lg:text-4xl">
             <TwoTone text={CASE_STUDIES.headline} split={CASE_STUDIES.headlineSplit} />
           </h2>
@@ -68,10 +74,10 @@ export default function CaseStudies({ onConsult }) {
             aria-label="Case studies"
             aria-orientation="vertical"
             onKeyDown={onKeyDown}
-            onMouseEnter={() => setPaused(true)}
-            onMouseLeave={() => setPaused(false)}
-            onFocus={() => setPaused(true)}
-            onBlur={() => setPaused(false)}
+            onMouseEnter={() => setHovered(true)}
+            onMouseLeave={() => setHovered(false)}
+            onFocus={() => setHovered(true)}
+            onBlur={() => setHovered(false)}
             className="mt-10 space-y-2"
           >
             {stories.map((item, i) => {
@@ -87,7 +93,7 @@ export default function CaseStudies({ onConsult }) {
                   aria-controls="case-panel"
                   tabIndex={on ? 0 : -1}
                   onClick={() => select(i)}
-                  className={`group relative flex w-full items-center gap-4 overflow-hidden rounded-2xl border px-5 py-4 text-left transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 ${
+                  className={`group relative flex w-full items-center gap-4 overflow-hidden rounded-2xl border px-5 py-4 text-left transition-all duration-300 ${
                     on ? "border-slate-200/80 bg-white shadow-lg shadow-slate-900/5" : "border-transparent hover:bg-slate-50"
                   }`}
                 >
@@ -95,23 +101,23 @@ export default function CaseStudies({ onConsult }) {
                     aria-hidden
                     className={`absolute inset-y-3 left-0 w-1 rounded-r-full transition-colors duration-300 ${on ? "bg-emerald-500" : "bg-transparent"}`}
                   />
-                  <span className={`font-display text-sm font-semibold tabular-nums ${on ? "text-emerald-600" : "text-slate-400"}`}>
-                    0{i + 1}
+                  <span className={`font-display text-sm font-semibold tabular-nums ${on ? "text-emerald-700" : "text-slate-600"}`}>
+                    {String(i + 1).padStart(2, "0")}
                   </span>
                   <span className="min-w-0 flex-1">
                     <span
                       className={`block font-display text-lg font-semibold tracking-tight transition-colors ${
-                        on ? "text-slate-900" : "text-slate-500 group-hover:text-slate-800"
+                        on ? "text-slate-900" : "text-slate-700 group-hover:text-slate-900"
                       }`}
                     >
                       {item.client}
                     </span>
-                    <span className="block text-sm text-slate-400">{item.region}</span>
+                    <span className="block text-sm text-slate-600">{item.region}</span>
                   </span>
                   <ArrowRight
                     aria-hidden
                     className={`size-4 transition-all duration-300 ${
-                      on ? "translate-x-0 text-emerald-600 opacity-100" : "-translate-x-2 text-slate-400 opacity-0 group-hover:translate-x-0 group-hover:opacity-100"
+                      on ? "translate-x-0 text-emerald-700 opacity-100" : "-translate-x-2 text-slate-400 opacity-0 group-hover:translate-x-0 group-hover:opacity-100"
                     }`}
                   />
                   {on && autoplay && (
@@ -127,7 +133,19 @@ export default function CaseStudies({ onConsult }) {
             })}
           </div>
 
-          <a href="#inquiry" onClick={onConsult} className={`${BTN_PRIMARY} mt-10`}>
+          {autoplay && (
+            <button
+              type="button"
+              onClick={() => setPaused((p) => !p)}
+              aria-pressed={paused}
+              className="mt-4 inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-slate-700 hover:text-slate-900"
+            >
+              {paused ? <Play className="size-4" aria-hidden /> : <Pause className="size-4" aria-hidden />}
+              {paused ? "Resume auto-advance" : "Pause auto-advance"}
+            </button>
+          )}
+
+          <a href="#inquiry" onClick={onConsult} className={`${BTN_PRIMARY} mt-8 flex w-fit`}>
             {PLATFORM.primaryCta}
             <ArrowRight className="size-[18px] transition-transform duration-200 group-hover:translate-x-1" aria-hidden />
           </a>
@@ -146,19 +164,19 @@ export default function CaseStudies({ onConsult }) {
               <div key={s.id} className="motion-safe:animate-[fade-up_0.45s_ease-out]">
                 <div className="flex items-center justify-between gap-4">
                   <div className="flex min-w-0 items-center gap-4">
-                    <span className="grid size-14 shrink-0 place-items-center rounded-2xl bg-emerald-50 text-emerald-600 ring-1 ring-inset ring-emerald-100">
+                    <span className="grid size-14 shrink-0 place-items-center rounded-2xl bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-100">
                       <Building2 className="size-7" strokeWidth={1.5} aria-hidden />
                     </span>
                     <div className="min-w-0">
                       <p className="truncate font-display text-base font-semibold text-slate-900">{s.client}</p>
                       <p className="flex items-center gap-1 text-sm text-slate-500">
-                        <MapPin className="size-3.5 text-emerald-600" aria-hidden />
+                        <MapPin className="size-3.5 text-emerald-700" aria-hidden />
                         {s.region}
                       </p>
                     </div>
                   </div>
-                  <span className="shrink-0 font-display text-sm font-semibold tabular-nums text-slate-400">
-                    <span className="text-slate-900">0{active + 1}</span> / 0{stories.length}
+                  <span className="shrink-0 font-display text-sm font-semibold tabular-nums text-slate-600">
+                    <span className="text-slate-900">{String(active + 1).padStart(2, "0")}</span> / {String(stories.length).padStart(2, "0")}
                   </span>
                 </div>
 
@@ -167,7 +185,7 @@ export default function CaseStudies({ onConsult }) {
                 <div className="relative mt-8 aspect-[16/9] overflow-hidden rounded-2xl bg-slate-100">
                   <img src={s.image} alt="" loading="lazy" className={`size-full object-cover ${s.imagePosition ?? "object-center"}`} />
                   <span className="absolute bottom-4 left-4 rounded-full bg-white/95 px-3.5 py-1.5 text-xs font-semibold text-emerald-700 shadow-sm">
-                    Case study 0{active + 1}
+                    Case study {String(active + 1).padStart(2, "0")}
                   </span>
                 </div>
 

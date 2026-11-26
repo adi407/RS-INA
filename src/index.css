@@ -9,25 +9,55 @@
   --color-abyss: #090d16;
 }
 
-/* Native smooth scrolling is the fallback; Lenis turns it off (lenis.css) while it runs */
 html {
   scroll-behavior: smooth;
+  /* Anchor jumps and keyboard focus land below the sticky header (WCAG 2.4.11) */
+  scroll-padding-top: 6rem;
   -webkit-font-smoothing: antialiased;
 }
 
-/* Light canvas (RemotePeople-style); hero, nav and footer are dark anchors */
 body {
   background: #ffffff;
   color: #475569; /* slate-600 body copy */
   font-family: var(--font-sans);
 }
 
+/* Readable selection: dark text on pale green */
 ::selection {
-  background: rgb(16 185 129 / 0.35);
-  color: #fff;
+  background: #d1fae5;
+  color: #064e3b;
 }
 
-/* Advantages card: content swap + autoplay progress */
+/* ---------- Focus ----------
+   One visible focus style for every interactive element (WCAG 2.4.7): a 2px emerald
+   outline with a gap. Dark sections get a lighter emerald so it stays visible. */
+:focus-visible {
+  outline: 2px solid #047857;
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+:where(.bg-obsidian, .bg-\[\#0A0F1D\], .bg-\[\#0a0f1d\], footer, [data-theme="dark"]) :focus-visible {
+  outline-color: #34d399;
+}
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: none; /* fields use their own ring + border */
+}
+
+/* ---------- Page transitions (View Transitions API) ----------
+   Supporting browsers cross-fade between pages; the banner slides up into place. */
+@view-transition {
+  navigation: auto;
+}
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.35s;
+}
+.vt-banner {
+  view-transition-name: page-banner;
+}
+
 @keyframes fade-up {
   from {
     opacity: 0;
@@ -57,7 +87,8 @@ body {
   left: 0;
   right: 0;
   bottom: -6px;
-  height: 1px;
+  height: 2px;
+  border-radius: 2px;
   background: #34d399;
   transform: scaleX(0);
   transform-origin: right;
@@ -73,12 +104,11 @@ body {
 /* ---------- Scroll reveal ----------
    Elements tagged data-reveal start hidden only once JS has added .reveal-ready
    (so no-JS and reduced-motion visitors always see content). useReveal.js sets
-   data-reveal="in" on entry, then "done" when the animation ends so the element's
-   own hover transitions take over again. --d staggers grid items. */
+   data-reveal="in" on entry, then "done" when the animation ends. --d staggers grid items. */
 @keyframes reveal-up {
   from {
     opacity: 0;
-    transform: translateY(28px);
+    transform: translateY(20px);
   }
   to {
     opacity: 1;
@@ -90,7 +120,7 @@ body {
     opacity: 0;
   }
   .reveal-ready [data-reveal="in"] {
-    animation: reveal-up 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) var(--d, 0ms) both;
+    animation: reveal-up 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) var(--d, 0ms) both;
   }
 }
 
@@ -112,9 +142,41 @@ body {
   }
 }
 
-/* ---------- Hero rolling word ----------
-   Letter-by-letter roll: the old word's letters slide up and out while the new
-   word's letters rise into place, staggered left to right (delay set per letter). */
+/* ---------- Form feedback ---------- */
+/* Two identical shakes: alternating the name replays it on every failed submit */
+@keyframes shake-a {
+  0%, 100% { transform: none; }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+@keyframes shake-b {
+  0%, 100% { transform: none; }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+/* SVG stroke that draws itself (success tick). --len = path length */
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.draw-stroke {
+  stroke-dasharray: var(--len);
+  stroke-dashoffset: var(--len);
+  animation: draw 0.5s ease-out forwards;
+}
+
+/* ---------- Hero rolling word ---------- */
 @keyframes roll-in {
   from {
     transform: translateY(105%);
@@ -132,26 +194,30 @@ body {
   }
 }
 
-/* ---------- Page colour wash (Fluxon-style) ----------
-   Light sections blend toward mint by --wash (0 → 1), which Workflow.jsx drives with
-   the scroll: the whole visible page tints as that section comes into view, holds,
-   then fades back. Plain colours come first as the fallback for older browsers. */
-:root {
-  --wash: 0;
-  --wash-to: #d3f3e1;
+/* ---------- Client logo marquee ---------- */
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
 }
+.marquee-track {
+  animation: marquee 40s linear infinite;
+}
+.marquee:hover .marquee-track,
+.marquee:focus-within .marquee-track,
+.marquee[data-paused="true"] .marquee-track {
+  animation-play-state: paused;
+}
+
+/* Section backgrounds (formerly blended toward mint while scrolling; now fixed) */
 .wash-white {
   background-color: #ffffff;
-  background-color: color-mix(in oklab, #ffffff, var(--wash-to) calc(var(--wash) * 100%));
 }
 .wash-tint {
   background-color: #f8fafc;
-  background-color: color-mix(in oklab, #f8fafc, var(--wash-to) calc(var(--wash) * 100%));
 }
 
-/* ---------- Mockup "in progress" text ----------
-   A soft emerald highlight sweeps across pending statuses ("Checking…", "Pending")
-   in the product mockups until their hover sequence resolves them. */
+/* ---------- Mockup "in progress" text ---------- */
 @keyframes shimmer {
   from {
     background-position: 150% 0;
@@ -161,28 +227,47 @@ body {
   }
 }
 .text-shimmer {
-  background: linear-gradient(90deg, #94a3b8 0%, #94a3b8 38%, #10b981 50%, #94a3b8 62%, #94a3b8 100%);
+  background: linear-gradient(90deg, #64748b 0%, #64748b 38%, #047857 50%, #64748b 62%, #64748b 100%);
   background-size: 250% 100%;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
   animation: shimmer 1.8s linear infinite;
 }
-@media (prefers-reduced-motion: reduce) {
-  .text-shimmer {
-    animation: none;
+
+/* ---------- Card spotlight ----------
+   A soft light follows the pointer across cards tagged .spotlight (desktop mice only).
+   --mx/--my are set by useSpotlight. */
+@media (hover: hover) and (pointer: fine) {
+  .spotlight {
+    position: relative;
+    isolation: isolate;
+  }
+  .spotlight::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgb(16 185 129 / 0.09), transparent 45%);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .spotlight:hover::before {
+    opacity: 1;
   }
 }
 
-/* ---------- Hover focus ----------
-   In a .focus-grid, hovering one item blurs and dims its siblings.
-   Mouse devices only, so a tap on a phone never leaves a grid blurred.
-   Children carry their own transition-all, which animates filter/opacity. */
-@media (hover: hover) and (pointer: fine) {
-  .focus-grid:has(> :hover) > :not(:hover) {
-    filter: blur(3px) saturate(0.6);
-    opacity: 0.45;
-  }
+/* Visitors can turn motion down from the footer switch as well as in their OS */
+:root[data-motion="reduce"] *,
+:root[data-motion="reduce"] *::before,
+:root[data-motion="reduce"] *::after {
+  transition-duration: 1ms !important;
+  animation-duration: 1ms !important;
+  animation-iteration-count: 1 !important;
+}
+:root[data-motion="reduce"] .marquee-track {
+  animation: none !important;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -194,5 +279,12 @@ body {
   *::after {
     transition-duration: 1ms !important;
     animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+  }
+  .marquee-track {
+    animation: none !important;
+  }
+  @view-transition {
+    navigation: none;
   }
 }

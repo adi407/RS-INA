@@ -1,6 +1,5 @@
 import { BadgeCheck, MapPin } from "lucide-react";
 import PageBanner from "../components/PageBanner.jsx";
-import MetricsSection from "../components/MetricsSection.jsx";
 import NewsStories from "../components/NewsStories.jsx";
 import { UPDATES_PAGE } from "../content.js";
 
@@ -17,7 +16,6 @@ export default function UpdatesPage() {
       <section aria-label="Company news" className="scroll-mt-20 bg-[#F8FAFC] px-6 py-16 lg:px-12 lg:py-24">
         <NewsStories stories={UPDATES_PAGE.stories} icons={LABEL_ICONS} />
       </section>
-      <MetricsSection className="bg-white" />
     </>
   );
 }

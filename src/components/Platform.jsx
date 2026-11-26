@@ -9,14 +9,10 @@ import {
   ShieldCheck,
   Users,
 } from "lucide-react";
-import { BlurGroup, Section, Words } from "./ui.jsx";
+import { BlurGroup, BTN_GHOST, BTN_PRIMARY, Section, Words } from "./ui.jsx";
 import usePlayOnHover, { step } from "../usePlayOnHover.js";
 import { LICENSE, PLATFORM } from "../content.js";
 
-const PILL_PRIMARY =
-  "group inline-flex items-center justify-center gap-2 rounded-full bg-emerald-600 px-7 py-3.5 font-semibold text-white shadow-lg shadow-emerald-900/15 transition-all duration-200 hover:-translate-y-0.5 hover:bg-emerald-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2";
-const PILL_SOFT =
-  "inline-flex items-center justify-center gap-2 rounded-full bg-slate-100 px-7 py-3.5 font-semibold text-slate-800 transition-colors duration-200 hover:bg-slate-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2";
 
 /* Mockup data: roles and pipeline stages only — no invented people or figures */
 const STAGES = ["Sourcing", "Vetting", "Visa", "Deploy"];
@@ -39,8 +35,8 @@ const FADE = "transition-all duration-500 ease-out";
 function DashboardMockup({ on }) {
   return (
     <figure className="relative">
-      <figcaption className="sr-only">
-        Illustration of the RS International recruitment dashboard tracking candidates from sourcing to deployment.
+      <figcaption className="absolute -bottom-12 right-0 text-xs font-medium text-slate-600">
+        Illustration: how we track each candidate from sourcing to deployment
       </figcaption>
 
       <div
@@ -57,14 +53,10 @@ function DashboardMockup({ on }) {
               <span className="size-2.5 rounded-full bg-slate-200" />
               <span className="size-2.5 rounded-full bg-slate-200" />
             </div>
-            <span className="font-display text-sm font-semibold text-slate-900">RS Command Center</span>
-            <span className="ml-auto hidden items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-[11px] font-semibold text-emerald-700 sm:flex">
-              <span className="size-1.5 animate-pulse rounded-full bg-emerald-500 motion-reduce:animate-none" />
-              Live
-            </span>
+            <span className="font-display text-sm font-semibold text-slate-900">Candidate pipeline</span>
             {/* The "button" the demo presses */}
             <span
-              className={`ml-auto flex items-center gap-1 rounded-full px-3 py-1 text-[11px] font-semibold ring-1 ring-inset transition-all duration-300 sm:ml-0 ${
+              className={`ml-auto flex items-center gap-1 rounded-full px-3 py-1 text-[11px] font-semibold ring-1 ring-inset transition-all duration-300 ${
                 on ? "scale-95 bg-slate-900 text-white ring-slate-900" : "bg-white text-slate-700 ring-slate-200"
               }`}
             >
@@ -78,7 +70,7 @@ function DashboardMockup({ on }) {
               {[LayoutDashboard, Users, FileCheck2, Plane, ShieldCheck].map((Icon, i) => (
                 <span
                   key={i}
-                  className={`grid size-9 place-items-center rounded-xl ${i === 0 ? "bg-emerald-600 text-white" : "text-slate-400"}`}
+                  className={`grid size-9 place-items-center rounded-xl ${i === 0 ? "bg-emerald-700 text-white" : "text-slate-400"}`}
                 >
                   <Icon className="size-4" strokeWidth={1.75} />
                 </span>
@@ -90,7 +82,7 @@ function DashboardMockup({ on }) {
               <div className="rounded-2xl border border-slate-100 bg-slate-50/70 p-4">
                 <div className="flex items-start justify-between gap-3">
                   <div className="min-w-0">
-                    <p className="text-[11px] font-semibold uppercase tracking-widest text-slate-400">Active requirement</p>
+                    <p className="text-[11px] font-semibold uppercase tracking-widest text-slate-500">Active requirement</p>
                     <p className="mt-1 truncate font-display text-[15px] font-semibold text-slate-900">
                       Construction · Middle East
                     </p>
@@ -123,7 +115,7 @@ function DashboardMockup({ on }) {
                           />
                         </span>
                         <span
-                          className={`mt-1.5 block text-[11px] font-medium transition-colors duration-500 ${done ? "text-slate-700" : "text-slate-400"}`}
+                          className={`mt-1.5 block text-[11px] font-medium transition-colors duration-500 ${done ? "text-slate-700" : "text-slate-500"}`}
                           style={i === 2 ? step(on, 900) : undefined}
                         >
                           {s}
@@ -178,7 +170,7 @@ function DashboardMockup({ on }) {
 
               {/* Compliance strip */}
               <div className="flex items-center gap-3 rounded-2xl bg-emerald-50/70 px-3.5 py-3 ring-1 ring-inset ring-emerald-100">
-                <ShieldCheck className="size-4 shrink-0 text-emerald-600" strokeWidth={1.75} />
+                <ShieldCheck className="size-4 shrink-0 text-emerald-700" strokeWidth={1.75} />
                 <p className="min-w-0 truncate text-[12px] text-slate-600">
                   <span className="font-semibold text-slate-900">MEA licensed</span> · {LICENSE}
                 </p>
@@ -196,7 +188,7 @@ function DashboardMockup({ on }) {
         }`}
         style={step(on, 1250)}
       >
-        <span className="grid size-8 place-items-center rounded-full bg-emerald-600 text-white">
+        <span className="grid size-8 place-items-center rounded-full bg-emerald-700 text-white">
           <BadgeCheck className="size-4" strokeWidth={2} />
         </span>
         <div>
@@ -209,7 +201,7 @@ function DashboardMockup({ on }) {
         aria-hidden
         className="absolute -right-3 -top-4 hidden items-center gap-2 rounded-full border border-slate-200/80 bg-white px-3.5 py-2 text-[12px] font-semibold text-slate-700 shadow-lg shadow-slate-900/10 sm:flex lg:-right-6"
       >
-        <ClipboardCheck className="size-3.5 text-emerald-600" strokeWidth={2} />
+        <ClipboardCheck className="size-3.5 text-emerald-700" strokeWidth={2} />
         Pre-screened
       </div>
     </figure>
@@ -224,7 +216,7 @@ export default function Platform({ onConsult }) {
       <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-12 lg:gap-16">
         <div data-reveal className="lg:col-span-6">
           <BlurGroup>
-          <p className="text-xs font-semibold uppercase tracking-widest text-emerald-600"><Words text={PLATFORM.tag} /></p>
+          <p className="text-xs font-semibold uppercase tracking-widest text-emerald-700"><Words text={PLATFORM.tag} /></p>
           <h2
             id="platform-title"
             className="mt-4 font-display text-4xl font-extrabold leading-[1.08] tracking-tight text-slate-900 sm:text-5xl"
@@ -240,7 +232,7 @@ export default function Platform({ onConsult }) {
           <ul className="mt-8 space-y-4">
             {PLATFORM.bullets.map((b) => (
               <li key={b} className="flex items-start gap-3 text-[15px] font-medium text-slate-800">
-                <span className="mt-0.5 grid size-5 shrink-0 place-items-center rounded-full bg-emerald-500 text-white">
+                <span className="mt-0.5 grid size-5 shrink-0 place-items-center rounded-full bg-emerald-700 text-white">
                   <Check className="size-3" strokeWidth={3} aria-hidden />
                 </span>
                 {b}
@@ -249,11 +241,11 @@ export default function Platform({ onConsult }) {
           </ul>
 
           <div className="mt-10 flex flex-col gap-3 sm:flex-row">
-            <a href="#inquiry" onClick={onConsult} className={PILL_PRIMARY}>
+            <a href="#inquiry" onClick={onConsult} className={BTN_PRIMARY}>
               {PLATFORM.primaryCta}
               <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" aria-hidden />
             </a>
-            <a href="#sectors" className={PILL_SOFT}>
+            <a href="#sectors" className={BTN_GHOST}>
               {PLATFORM.secondaryCta}
             </a>
           </div>

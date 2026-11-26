@@ -1,6 +1,5 @@
 import { Building2, Palmtree } from "lucide-react";
 import PageBanner from "../components/PageBanner.jsx";
-import MetricsSection from "../components/MetricsSection.jsx";
 import NewsStories from "../components/NewsStories.jsx";
 import { GLOBAL_PAGE } from "../content.js";
 
@@ -21,7 +20,6 @@ export default function GlobalPage() {
         </p>
         <NewsStories stories={GLOBAL_PAGE.stories} icons={LABEL_ICONS} />
       </section>
-      <MetricsSection className="bg-white" />
     </>
   );
 }

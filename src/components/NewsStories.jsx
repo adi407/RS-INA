@@ -21,7 +21,7 @@ function Lightbox({ image, onClose }) {
           type="button"
           onClick={onClose}
           aria-label="Close photo"
-          className="absolute -top-12 right-0 grid size-10 place-items-center rounded-full bg-white/15 text-white transition-colors hover:bg-white/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+          className="absolute -top-12 right-0 grid size-10 place-items-center rounded-full bg-white/15 text-white transition-colors hover:bg-white/25"
         >
           <X className="size-5" />
         </button>
@@ -40,7 +40,7 @@ function Photo({ image, onOpen, className = "", imgClass = "" }) {
       type="button"
       onClick={() => onOpen(image)}
       aria-label={`View larger: ${image.alt}`}
-      className={`group/photo block cursor-zoom-in overflow-hidden bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 ${className}`}
+      className={`group/photo block cursor-zoom-in overflow-hidden bg-slate-100 ${className}`}
     >
       <img src={image.src} alt="" loading="lazy" className={`size-full object-cover transition-transform duration-700 ease-out group-hover/photo:scale-105 ${imgClass}`} />
       <span className="absolute right-3 top-3 grid size-8 place-items-center rounded-full bg-white/80 text-slate-700 opacity-0 shadow backdrop-blur transition-opacity group-hover/photo:opacity-100 group-focus-visible/photo:opacity-100">

@@ -1,8 +1,7 @@
-import { useLayoutEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { ArrowRight, BadgeCheck, Check, MessagesSquare, Search } from "lucide-react";
-import { Section, SectionHeader } from "./ui.jsx";
+import { BTN_PRIMARY, Section, SectionHeader } from "./ui.jsx";
 import { WORKFLOW } from "../content.js";
-import { gsap } from "../motion.js";
 
 const ICONS = { search: Search, consult: MessagesSquare, hire: BadgeCheck };
 
@@ -17,7 +16,7 @@ function MilestoneRail({ count, active }) {
             <span
               className={`size-5 rounded-full border-2 transition-all duration-300 ${
                 i === active
-                  ? "border-emerald-600 bg-emerald-600 ring-[6px] ring-emerald-500/20"
+                  ? "border-emerald-600 bg-emerald-700 ring-[6px] ring-emerald-500/20"
                   : "wash-tint border-slate-300 ring-0 ring-transparent"
               }`}
             />
@@ -43,7 +42,7 @@ function StepCard({ step, index, active, onActivate }) {
       <div
         className={`h-full rounded-2xl border p-8 transition-all duration-300 ${
           active
-            ? "-translate-y-1 border-emerald-600 bg-emerald-600 text-white shadow-xl shadow-emerald-950/20"
+            ? "-translate-y-1 border-emerald-800 bg-emerald-800 text-white shadow-xl shadow-emerald-950/20"
             : "border-slate-200/80 bg-white text-slate-900 shadow-lg shadow-slate-900/5"
         }`}
       >
@@ -52,7 +51,7 @@ function StepCard({ step, index, active, onActivate }) {
         <span className="relative shrink-0">
           <span
             className={`grid size-12 place-items-center rounded-2xl transition-colors duration-300 ${
-              active ? "bg-white text-emerald-600" : "bg-emerald-50 text-emerald-600 ring-1 ring-inset ring-emerald-100"
+              active ? "bg-white text-emerald-700" : "bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-100"
             }`}
           >
             <Icon className="size-5" strokeWidth={1.8} aria-hidden />
@@ -78,7 +77,7 @@ function StepCard({ step, index, active, onActivate }) {
         <span className="sr-only">Step {index + 1}: </span>
         {step.title}
       </h3>
-      <p className={`mt-3 text-base leading-relaxed transition-colors duration-300 ${active ? "text-emerald-50/90" : "text-slate-600"}`}>{step.body}</p>
+      <p className={`mt-3 text-base leading-relaxed transition-colors duration-300 ${active ? "text-white" : "text-slate-600"}`}>{step.body}</p>
       </div>
     </li>
   );
@@ -91,35 +90,13 @@ function StepCard({ step, index, active, onActivate }) {
 export default function Workflow({ onContact }) {
   const { steps } = WORKFLOW;
   const [active, setActive] = useState(null);
-  const sectionRef = useRef(null);
 
   // Page colour wash: as this section scrolls in, every light section blends toward mint
   // (--wash 0 → 1, see index.css), holds while it's in view, then fades back on the way out.
   // Scrubbed to the scroll, so the colour moves exactly with the visitor.
-  useLayoutEffect(() => {
-    const root = document.documentElement;
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: "top 85%",
-        end: "bottom 15%",
-        scrub: 0.8,
-        // Measure after the pinned Sectors stage above has added its scroll space
-        refreshPriority: -1,
-      },
-    });
-    tl.fromTo(root, { "--wash": 0 }, { "--wash": 1, duration: 0.3, ease: "power1.inOut" })
-      .to(root, { "--wash": 1, duration: 0.4 })
-      .to(root, { "--wash": 0, duration: 0.3, ease: "power1.inOut" });
-    return () => {
-      tl.scrollTrigger?.kill();
-      tl.kill();
-      root.style.setProperty("--wash", "0");
-    };
-  }, []);
 
   return (
-    <Section ref={sectionRef} id="workflow" tint labelledBy="workflow-title">
+    <Section id="workflow" tint labelledBy="workflow-title">
       <SectionHeader id="workflow-title" tag={WORKFLOW.tag} title={WORKFLOW.headline} split={WORKFLOW.headlineSplit} align="center" />
 
       <div className="mt-16">
@@ -132,11 +109,7 @@ export default function Workflow({ onContact }) {
       </div>
 
       <div className="mt-14 flex justify-center">
-        <a
-          href="#inquiry"
-          onClick={onContact}
-          className="group inline-flex items-center gap-2 rounded-full bg-emerald-600 px-8 py-4 font-semibold text-white shadow-lg shadow-emerald-950/10 transition-all duration-200 hover:-translate-y-0.5 hover:bg-emerald-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2"
-        >
+        <a href="#inquiry" onClick={onContact} className={BTN_PRIMARY}>
           {WORKFLOW.cta}
           <ArrowRight className="size-[18px] transition-transform duration-200 group-hover:translate-x-1" aria-hidden />
         </a>

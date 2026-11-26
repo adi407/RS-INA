@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { reducedMotion } from "./motion.js";
 
 /**
  * Counts from 0 to `to` once the element scrolls into view.
@@ -11,7 +12,7 @@ export default function useCountUp(to, duration = 1600) {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    if (reducedMotion()) {
       setValue(to);
       return;
     }

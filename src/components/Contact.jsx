@@ -13,17 +13,17 @@ export default function Contact(formProps) {
       <div className="grid items-start gap-12 lg:grid-cols-12 lg:gap-16">
         <div data-reveal className="lg:col-span-6">
           <BlurGroup>
-          <p className="text-xs font-semibold uppercase tracking-widest text-emerald-600"><Words text="Get In Touch" /></p>
+          <p className="text-xs font-semibold uppercase tracking-widest text-emerald-700"><Words text="Get In Touch" /></p>
           <h2 id="contact-title" className="mt-4 font-display text-3xl font-bold tracking-tight text-slate-900 lg:text-4xl">
             <Words text="Hiring a new talent can cost you time, energy, and money." />{" "}
-            <span className="text-emerald-600">
+            <span className="text-emerald-700">
               <Words text="Hire the best with RS International." />
             </span>
           </h2>
           </BlurGroup>
 
           <div className="mt-10 flex gap-4 rounded-3xl border border-slate-200/80 bg-white p-6 shadow-xl shadow-slate-900/5">
-            <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-emerald-50 text-emerald-600 ring-1 ring-inset ring-emerald-100">
+            <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-100">
               <Landmark className="size-5" strokeWidth={1.6} aria-hidden />
             </span>
             <p className="text-sm leading-relaxed text-slate-600">
@@ -32,9 +32,9 @@ export default function Contact(formProps) {
             </p>
           </div>
 
-          <div id="regions" className="mt-8 scroll-mt-28">
+          <div id="serve-regions" className="mt-8 scroll-mt-28">
             <h3 className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-slate-500">
-              <Globe2 className="size-3.5 text-emerald-600" aria-hidden />
+              <Globe2 className="size-3.5 text-emerald-700" aria-hidden />
               Region we serve
             </h3>
             <ul className="mt-4 flex flex-wrap gap-2">

@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { BadgeCheck, ChevronDown, Eye, FileText, Landmark, Quote, ShieldCheck, Target } from "lucide-react";
+import { BadgeCheck, Eye, FileText, Landmark, Quote, ShieldCheck, Target } from "lucide-react";
 import { SectionHeader, SlashBreak } from "../components/ui.jsx";
 import PageBanner from "../components/PageBanner.jsx";
 import MetricsSection from "../components/MetricsSection.jsx";
@@ -15,7 +14,7 @@ function LicenceCard({ className = "" }) {
       className={`rounded-3xl border border-white/60 bg-white/80 p-6 shadow-2xl shadow-slate-900/10 ring-1 ring-slate-900/5 backdrop-blur-xl sm:p-8 ${className}`}
     >
       <div className="flex items-start justify-between gap-4">
-        <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-emerald-600 text-white shadow-lg shadow-emerald-900/20">
+        <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-emerald-700 text-white shadow-lg shadow-emerald-900/20">
           <Landmark className="size-6" strokeWidth={1.5} aria-hidden />
         </span>
         <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700 ring-1 ring-emerald-100">
@@ -32,7 +31,7 @@ function LicenceCard({ className = "" }) {
         href={ABOUT_PAGE.brochure}
         target="_blank"
         rel="noopener noreferrer"
-        className="group mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-slate-900 px-5 py-3 text-sm font-medium text-white transition-colors hover:bg-emerald-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2"
+        className="group mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-slate-900 px-5 py-3 text-sm font-medium text-white transition-colors hover:bg-emerald-700"
       >
         <FileText className="size-4" aria-hidden />
         View Brochure
@@ -48,7 +47,6 @@ function LicenceCard({ className = "" }) {
  * Vision / Mission / Values cards, then the 2022-2023 recruitment figures.
  */
 export default function AboutPage() {
-  const [more, setMore] = useState(false);
   const { director } = ABOUT_PAGE;
 
   return (
@@ -66,29 +64,10 @@ export default function AboutPage() {
                   {p}
                 </p>
               ))}
-              {/* The rest of the story; grid-rows trick animates the height open */}
-              <div
-                id="story-more"
-                className={`grid transition-[grid-template-rows,opacity] duration-500 ease-out ${more ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"}`}
-                inert={more ? undefined : ""} /* React 18 needs a string for inert */
-              >
-                <div className="space-y-5 overflow-hidden">
-                  {ABOUT_PAGE.storyMore.map((p) => (
-                    <p key={p.slice(0, 24)}>{p}</p>
-                  ))}
-                </div>
-              </div>
+              {ABOUT_PAGE.storyMore.map((p) => (
+                <p key={p.slice(0, 24)}>{p}</p>
+              ))}
             </div>
-            <button
-              type="button"
-              aria-expanded={more}
-              aria-controls="story-more"
-              onClick={() => setMore((v) => !v)}
-              className="mt-6 inline-flex items-center gap-2 font-semibold text-emerald-600 transition-colors hover:text-emerald-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-4"
-            >
-              {more ? "Read Less" : "Read More"}
-              <ChevronDown className={`size-4 transition-transform duration-300 ${more ? "rotate-180" : ""}`} aria-hidden />
-            </button>
           </div>
 
           {/* Photo with the licence card floating over its lower edge */}
@@ -120,9 +99,9 @@ export default function AboutPage() {
               </div>
             </div>
             <div>
-              <p id="director-title" className="text-xs font-semibold uppercase tracking-widest text-emerald-400">
+              <h2 id="director-title" className="text-xs font-semibold uppercase tracking-widest text-emerald-400">
                 {director.tag}
-              </p>
+              </h2>
               <blockquote className="mt-5">
                 <Quote aria-hidden className="mb-3 size-8 text-emerald-400" strokeWidth={1.5} />
                 <p className="text-lg italic leading-relaxed text-slate-200 lg:text-xl lg:leading-relaxed">{director.quote}</p>
@@ -130,8 +109,8 @@ export default function AboutPage() {
               <figcaption className="mt-8 flex items-center gap-4 border-t border-white/10 pt-6">
                 <span className="h-px w-8 bg-emerald-400" aria-hidden />
                 <span>
-                  <span className="block font-display text-lg font-bold uppercase tracking-wide text-white">{director.name}</span>
-                  <span className="text-sm text-slate-400">{director.role}, R.S. International</span>
+                  <span className="block font-display text-lg font-bold tracking-wide text-white">{director.name}</span>
+                  <span className="text-sm text-slate-300">{director.role}, R.S. International</span>
                 </span>
               </figcaption>
             </div>
@@ -153,10 +132,10 @@ export default function AboutPage() {
                   style={{ "--d": `${i * 110}ms` }}
                   className="group rounded-3xl border border-slate-200/80 bg-white p-8 shadow-xl shadow-slate-900/5 transition-all duration-300 hover:-translate-y-1 hover:border-emerald-500/50"
                 >
-                  <span className="grid size-12 place-items-center rounded-xl bg-emerald-50 text-emerald-600 ring-1 ring-emerald-100 transition-colors duration-300 group-hover:bg-emerald-600 group-hover:text-white">
+                  <span className="grid size-12 place-items-center rounded-xl bg-emerald-50 text-emerald-700 ring-1 ring-emerald-100 transition-colors duration-300 group-hover:bg-emerald-700 group-hover:text-white">
                     <Icon className="size-[22px]" strokeWidth={1.5} aria-hidden />
                   </span>
-                  <h3 className="mt-6 font-display text-xl font-bold uppercase tracking-wide text-slate-900">{p.title}</h3>
+                  <h3 className="mt-6 font-display text-xl font-bold tracking-tight text-slate-900">{p.title}</h3>
                   <p className="mt-3 text-[15px] leading-relaxed text-slate-600">{p.body}</p>
                 </article>
               );

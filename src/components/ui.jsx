@@ -8,10 +8,15 @@ import { useBlurReveal } from "../motion.js";
  */
 
 export const BTN_PRIMARY =
-  "group inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-7 py-3.5 font-medium text-white shadow-lg shadow-emerald-950/10 transition-all duration-200 hover:-translate-y-0.5 hover:bg-emerald-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2";
+  "group inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-emerald-700 px-7 py-3.5 font-semibold text-white shadow-lg shadow-emerald-950/10 transition-all duration-200 hover:-translate-y-0.5 hover:bg-emerald-800 active:translate-y-0 active:scale-[0.98]";
 
+/** Secondary button: same shape as primary, outlined. */
 export const BTN_GHOST =
-  "inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 px-6 py-3.5 font-medium text-slate-700 transition-all duration-200 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500";
+  "inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-slate-500 px-7 py-3.5 font-semibold text-slate-800 transition-all duration-200 hover:bg-slate-100 active:scale-[0.98]";
+
+/** Text link with an arrow ("Read more", "Explore talent"). */
+export const BTN_TEXT =
+  "group inline-flex min-h-11 items-center gap-2 font-semibold text-emerald-800 underline-offset-4 transition-colors hover:text-emerald-950 hover:underline";
 
 /** Bento module card */
 export const CARD =
@@ -19,7 +24,7 @@ export const CARD =
 
 /** Emerald icon tile used across cards */
 export const ICON_TILE =
-  "grid size-12 shrink-0 place-items-center rounded-2xl bg-emerald-50 text-emerald-600 ring-1 ring-inset ring-emerald-100";
+  "grid size-12 shrink-0 place-items-center rounded-2xl bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-100";
 
 /** Section wrapper: alternating canvas + consistent rhythm */
 /** Page section. `bg` overrides the white / slate-50 background; extra props (ref, data-*) pass through. */
@@ -49,12 +54,20 @@ export const Section = forwardRef(function Section({ id, tint = false, bg, label
  */
 export function Words({ text }) {
   const words = String(text).split(" ");
-  return words.map((w, i) => (
-    <Fragment key={i}>
-      <span data-bw>{w}</span>
-      {i < words.length - 1 ? " " : ""}
-    </Fragment>
-  ));
+  // Screen readers get the phrase whole; the per-word spans are visual only
+  return (
+    <>
+      <span className="sr-only">{text}</span>
+      <span aria-hidden="true">
+        {words.map((w, i) => (
+          <Fragment key={i}>
+            <span data-bw>{w}</span>
+            {i < words.length - 1 ? " " : ""}
+          </Fragment>
+        ))}
+      </span>
+    </>
+  );
 }
 
 export function TwoTone({ text, split }) {
@@ -87,7 +100,7 @@ export function SectionHeader({ id, tag, title, split, subtitle, align = "left",
   useBlurReveal(ref);
   return (
     <header ref={ref} className={`${center ? "mx-auto max-w-3xl text-center" : "max-w-3xl"} ${className}`}>
-      <p className="text-xs font-semibold uppercase tracking-widest text-emerald-600 transition-colors duration-700 group-data-[dark=true]/theme:text-emerald-400">
+      <p className="text-xs font-semibold uppercase tracking-widest text-emerald-700 transition-colors duration-700 group-data-[dark=true]/theme:text-emerald-400">
         <Words text={tag} />
       </p>
       <h2 id={id} className="mt-4 font-display text-3xl font-bold tracking-tight text-slate-900 transition-colors duration-700 group-data-[dark=true]/theme:text-white lg:text-4xl">

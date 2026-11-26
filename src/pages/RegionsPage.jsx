@@ -2,7 +2,6 @@ import { useCallback, useState } from "react";
 import { ArrowRight, Globe2, MapPin } from "lucide-react";
 import { SectionHeader } from "../components/ui.jsx";
 import PageBanner from "../components/PageBanner.jsx";
-import MetricsSection from "../components/MetricsSection.jsx";
 import StoryReader from "../components/StoryReader.jsx";
 import { REGIONS_PAGE } from "../content.js";
 
@@ -27,7 +26,7 @@ function RegionCard({ region, index, onOpen }) {
           className="size-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
         />
         <span className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full border border-white/40 bg-white/75 px-3 py-1 text-xs font-semibold text-slate-900 shadow-sm backdrop-blur-md">
-          <MapPin className="size-3.5 text-emerald-600" aria-hidden />
+          <MapPin className="size-3.5 text-emerald-700" aria-hidden />
           {regionName(region.title)}
         </span>
       </div>
@@ -41,7 +40,18 @@ function RegionCard({ region, index, onOpen }) {
                 {p}
               </li>
             ))}
-            {more > 0 && <li className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">+{more} more</li>}
+            {more > 0 && (
+              <li>
+                <button
+                  type="button"
+                  onClick={() => onOpen(region.id)}
+                  aria-label={`Show all ${region.places.length} places in ${regionName(region.title)}`}
+                  className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-800 transition-colors hover:bg-emerald-100"
+                >
+                  +{more} more
+                </button>
+              </li>
+            )}
           </ul>
         )}
         <div className="flex-1" />
@@ -49,7 +59,7 @@ function RegionCard({ region, index, onOpen }) {
           type="button"
           onClick={() => onOpen(region.id)}
           aria-label={`${REGIONS_PAGE.cta}: ${region.title}`}
-          className="mt-6 inline-flex items-center gap-2 self-start rounded-full font-semibold text-emerald-600 transition-transform duration-300 group-hover:translate-x-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-4"
+          className="mt-6 inline-flex items-center gap-2 self-start rounded-full font-semibold text-emerald-800 transition-transform duration-300 group-hover:translate-x-1"
         >
           {REGIONS_PAGE.cta}
           <ArrowRight className="size-4" aria-hidden />
@@ -92,7 +102,7 @@ export default function RegionsPage() {
           >
             <div aria-hidden className="absolute inset-y-0 left-0 w-1.5 bg-gradient-to-b from-emerald-400 to-emerald-600" />
             <div className="flex flex-col gap-6 sm:flex-row sm:items-start">
-              <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-emerald-50 text-emerald-600 ring-1 ring-emerald-100">
+              <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-emerald-50 text-emerald-700 ring-1 ring-emerald-100">
                 <Globe2 className="size-6" strokeWidth={1.5} aria-hidden />
               </span>
               <p className="font-display text-lg font-medium leading-relaxed text-slate-900 sm:text-xl lg:text-2xl lg:leading-relaxed">
@@ -116,8 +126,6 @@ export default function RegionsPage() {
           </div>
         </div>
       </section>
-
-      <MetricsSection className="bg-white" />
 
       <StoryReader item={region} list={regions} tag="Region We Serve" onClose={close} onOpen={setOpenId} />
     </>

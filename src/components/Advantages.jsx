@@ -1,7 +1,7 @@
 import { useLayoutEffect, useRef } from "react";
 import { ArrowRight, ArrowUpRight, BadgeCheck, Landmark, PiggyBank, Plane } from "lucide-react";
 import { BlurGroup, BTN_PRIMARY, TwoTone, Words } from "./ui.jsx";
-import { gsap } from "../motion.js";
+import { gsap, reducedMotion } from "../motion.js";
 import { ADVANTAGES } from "../content.js";
 
 const ICONS = { mobilization: Plane, security: BadgeCheck, affordability: PiggyBank, government: Landmark };
@@ -19,7 +19,7 @@ const SCATTER = [
 ];
 
 /** One column: photo + dark text panel; even columns put the text on top. */
-function PillarCard({ pillar, index, onSearch }) {
+function PillarCard({ pillar, index }) {
   const Icon = ICONS[pillar.id];
   const textFirst = index % 2 === 1;
   return (
@@ -51,15 +51,7 @@ function PillarCard({ pillar, index, onSearch }) {
           <Icon className="size-5" strokeWidth={1.6} aria-hidden />
         </span>
         <h3 className="mt-5 font-display text-xl font-semibold tracking-tight text-white">{pillar.title}</h3>
-        <p className="mt-3 text-sm leading-relaxed text-slate-400">{pillar.body}</p>
-        <a
-          href="#inquiry"
-          onClick={onSearch}
-          className="mt-5 inline-flex items-center gap-1.5 self-start text-sm font-semibold text-emerald-400 transition-colors hover:text-emerald-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400"
-        >
-          {ADVANTAGES.cta}
-          <ArrowUpRight className="size-4 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" aria-hidden />
-        </a>
+        <p className="mt-3 text-sm leading-relaxed text-slate-300">{pillar.body}</p>
       </div>
     </article>
   );
@@ -76,6 +68,7 @@ export default function Advantages({ onSearch }) {
   useLayoutEffect(() => {
     const mm = gsap.matchMedia();
     mm.add("(min-width: 1024px) and (prefers-reduced-motion: no-preference)", () => {
+      if (reducedMotion()) return;
       const cols = gsap.utils.toArray("[data-col]", panel.current);
       gsap
         .timeline({
@@ -101,7 +94,7 @@ export default function Advantages({ onSearch }) {
     <section id="advantages" aria-labelledby="advantages-title" className="wash-tint scroll-mt-20 overflow-hidden px-6 py-24 md:px-12">
       <div className="mx-auto max-w-7xl">
         <BlurGroup as="header" className="mx-auto max-w-3xl text-center">
-          <p className="text-xs font-semibold uppercase tracking-widest text-emerald-600"><Words text={ADVANTAGES.tag} /></p>
+          <p className="text-xs font-semibold uppercase tracking-widest text-emerald-700"><Words text={ADVANTAGES.tag} /></p>
           <h2 id="advantages-title" className="mt-4 font-display text-3xl font-bold tracking-tight text-slate-900 lg:text-5xl">
             <TwoTone text={ADVANTAGES.headline} split={ADVANTAGES.headlineSplit} />
           </h2>
@@ -110,7 +103,7 @@ export default function Advantages({ onSearch }) {
         <div className="mt-16 [perspective:1400px]">
           <div ref={panel} className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 lg:gap-0 lg:[transform-style:preserve-3d]">
             {ADVANTAGES.pillars.map((p, i) => (
-              <PillarCard key={p.id} pillar={p} index={i} onSearch={onSearch} />
+              <PillarCard key={p.id} pillar={p} index={i} />
             ))}
           </div>
         </div>

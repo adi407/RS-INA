@@ -19,7 +19,7 @@ function CaseCard({ study, index, onOpen }) {
       <div className="relative h-56 overflow-hidden bg-slate-100">
         <img
           src={study.image}
-          alt={study.client}
+          alt=""
           loading="lazy"
           className="size-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
         />
@@ -31,7 +31,7 @@ function CaseCard({ study, index, onOpen }) {
           type="button"
           onClick={() => onOpen(study.id)}
           aria-label={`${CLIENTS_PAGE.cta}: ${study.client} case study`}
-          className="mt-6 inline-flex items-center gap-2 self-start rounded-full font-semibold text-emerald-600 transition-transform duration-300 group-hover:translate-x-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-4"
+          className="mt-6 inline-flex items-center gap-2 self-start rounded-full font-semibold text-emerald-800 transition-transform duration-300 group-hover:translate-x-1"
         >
           {CLIENTS_PAGE.cta}
           <ArrowRight className="size-4" aria-hidden />
@@ -52,9 +52,8 @@ function LogoCard({ name, logo, index, className = "" }) {
       <img
         src={logo}
         alt={name}
-        title={name}
         loading="lazy"
-        className="max-h-14 w-auto max-w-full opacity-60 grayscale transition-all duration-300 group-hover:opacity-100 group-hover:grayscale-0"
+        className="max-h-14 w-auto max-w-full transition-transform duration-300 group-hover:scale-105"
       />
     </li>
   );
@@ -100,7 +99,7 @@ export default function ClientsPage() {
       {/* Partner logos */}
       <section id="partners" aria-labelledby="partners-title" className={`${SECTION} bg-white`}>
         <SectionHeader id="partners-title" tag={CLIENTS_PAGE.logosTag} title={CLIENTS_PAGE.logosTitle} split={1} align="center" />
-        <ul aria-label="Our clients" className="focus-grid mx-auto mt-12 grid max-w-7xl grid-cols-2 gap-6 md:grid-cols-4 lg:mt-16 lg:grid-cols-7">
+        <ul aria-label="Our clients" className="mx-auto mt-12 grid max-w-7xl grid-cols-2 gap-6 md:grid-cols-4 lg:mt-16 lg:grid-cols-7">
           {logos.map((l, i) => (
             // The odd seventh card spans both columns on phones so the grid stays balanced
             <LogoCard key={l.name} {...l} index={i} className={i === logos.length - 1 ? "col-span-2 md:col-span-1" : ""} />

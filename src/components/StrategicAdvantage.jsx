@@ -22,17 +22,17 @@ function AdvantageCard({ card, index }) {
   return (
     <article data-reveal style={{ "--d": `${index * 90}ms` }} className={`${CARD} group relative overflow-hidden lg:p-10`}>
       <div className="flex items-center justify-between">
-        <span className={`${ICON_TILE} transition-colors duration-300 group-hover:bg-emerald-600 group-hover:text-white`}>
+        <span className={`${ICON_TILE} transition-colors duration-300 group-hover:bg-emerald-700 group-hover:text-white`}>
           <Icon className="size-[22px]" strokeWidth={1.5} aria-hidden />
         </span>
         {card.id === "license" ? (
           // Verified government licence badge
           <span className="flex items-center gap-1.5 rounded-full bg-emerald-50 py-1 pl-2 pr-3 text-xs font-semibold text-emerald-700 ring-1 ring-inset ring-emerald-100">
-            <BadgeCheck className="size-4 text-emerald-600" strokeWidth={2} aria-hidden />
+            <BadgeCheck className="size-4 text-emerald-700" strokeWidth={2} aria-hidden />
             Verified · Govt. of India
           </span>
         ) : (
-          <span aria-hidden className="font-display text-sm font-semibold tabular-nums text-slate-300 transition-colors group-hover:text-emerald-600">
+          <span aria-hidden className="font-display text-sm font-semibold tabular-nums text-slate-500 transition-colors group-hover:text-emerald-700">
             0{index + 1}
           </span>
         )}
@@ -48,10 +48,10 @@ function AdvantageCard({ card, index }) {
 /** Section 7 — strategic advantage bento on slate-50. */
 export default function StrategicAdvantage() {
   return (
-    <Section id="about" tint labelledBy="strategic-title" className="relative isolate overflow-hidden">
+    <Section id="why-us" tint labelledBy="strategic-title" className="relative isolate overflow-hidden">
       <LinePattern className="inset-x-0 top-0 h-[520px]" />
       <SectionHeader id="strategic-title" tag={STRATEGIC.tag} title={STRATEGIC.headline} split={STRATEGIC.headlineSplit} align="center" />
-      <div className="focus-grid mx-auto mt-16 grid max-w-6xl grid-cols-1 gap-8 md:grid-cols-2">
+      <div className="mx-auto mt-16 grid max-w-6xl grid-cols-1 gap-8 md:grid-cols-2">
         {STRATEGIC.cards.map((c, i) => (
           <AdvantageCard key={c.id} card={c} index={i} />
         ))}

@@ -1,4 +1,5 @@
 import { ArrowRight, Check, FileCheck2, Landmark, ShieldCheck } from "lucide-react";
+import { reducedMotion } from "../motion.js";
 import { useEffect, useState } from "react";
 import usePlayOnHover, { step } from "../usePlayOnHover.js";
 import { BlurGroup, BTN_PRIMARY, Section, TwoTone, Words } from "./ui.jsx";
@@ -18,7 +19,7 @@ function useTween(on, target, delay, duration) {
       setN(0);
       return;
     }
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    if (reducedMotion()) {
       setN(target);
       return;
     }
@@ -50,7 +51,7 @@ function AssuranceCard({ on }) {
     >
       <div className="flex items-center justify-between border-b border-slate-100 pb-5">
         <div className="flex items-center gap-3">
-          <span className="grid size-10 place-items-center rounded-xl bg-emerald-50 text-emerald-600 ring-1 ring-inset ring-emerald-100">
+          <span className="grid size-10 place-items-center rounded-xl bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-100">
             <ShieldCheck className="size-5" strokeWidth={1.6} aria-hidden />
           </span>
           <div>
@@ -86,7 +87,7 @@ function AssuranceCard({ on }) {
           return (
             <li key={a.id} className="flex gap-4 py-5">
               <Icon
-                className={`mt-0.5 size-5 shrink-0 transition-colors duration-500 ${on ? "text-emerald-600" : "text-slate-300"}`}
+                className={`mt-0.5 size-5 shrink-0 transition-colors duration-500 ${on ? "text-emerald-700" : "text-slate-300"}`}
                 style={step(on, delay)}
                 strokeWidth={1.6}
                 aria-hidden
@@ -123,7 +124,7 @@ function AssuranceCard({ on }) {
             {/* Visual number animates; screen readers always get the real figure */}
             <span aria-hidden>{retention}</span>
             <span className="sr-only">{SOLUTION.retention}</span>
-            <span className="text-emerald-600">%</span>
+            <span className="text-emerald-700">%</span>
           </p>
         </div>
         <div
@@ -159,7 +160,7 @@ export default function Solution({ onSearch }) {
         <div className="relative grid grid-cols-1 items-center gap-12 lg:grid-cols-12">
           <div className="lg:col-span-7">
             <BlurGroup>
-            <p className="text-xs font-semibold uppercase tracking-widest text-emerald-600"><Words text={SOLUTION.tag} /></p>
+            <p className="text-xs font-semibold uppercase tracking-widest text-emerald-700"><Words text={SOLUTION.tag} /></p>
             <h2 id="solution-title" className="mt-4 max-w-xl font-display text-3xl font-bold tracking-tight text-slate-900 lg:text-4xl">
               <TwoTone text={SOLUTION.headline} split={SOLUTION.headlineSplit} />
             </h2>
@@ -170,9 +171,15 @@ export default function Solution({ onSearch }) {
               <ArrowRight className="size-[18px] transition-transform duration-200 group-hover:translate-x-1" aria-hidden />
             </a>
           </div>
-          <div ref={demoRef} className="lg:col-span-5">
-            <AssuranceCard on={demoOn} />
-          </div>
+          <figure ref={demoRef} className="lg:col-span-5">
+            <div aria-hidden="true">
+              <AssuranceCard on={demoOn} />
+            </div>
+            <figcaption className="mt-3 text-right text-xs font-medium text-slate-600">
+              <span className="sr-only">Illustration: our three assurance checks (vetting, compliance, risk) and a 95% worker retention rate.</span>
+              <span aria-hidden="true">Illustration</span>
+            </figcaption>
+          </figure>
         </div>
       </div>
     </Section>

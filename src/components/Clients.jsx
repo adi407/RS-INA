@@ -16,7 +16,7 @@ function PartnerCard({ name, logo, index, className = "" }) {
         src={logo}
         alt={name}
         loading="lazy"
-        className="max-h-16 w-auto max-w-full opacity-60 grayscale transition-all duration-300 group-hover:opacity-100 group-hover:grayscale-0"
+        className="max-h-16 w-auto max-w-full transition-transform duration-300 group-hover:scale-105"
       />
     </li>
   );
@@ -27,7 +27,7 @@ export default function Clients() {
   return (
     <Section id="clients" labelledBy="clients-title">
       <SectionHeader id="clients-title" tag={CLIENTS.tag} title={CLIENTS.headline} split={CLIENTS.headlineSplit} subtitle={CLIENTS.subtitle} align="center" />
-      <ul aria-label="Our clients" className="focus-grid mx-auto mt-16 grid max-w-6xl grid-cols-2 gap-6 md:grid-cols-5">
+      <ul aria-label="Our clients" className="mx-auto mt-16 grid max-w-6xl grid-cols-2 gap-6 md:grid-cols-5">
         {CLIENTS.logos.map((c, i) => (
           // The odd fifth card spans both columns on mobile so the grid stays balanced
           <PartnerCard key={c.name} {...c} index={i} className={i === CLIENTS.logos.length - 1 ? "col-span-2 md:col-span-1" : ""} />
