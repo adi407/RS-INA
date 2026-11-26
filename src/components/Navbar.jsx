@@ -148,10 +148,10 @@ export default function Navbar() {
     };
   }, [mobileOpen]);
 
-  // Widening past the desktop breakpoint closes the sheet
+  // Widening to desktop shows the full links, so close the mobile sheet
   useEffect(() => {
-    const mq = window.matchMedia("(min-width: 1280px)");
-    const onChange = () => mq.matches && setMobileOpen(false);
+    const mq = window.matchMedia("(min-width: 1024px)");
+    const onChange = (e) => e.matches && setMobileOpen(false);
     mq.addEventListener("change", onChange);
     return () => mq.removeEventListener("change", onChange);
   }, []);
@@ -170,8 +170,8 @@ export default function Navbar() {
           <Logo />
         </span>
 
-        {/* Desktop links — always visible on wide screens */}
-        <ul className="hidden items-center gap-7 xl:flex">
+        {/* Desktop links — always visible from lg (1024px) up, scrolled or not */}
+        <ul className="hidden items-center gap-6 lg:flex xl:gap-7">
           {NAV.map((item, i) =>
             item.children ? (
               <Dropdown key={item.label} item={item} alignRight={i === NAV.length - 1} />
@@ -197,6 +197,7 @@ export default function Navbar() {
           >
             Contact Us
           </a>
+          {/* Mobile / tablet only */}
           <button
             ref={toggle}
             type="button"
@@ -204,7 +205,7 @@ export default function Navbar() {
             aria-expanded={mobileOpen}
             aria-controls="mobile-menu"
             aria-label={mobileOpen ? "Close menu" : "Open menu"}
-            className="grid size-11 place-items-center rounded-full border border-slate-600 text-white transition-colors hover:border-emerald-400 xl:hidden"
+            className="grid size-11 place-items-center rounded-full border border-slate-600 text-white transition-colors hover:border-emerald-400 lg:hidden"
           >
             <MenuIcon open={mobileOpen} />
           </button>
@@ -216,7 +217,7 @@ export default function Navbar() {
         ref={sheet}
         id="mobile-menu"
         inert={mobileOpen ? undefined : ""}
-        className={`overflow-y-auto overscroll-contain border-t bg-obsidian transition-[max-height] duration-300 xl:hidden ${
+        className={`overflow-y-auto overscroll-contain border-t bg-obsidian transition-[max-height] duration-300 lg:hidden ${
           mobileOpen ? "max-h-[calc(100dvh-5rem)] border-slate-800/80 shadow-[0_0_0_100vmax_rgba(2,6,23,0.55)]" : "max-h-0 border-transparent"
         }`}
       >

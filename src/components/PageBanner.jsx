@@ -5,7 +5,8 @@ import { BlurGroup, Words } from "./ui.jsx";
  * Dark inner-page banner. Sits under the transparent navbar (-mt-20) like the homepage
  * hero; the photo is dimmed behind a left-to-right gradient so the copy stays legible.
  */
-export default function PageBanner({ crumb, tag, title, subtitle, image }) {
+/** docked: extra bottom room for a card that overlaps the banner's lower edge (the jobs search dock). */
+export default function PageBanner({ crumb, tag, title, subtitle, image, docked = false }) {
   return (
     <section id="top" className="vt-banner relative isolate -mt-20 overflow-hidden bg-[#0A0F1D] shadow-[0_-2px_0_0_#0A0F1D]">
       <div aria-hidden className="absolute inset-0 -z-10">
@@ -13,7 +14,7 @@ export default function PageBanner({ crumb, tag, title, subtitle, image }) {
         <div className="absolute inset-0 bg-gradient-to-r from-[#0A0F1D]/90 via-[#0A0F1D]/60 to-[#0A0F1D]/30" />
         <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[#0A0F1D] to-transparent" />
       </div>
-      <div className="mx-auto max-w-7xl px-6 pb-20 pt-40 md:px-12 lg:pb-24 lg:pt-48">
+      <div className={`mx-auto max-w-7xl px-6 pt-40 md:px-12 lg:pt-48 ${docked ? "pb-40 lg:pb-44" : "pb-20 lg:pb-24"}`}>
         <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-sm text-slate-300">
           <a href="/" className="transition-colors hover:text-white">
             Home

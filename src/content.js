@@ -766,7 +766,7 @@ export const EMPLOYERS = {
  * apply form sends to CONTACT). Filter options in the old dropdowns' order.
  */
 export const JOBS = {
-  tag: "Career Opportunities",
+  tag: "(Career Opportunities)",
   title: "Job Openings",
   subtitle: "Explore verified international career opportunities with end-to-end visa and mobilization support.",
   searchPlaceholder: "Search job title or keyword...",

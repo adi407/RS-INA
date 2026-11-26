@@ -1,12 +1,15 @@
 import { useCallback, useLayoutEffect, useMemo, useRef, useState } from "react";
-import { ArrowRight, Briefcase, CalendarDays, ChevronDown, Clock, FileText, MapPin, Search, SearchX, Wallet, X } from "lucide-react";
+import { ArrowRight, Briefcase, CalendarDays, Clock, FileText, MapPin, Search, SearchX, Wallet, X } from "lucide-react";
 import PageBanner from "../components/PageBanner.jsx";
 import JobDrawer from "../components/JobDrawer.jsx";
 import { BTN_GHOST, BTN_PRIMARY } from "../components/ui.jsx";
+import FilterDropdown from "../components/FilterDropdown.jsx";
 import { JOBS } from "../content.js";
 import { Flip, gsap, reducedMotion } from "../motion.js";
 
 const norm = (s) => s.toLowerCase().trim();
+// Pill text in one consistent case (the old site's data mixes "DUBAI" and "Full Time")
+const title = (s) => s.toLowerCase().replace(/(^|\s)\S/g, (c) => c.toUpperCase());
 const NONE = { q: "", category: "", type: "", location: "" };
 const STALE_DAYS = 180;
 const ageInDays = (posted) => (Date.now() - new Date(posted).getTime()) / 86400000;
@@ -14,58 +17,33 @@ const ageInDays = (posted) => (Date.now() - new Date(posted).getTime()) / 864000
 /** Newest first */
 const LISTINGS = [...JOBS.listings].sort((a, b) => new Date(b.posted) - new Date(a.posted));
 
-function FilterSelect({ id, value, onChange, filter, className = "" }) {
-  return (
-    <div className={`relative ${className}`}>
-      <label htmlFor={id} className="sr-only">
-        {filter.label}
-      </label>
-      <select
-        id={id}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        className={`h-12 w-full cursor-pointer appearance-none rounded-xl border bg-white pl-4 pr-10 text-sm font-medium outline-none transition focus:border-emerald-700 focus:ring-2 focus:ring-emerald-700/50 ${
-          value ? "border-emerald-700 text-slate-900" : "border-slate-500 text-slate-700"
-        }`}
-      >
-        <option value="">{filter.label}</option>
-        {filter.options.map((o) => (
-          <option key={o} value={o}>
-            {o}
-          </option>
-        ))}
-      </select>
-      <ChevronDown className="pointer-events-none absolute right-3.5 top-1/2 size-4 -translate-y-1/2 text-slate-600" aria-hidden />
-    </div>
-  );
-}
-
+/** Horizontal job card: title, soft metadata pills and posted date on the left, "More Details" on the right. */
 function JobCard({ job, onOpen }) {
-  const pill = "inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold";
+  const pill = "inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-3 py-1.5 text-xs font-medium text-slate-800";
   const stale = ageInDays(job.posted) > STALE_DAYS;
   return (
     <li
       data-flip-id={job.id}
-      className="spotlight group flex flex-col justify-between gap-6 rounded-2xl border border-slate-200 bg-white p-6 transition-[border-color,box-shadow] duration-200 hover:border-emerald-600/50 hover:shadow-xl hover:shadow-slate-900/5 md:flex-row md:items-center lg:p-7"
+      className="spotlight group flex flex-col justify-between gap-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-[border-color,box-shadow] duration-300 hover:border-emerald-600/50 hover:shadow-xl hover:shadow-slate-900/5 md:flex-row md:items-center lg:p-7"
     >
       <div className="min-w-0">
         <h3 className="text-lg font-bold leading-snug text-slate-900 transition-colors group-hover:text-emerald-800">{job.title}</h3>
         <div className="mt-3 flex flex-wrap gap-2">
-          <span className={`${pill} bg-slate-100 text-slate-800`}>
-            <Briefcase className="size-3.5" aria-hidden />
-            {job.category}
+          <span className={pill}>
+            <Briefcase className="size-3.5 text-emerald-700" aria-hidden />
+            {title(job.category)}
           </span>
-          <span className={`${pill} bg-emerald-50 text-emerald-800`}>
-            <MapPin className="size-3.5" aria-hidden />
-            {job.location}
+          <span className={pill}>
+            <MapPin className="size-3.5 text-emerald-700" aria-hidden />
+            {title(job.location)}
           </span>
-          <span className={`${pill} bg-sky-50 text-sky-800`}>
-            <Clock className="size-3.5" aria-hidden />
-            {job.type}
+          <span className={pill}>
+            <Clock className="size-3.5 text-emerald-700" aria-hidden />
+            {title(job.type)}
           </span>
           {job.salary && (
-            <span className={`${pill} bg-amber-50 text-amber-900`}>
-              <Wallet className="size-3.5" aria-hidden />
+            <span className={pill}>
+              <Wallet className="size-3.5 text-emerald-700" aria-hidden />
               {job.salary}
             </span>
           )}
@@ -141,13 +119,14 @@ export default function JobsPage() {
 
   return (
     <>
-      <PageBanner crumb="Jobs" tag={JOBS.tag} title={JOBS.title} subtitle={JOBS.subtitle} image="/media/hero-cities-poster.jpg" />
+      <PageBanner crumb="Jobs" tag={JOBS.tag} title={JOBS.title} subtitle={JOBS.subtitle} image="/media/hero-cities-poster.jpg" docked />
 
       <section aria-labelledby="board-title" className="bg-[#F8FAFC] px-6 py-16 lg:px-12 lg:py-20">
         <h2 id="board-title" className="sr-only">
           Open positions
         </h2>
-        <div className="relative z-10 mx-auto -mt-20 mb-12 max-w-6xl rounded-2xl border border-slate-200 bg-white p-4 shadow-xl shadow-slate-900/5">
+        {/* Floating filter dock: overlaps the banner's empty lower band (banner is `docked`), clear of the copy */}
+        <div className="relative z-20 mx-auto -mt-[8.5rem] mb-12 max-w-6xl rounded-2xl border border-white/60 bg-white/95 p-4 shadow-2xl shadow-slate-900/15 ring-1 ring-slate-900/5 backdrop-blur-xl sm:p-5">
           <div role="search" className="grid grid-cols-1 gap-4 md:grid-cols-12">
             <div className="relative md:col-span-12 lg:col-span-6">
               <label htmlFor="job-search" className="sr-only">
@@ -163,9 +142,9 @@ export default function JobsPage() {
                 className="h-12 w-full rounded-xl border border-slate-500 bg-white pl-12 pr-4 text-[15px] text-slate-900 outline-none transition placeholder:text-slate-500 focus:border-emerald-700 focus:ring-2 focus:ring-emerald-700/50"
               />
             </div>
-            <FilterSelect id="f-category" value={f.category} onChange={set("category")} filter={JOBS.filters.category} className="md:col-span-4 lg:col-span-2" />
-            <FilterSelect id="f-type" value={f.type} onChange={set("type")} filter={JOBS.filters.type} className="md:col-span-4 lg:col-span-2" />
-            <FilterSelect id="f-location" value={f.location} onChange={set("location")} filter={JOBS.filters.location} className="md:col-span-4 lg:col-span-2" />
+            <FilterDropdown value={f.category} onChange={set("category")} placeholder={JOBS.filters.category.label} options={JOBS.filters.category.options} className="md:col-span-4 lg:col-span-2" />
+            <FilterDropdown value={f.type} onChange={set("type")} placeholder={JOBS.filters.type.label} options={JOBS.filters.type.options} className="md:col-span-4 lg:col-span-2" />
+            <FilterDropdown value={f.location} onChange={set("location")} placeholder={JOBS.filters.location.label} options={JOBS.filters.location.options} className="md:col-span-4 lg:col-span-2" />
           </div>
           <div className="mt-3 flex items-center justify-between gap-3 border-t border-slate-100 px-1 pt-3 text-sm">
             <p className="text-slate-700" aria-live="polite">
